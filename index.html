@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Clean Pro Services LLC | Commercial Cleaning Across Illinois</title>
+<meta name="description" content="E-Clean Pro Services LLC provides professional commercial cleaning and facility maintenance across Illinois. Get an instant price estimate and book your cleaning today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#052e2b;
+    --teal-800:#07403c;
+    --teal-700:#0a5c53;
+    --teal-600:#0e7d70;
+    --teal-500:#12a394;
+    --teal-400:#2ec4b6;
+    --mint-300:#7fe8d8;
+    --aqua-100:#e6fbf7;
+    --ink:#0b1f1d;
+    --ink-soft:#3c5450;
+    --paper:#f6fbfa;
+    --white:#ffffff;
+    --gold:#f5b942;
+    --danger:#e5484d;
+    --shadow-lg: 0 30px 60px -20px rgba(4, 40, 36, 0.35);
+    --shadow-md: 0 14px 34px -12px rgba(4, 40, 36, 0.28);
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Plus Jakarta Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Sora', 'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;}
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  .container{width:100%; max-width:1220px; margin:0 auto; padding:0 24px;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--teal-600); background:var(--aqua-100); border:1px solid rgba(18,163,148,0.25);
+    padding:7px 14px; border-radius:99px; margin-bottom:16px;
+  }
+  .eyebrow span.dot{width:6px;height:6px;border-radius:50%;background:var(--teal-500);}
+
+  /* ===== TOPBAR ===== */
+  .topbar{
+    background:linear-gradient(90deg, var(--teal-900), var(--teal-800) 60%, var(--teal-900));
+    color:rgba(255,255,255,0.92);
+    font-size:13.5px;
+    position:relative;
+    z-index:60;
+  }
+  .topbar-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 24px; max-width:1220px; margin:0 auto; gap:16px; flex-wrap:wrap;
+  }
+  .topbar-left, .topbar-right{display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .topbar a.tlink{display:flex; align-items:center; gap:7px; color:rgba(255,255,255,0.92); transition:color .2s;}
+  .topbar a.tlink:hover{color:var(--mint-300);}
+  .topbar svg{width:14px;height:14px;flex-shrink:0;}
+  .topbar-badge{
+    display:flex; align-items:center; gap:7px; font-weight:600; color:var(--mint-300);
+  }
+  .topbar-badge svg{width:14px;height:14px;}
+
+  /* ===== NAVBAR ===== */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    padding:14px 0;
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(18px) saturate(180%);
+    -webkit-backdrop-filter:blur(18px) saturate(180%);
+    border-bottom:1px solid rgba(255,255,255,0.4);
+    transition:all .35s var(--ease);
+  }
+  .navbar.scrolled{
+    padding:9px 0;
+    background:rgba(255,255,255,0.78);
+    box-shadow:0 8px 30px -10px rgba(5,46,43,0.25);
+    border-bottom:1px solid rgba(18,163,148,0.15);
+  }
+  .navbar::after{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+    pointer-events:none;
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:20px;}
+  .brand{display:flex; align-items:center; gap:11px; font-family:'Sora',sans-serif; font-weight:800; font-size:19px; color:var(--teal-900);}
+  .brand-mark{
+    width:42px; height:42px; border-radius:13px;
+    background:linear-gradient(145deg, var(--teal-400), var(--teal-700));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 20px -6px rgba(14,125,112,0.6), inset 0 1px 1px rgba(255,255,255,0.4);
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:23px;height:23px;color:#fff;}
+  .brand small{display:block; font-size:10.5px; font-weight:600; letter-spacing:0.1em; color:var(--teal-600); text-transform:uppercase;}
+
+  .nav-links{display:flex; align-items:center; gap:2px;}
+  .nav-links a{
+    padding:9px 15px; border-radius:99px; font-weight:600; font-size:14.5px; color:var(--ink-soft);
+    transition:all .25s var(--ease); position:relative;
+  }
+  .nav-links a:hover{color:var(--teal-800); background:rgba(18,163,148,0.1);}
+
+  .nav-cta{display:flex; align-items:center; gap:12px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:99px; border:none; font-weight:700; font-size:14.5px;
+    cursor:pointer; transition:all .3s var(--ease); white-space:nowrap;
+  }
+  .btn-primary{
+    color:#fff;
+    background:linear-gradient(135deg, var(--teal-400), var(--teal-600) 55%, var(--teal-700));
+    background-size:160% 160%; background-position:0% 0%;
+    box-shadow:0 14px 28px -10px rgba(14,125,112,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .btn-primary:hover{background-position:100% 100%; transform:translateY(-2px); box-shadow:0 18px 34px -10px rgba(14,125,112,0.75), inset 0 1px 0 rgba(255,255,255,0.4);}
+  .btn-ghost{
+    color:var(--teal-800); background:rgba(255,255,255,0.6); border:1px solid rgba(10,92,83,0.18);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.95); transform:translateY(-2px);}
+  .btn-block{width:100%;}
+  .btn-lg{padding:15px 30px; font-size:15.5px;}
+  .btn svg{width:16px;height:16px;}
+
+  .nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:none; padding:8px;}
+  .nav-toggle span{width:24px; height:2.4px; background:var(--teal-900); border-radius:2px; transition:.3s;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 60% at 15% -10%, rgba(46,196,182,0.35), transparent 55%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(245,185,66,0.18), transparent 50%),
+      linear-gradient(160deg, var(--teal-900) 0%, var(--teal-800) 45%, var(--teal-700) 100%);
+    padding:88px 0 130px;
+    color:#fff;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(255,255,255,0.14) 1.4px, transparent 0);
+    background-size:26px 26px;
+    opacity:.4; pointer-events:none;
+  }
+  .hero-blob{position:absolute; border-radius:50%; filter:blur(70px); opacity:.55; pointer-events:none;}
+  .hero-blob.b1{width:420px; height:420px; background:var(--teal-400); top:-160px; right:-120px;}
+  .hero-blob.b2{width:320px; height:320px; background:var(--gold); bottom:-140px; left:10%; opacity:.18;}
+  .hero-grid{position:relative; z-index:2; display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;}
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--mint-300);
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.22);
+    padding:7px 14px; border-radius:99px; margin-bottom:22px; backdrop-filter:blur(6px);
+  }
+  .hero h1{font-size:clamp(34px, 4.6vw, 56px); line-height:1.08; font-weight:800; margin-bottom:20px;}
+  .hero h1 em{font-style:normal; color:var(--mint-300);}
+  .hero p.lead{font-size:17.5px; line-height:1.65; color:rgba(255,255,255,0.82); max-width:520px; margin-bottom:34px;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px;}
+  .hero-stats{display:flex; gap:0; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.18); padding-top:26px;}
+  .hero-stats .stat{padding-right:34px; margin-right:34px; border-right:1px solid rgba(255,255,255,0.18);}
+  .hero-stats .stat:last-child{border-right:none; margin-right:0;}
+  .hero-stats .stat strong{display:block; font-family:'Sora',sans-serif; font-size:24px; font-weight:800; color:#fff;}
+  .hero-stats .stat span{font-size:13px; color:rgba(255,255,255,0.68);}
+
+  /* glass quote card in hero */
+  .hero-card{
+    position:relative; z-index:2;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.28);
+    backdrop-filter:blur(22px) saturate(160%);
+    -webkit-backdrop-filter:blur(22px) saturate(160%);
+    border-radius:var(--radius-lg);
+    padding:30px;
+    box-shadow:var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .hero-card-head{display:flex; align-items:center; gap:12px; margin-bottom:20px;}
+  .hero-card-head .icon-circ{
+    width:44px; height:44px; border-radius:12px; background:linear-gradient(145deg, var(--mint-300), var(--teal-500));
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    box-shadow:0 8px 18px -6px rgba(46,196,182,0.6);
+  }
+  .hero-card-head .icon-circ svg{width:22px;height:22px; color:var(--teal-900);}
+  .hero-card-head h3{font-size:17px; color:#fff;}
+  .hero-card-head p{font-size:12.5px; color:rgba(255,255,255,0.65);}
+  .hero-mini-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 4px; border-bottom:1px solid rgba(255,255,255,0.14); font-size:14px; color:rgba(255,255,255,0.88);
+  }
+  .hero-mini-row:last-of-type{border-bottom:none;}
+  .hero-mini-row svg{width:17px;height:17px; color:var(--mint-300); flex-shrink:0;}
+  .hero-mini-row .left{display:flex; align-items:center; gap:10px;}
+  .hero-card .btn{margin-top:18px;}
+
+  /* ===== SECTION GENERIC ===== */
+  section{padding:96px 0;}
+  .section-head{max-width:660px; margin-bottom:52px;}
+  .section-head.center{margin-left:auto; margin-right:auto; text-align:center;}
+  .section-head h2{font-size:clamp(28px,3.4vw,40px); font-weight:800; color:var(--teal-900); margin-bottom:14px; line-height:1.15;}
+  .section-head p{font-size:16px; color:var(--ink-soft); line-height:1.7;}
+  .bg-fade{background:linear-gradient(180deg, var(--aqua-100), var(--paper) 30%);}
+  .bg-deep{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(46,196,182,0.15), transparent 60%),
+      var(--teal-900);
+    color:#fff;
+  }
+
+  /* ===== ABOUT ===== */
+  .about-wrap{display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:start;}
+  .about-visual{position:relative;}
+  .about-card{
+    border-radius:var(--radius-lg);
+    background:linear-gradient(150deg, var(--teal-700), var(--teal-900));
+    padding:36px 30px;
+    color:#fff;
+    box-shadow:var(--shadow-lg);
+    position:relative;
+    overflow:hidden;
+  }
+  .about-card::after{content:"";position:absolute; width:220px; height:220px; background:var(--mint-300); opacity:.25; filter:blur(60px); border-radius:50%; bottom:-80px; right:-60px;}
+  .about-card h3{font-size:22px; margin-bottom:14px; position:relative;}
+  .about-card p{font-size:14.5px; line-height:1.75; color:rgba(255,255,255,0.82); position:relative; margin-bottom:22px;}
+  .about-quote{
+    font-family:'Sora',sans-serif; font-weight:700; font-size:17px; line-height:1.5;
+    border-left:3px solid var(--mint-300); padding-left:16px; position:relative; color:#fff;
+  }
+  .about-copy p{font-size:15.5px; line-height:1.85; color:var(--ink-soft); margin-bottom:18px;}
+  .about-copy h3{font-size:21px; color:var(--teal-900); margin:30px 0 14px;}
+  .pillars{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:10px;}
+  .pillar{
+    background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md);
+    padding:20px; transition:.3s var(--ease);
+  }
+  .pillar:hover{transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:rgba(18,163,148,0.3);}
+  .pillar .icon-sq{
+    width:38px;height:38px;border-radius:10px; background:var(--aqua-100); display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+  }
+  .pillar .icon-sq svg{width:19px;height:19px; color:var(--teal-600);}
+  .pillar h4{font-size:15px; color:var(--teal-900); margin-bottom:6px;}
+  .pillar p{font-size:13px; color:var(--ink-soft); line-height:1.55;}
+
+  /* ===== SERVICES / WHO WE SERVE ===== */
+  .services-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .service-card{
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:var(--radius-md);
+    padding:24px 20px;
+    box-shadow:0 10px 24px -14px rgba(5,46,43,0.18);
+    transition:.35s var(--ease);
+    position:relative;
+    overflow:hidden;
+  }
+  .service-card:hover{transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:rgba(18,163,148,0.35); background:#fff;}
+  .service-card .icon-circ2{
+    width:46px;height:46px;border-radius:13px;
+    background:linear-gradient(145deg, var(--teal-500), var(--teal-700));
+    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+    box-shadow:0 10px 20px -8px rgba(14,125,112,0.55);
+  }
+  .service-card .icon-circ2 svg{width:22px;height:22px;color:#fff;}
+  .service-card h4{font-size:15.5px; color:var(--teal-900); margin-bottom:6px;}
+  .service-card p{font-size:12.8px; color:var(--ink-soft); line-height:1.5;}
+
+  /* ===== APPROACH / WHY US ===== */
+  .why-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .why-item{
+    display:flex; gap:14px; align-items:flex-start;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    border-radius:var(--radius-md); padding:18px; backdrop-filter:blur(8px);
+  }
+  .why-item .check{
+    width:26px;height:26px; border-radius:8px; background:var(--mint-300); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; margin-top:2px;
+  }
+  .why-item .check svg{width:15px;height:15px; color:var(--teal-900);}
+  .why-item p{font-size:14.5px; color:rgba(255,255,255,0.88); font-weight:600;}
+
+  /* ===== CALCULATOR ===== */
+  .calc-wrap{
+    display:grid; grid-template-columns:1.2fr 0.9fr; gap:0;
+    background:rgba(255,255,255,0.65);
+    backdrop-filter:blur(20px) saturate(180%);
+    -webkit-backdrop-filter:blur(20px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.8);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    overflow:hidden;
+  }
+  .calc-form{padding:44px 44px;}
+  .calc-form h3{font-size:22px; color:var(--teal-900); margin-bottom:6px;}
+  .calc-form > p{font-size:14px; color:var(--ink-soft); margin-bottom:30px;}
+  .field{margin-bottom:22px;}
+  .field label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:700; color:var(--teal-800); margin-bottom:9px;}
+  .field label .val{color:var(--teal-500); font-weight:800;}
+  .field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=date], .field select, .field textarea{
+    width:100%; padding:13px 15px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.16);
+    background:rgba(255,255,255,0.85); font-family:inherit; font-size:14.5px; color:var(--ink); transition:.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--teal-500); box-shadow:0 0 0 4px rgba(18,163,148,0.15); background:#fff;}
+  .field input[type=range]{
+    width:100%; height:6px; border-radius:99px; background:linear-gradient(90deg, var(--teal-400), var(--teal-500));
+    appearance:none; -webkit-appearance:none; cursor:pointer;
+  }
+  .field input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff;
+    border:4px solid var(--teal-500); box-shadow:0 4px 10px rgba(5,46,43,0.3); cursor:pointer;
+  }
+  .field input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:#fff; border:4px solid var(--teal-500); box-shadow:0 4px 10px rgba(5,46,43,0.3); cursor:pointer;
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .chips{display:flex; flex-wrap:wrap; gap:9px;}
+  .chip{
+    padding:10px 15px; border-radius:99px; border:1.5px solid rgba(10,92,83,0.18); background:rgba(255,255,255,0.7);
+    font-size:13.5px; font-weight:600; color:var(--ink-soft); cursor:pointer; transition:.2s;
+    display:flex; align-items:center; gap:7px;
+  }
+  .chip input{display:none;}
+  .chip:hover{border-color:var(--teal-400);}
+  .chip.active{background:linear-gradient(135deg, var(--teal-400), var(--teal-600)); color:#fff; border-color:transparent; box-shadow:0 8px 18px -8px rgba(14,125,112,0.6);}
+  .addon-list{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .addon{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.14); background:rgba(255,255,255,0.6);
+    cursor:pointer; transition:.2s; font-size:13.3px;
+  }
+  .addon:hover{border-color:var(--teal-400);}
+  .addon.active{border-color:var(--teal-500); background:rgba(46,196,182,0.1);}
+  .addon .a-left{display:flex; align-items:center; gap:10px;}
+  .addon .a-left .box{width:19px;height:19px; border-radius:6px; border:1.5px solid rgba(10,92,83,0.3); flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff;}
+  .addon.active .box{background:var(--teal-500); border-color:var(--teal-500);}
+  .addon .a-left .box svg{width:12px;height:12px; color:#fff; opacity:0;}
+  .addon.active .box svg{opacity:1;}
+  .addon .price{font-weight:800; color:var(--teal-700); white-space:nowrap;}
+  .addon input{display:none;}
+
+  .calc-result{
+    background:linear-gradient(165deg, var(--teal-800), var(--teal-900) 70%);
+    color:#fff; padding:44px 38px; position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .calc-result::before{content:"";position:absolute; width:260px;height:260px; background:var(--mint-300); opacity:.2; filter:blur(70px); border-radius:50%; top:-90px; right:-70px;}
+  .calc-result .r-label{font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--mint-300); margin-bottom:8px; position:relative;}
+  .calc-result .r-price{font-family:'Sora',sans-serif; font-size:52px; font-weight:800; line-height:1; margin-bottom:4px; position:relative;}
+  .calc-result .r-price span{font-size:17px; font-weight:600; color:rgba(255,255,255,0.65);}
+  .calc-result .r-sub{font-size:13.5px; color:rgba(255,255,255,0.65); margin-bottom:26px; position:relative;}
+  .r-breakdown{position:relative; border-top:1px solid rgba(255,255,255,0.15); padding-top:18px; margin-bottom:20px;}
+  .r-line{display:flex; justify-content:space-between; font-size:13.5px; padding:7px 0; color:rgba(255,255,255,0.82);}
+  .r-line strong{color:#fff; font-weight:700;}
+  .r-line.total{border-top:1px dashed rgba(255,255,255,0.25); margin-top:6px; padding-top:14px; font-size:15px;}
+  .r-note{
+    display:flex; gap:9px; font-size:12px; line-height:1.55; color:rgba(255,255,255,0.6);
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14); border-radius:var(--radius-sm); padding:13px; position:relative; margin-bottom:22px;
+  }
+  .r-note svg{width:15px;height:15px; flex-shrink:0; color:var(--mint-300); margin-top:1px;}
+  .calc-result .btn{position:relative; margin-top:auto;}
+
+  /* ===== BOOKING ===== */
+  .booking-wrap{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:44px;
+  }
+  .booking-info{
+    background:linear-gradient(160deg, var(--teal-700), var(--teal-900));
+    border-radius:var(--radius-lg); padding:38px 32px; color:#fff; position:relative; overflow:hidden;
+  }
+  .booking-info::after{content:"";position:absolute; width:200px;height:200px;background:var(--gold); opacity:.15; filter:blur(60px); border-radius:50%; bottom:-70px; left:-50px;}
+  .booking-info h3{font-size:23px; margin-bottom:12px; position:relative;}
+  .booking-info > p{font-size:14.5px; color:rgba(255,255,255,0.78); line-height:1.7; margin-bottom:28px; position:relative;}
+  .b-step{display:flex; gap:14px; margin-bottom:22px; position:relative;}
+  .b-step .num{
+    width:32px;height:32px; border-radius:50%; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13.5px; flex-shrink:0; color:var(--mint-300);
+  }
+  .b-step h5{font-size:14.5px; margin-bottom:3px;}
+  .b-step p{font-size:12.8px; color:rgba(255,255,255,0.65); line-height:1.5;}
+  .booking-contact-mini{margin-top:28px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.15); position:relative;}
+  .booking-contact-mini .row{display:flex; align-items:center; gap:11px; margin-bottom:14px; font-size:13.8px; color:rgba(255,255,255,0.9);}
+  .booking-contact-mini svg{width:17px;height:17px; color:var(--mint-300); flex-shrink:0;}
+
+  .booking-form{
+    background:rgba(255,255,255,0.7); backdrop-filter:blur(20px) saturate(180%); -webkit-backdrop-filter:blur(20px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.8); border-radius:var(--radius-lg); padding:38px; box-shadow:var(--shadow-lg);
+  }
+  .booking-summary{
+    display:none;
+    background:linear-gradient(135deg, rgba(46,196,182,0.12), rgba(18,163,148,0.06));
+    border:1.5px dashed rgba(18,163,148,0.4); border-radius:var(--radius-md); padding:16px 18px; margin-bottom:24px; font-size:13.5px; color:var(--teal-800);
+  }
+  .booking-summary.show{display:block;}
+  .booking-summary strong{color:var(--teal-900);}
+  .success-panel{display:none; text-align:center; padding:30px 10px;}
+  .success-panel.show{display:block;}
+  .success-panel .ring{
+    width:64px;height:64px;border-radius:50%; background:linear-gradient(145deg, var(--mint-300), var(--teal-500)); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;
+    box-shadow:0 12px 26px -8px rgba(14,125,112,0.55);
+  }
+  .success-panel .ring svg{width:30px;height:30px; color:#fff;}
+  .success-panel h3{font-size:21px; color:var(--teal-900); margin-bottom:10px;}
+  .success-panel p{font-size:14px; color:var(--ink-soft); margin-bottom:22px; line-height:1.6;}
+  .success-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+
+  /* ===== CONTACT / MAP / FOOTER ===== */
+  .contact-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:50px;}
+  .contact-card{
+    background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); padding:26px; text-align:center;
+    box-shadow:0 10px 24px -16px rgba(5,46,43,0.2); transition:.3s;
+  }
+  .contact-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-md);}
+  .contact-card .icon-circ3{
+    width:50px;height:50px; border-radius:14px; background:var(--aqua-100); display:flex; align-items:center; justify-content:center; margin:0 auto 14px;
+  }
+  .contact-card .icon-circ3 svg{width:24px;height:24px; color:var(--teal-600);}
+  .contact-card h4{font-size:15px; color:var(--teal-900); margin-bottom:6px;}
+  .contact-card p, .contact-card a{font-size:13.8px; color:var(--ink-soft);}
+  .map-frame{border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); border:1px solid rgba(10,92,83,0.1); height:340px;}
+  .map-frame iframe{width:100%; height:100%; border:0; filter:saturate(0.9);}
+
+  footer{background:var(--teal-900); color:rgba(255,255,255,0.7); padding:60px 0 26px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px; margin-bottom:44px;}
+  .footer-brand .brand{color:#fff; margin-bottom:14px;}
+  .footer-brand p{font-size:13.5px; line-height:1.7; color:rgba(255,255,255,0.55); max-width:280px;}
+  footer h5{font-size:13.5px; color:#fff; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;}
+  footer ul li{margin-bottom:11px;}
+  footer ul li a{font-size:13.8px; color:rgba(255,255,255,0.6); transition:.2s;}
+  footer ul li a:hover{color:var(--mint-300);}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1); padding-top:22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:12.8px; color:rgba(255,255,255,0.45);
+  }
+
+  .fab-call{
+    position:fixed; bottom:22px; right:22px; z-index:70;
+    width:58px; height:58px; border-radius:50%;
+    background:linear-gradient(145deg, var(--teal-400), var(--teal-600));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 16px 32px -10px rgba(14,125,112,0.7);
+    animation:pulse 2.4s infinite;
+  }
+  .fab-call svg{width:24px;height:24px;color:#fff;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(46,196,182,0.55), 0 16px 32px -10px rgba(14,125,112,0.7);}
+    70%{box-shadow:0 0 0 14px rgba(46,196,182,0), 0 16px 32px -10px rgba(14,125,112,0.7);}
+    100%{box-shadow:0 0 0 0 rgba(46,196,182,0), 0 16px 32px -10px rgba(14,125,112,0.7);}
+  }
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:980px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-card{max-width:460px;}
+    .about-wrap{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .calc-wrap{grid-template-columns:1fr;}
+    .why-grid{grid-template-columns:1fr;}
+    .booking-wrap{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr; row-gap:32px;}
+  }
+  @media (max-width:760px){
+    .topbar .topbar-right{display:none;}
+    .nav-links{display:none;}
+    .nav-toggle{display:flex;}
+    .nav-cta .btn-ghost{display:none;}
+    section{padding:64px 0;}
+    .row2{grid-template-columns:1fr;}
+    .addon-list{grid-template-columns:1fr;}
+    .calc-form{padding:30px 22px;}
+    .calc-result{padding:34px 24px;}
+    .pillars{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:1fr 1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero{padding:54px 0 90px;}
+  }
+
+  /* mobile menu */
+  .mobile-menu{
+    position:fixed; inset:0; z-index:80; background:rgba(5,46,43,0.6); backdrop-filter:blur(4px);
+    display:none;
+  }
+  .mobile-menu.open{display:block;}
+  .mobile-panel{
+    position:absolute; top:0; right:0; width:78%; max-width:340px; height:100%;
+    background:linear-gradient(160deg, var(--teal-900), var(--teal-800));
+    padding:28px 26px; display:flex; flex-direction:column; gap:6px;
+    box-shadow:-20px 0 50px rgba(0,0,0,0.35);
+    transform:translateX(100%); transition:transform .35s var(--ease);
+  }
+  .mobile-menu.open .mobile-panel{transform:translateX(0);}
+  .mobile-panel a{padding:14px 8px; color:#fff; font-weight:600; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.08);}
+  .mobile-close{align-self:flex-end; background:rgba(255,255,255,0.1); border:none; width:38px;height:38px; border-radius:50%; color:#fff; font-size:20px; margin-bottom:10px;}
+  .mobile-panel .btn{margin-top:18px;}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <a class="tlink" href="tel:4649276146">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        464-927-6146
+      </a>
+      <a class="tlink" href="https://maps.google.com/?q=19980+Aine+Drive,+Frankfort,+IL+60423" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        19980 Aine Drive, Frankfort, IL 60423
+      </a>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Mon–Sat: 7:00 AM – 7:00 PM
+      </span>
+      <a class="tlink" href="#booking">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 2v4M8 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+        Serving Businesses Statewide, IL
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="#home" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21v-4M12 17a6 6 0 0 0 6-6V4H6v7a6 6 0 0 0 6 6z"/><path d="M9 4V2M15 4V2"/></svg>
+      </span>
+      <span>E-Clean Pro <small>Services LLC</small></span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#why-us">Why Us</a>
+      <a href="#calculator">Price Calculator</a>
+      <a href="#booking">Booking</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="nav-cta">
+      <a href="tel:4649276146" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Now
+      </a>
+      <a href="#calculator" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+        Get Free Quote
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-panel">
+    <button class="mobile-close" id="mobileClose">&times;</button>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#why-us">Why Us</a>
+    <a href="#calculator">Price Calculator</a>
+    <a href="#booking">Booking</a>
+    <a href="#contact">Contact</a>
+    <a href="tel:4649276146" class="btn btn-primary btn-block">Call 464-927-6146</a>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="home">
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="container hero-grid">
+    <div>
+      <span class="hero-eyebrow"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--mint-300);display:inline-block;"></span>Commercial Cleaning &amp; Facility Maintenance</span>
+      <h1>Cleaning With Purpose. <em>Service You Can Trust.</em></h1>
+      <p class="lead">E-Clean Pro Services LLC helps Illinois businesses maintain clean, safe, and welcoming facilities — with reliable scheduling, professional standards, and cleaning programs built around your operation.</p>
+      <div class="hero-actions">
+        <a href="#calculator" class="btn btn-primary btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+          Calculate My Price
+        </a>
+        <a href="#booking" class="btn btn-ghost btn-lg" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Book a Cleaning
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>Statewide</strong><span>Coverage across Illinois</span></div>
+        <div class="stat"><strong>Custom</strong><span>Programs per facility</span></div>
+        <div class="stat"><strong>100%</strong><span>Satisfaction focused</span></div>
+      </div>
+    </div>
+
+    <div class="hero-card reveal in">
+      <div class="hero-card-head">
+        <div class="icon-circ">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <div>
+          <h3>What Our Clients Get</h3>
+          <p>Every commercial cleaning program includes:</p>
+        </div>
+      </div>
+      <div class="hero-mini-row"><span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Customized cleaning schedule</span></div>
+      <div class="hero-mini-row"><span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Trained &amp; supervised staff</span></div>
+      <div class="hero-mini-row"><span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Documented quality inspections</span></div>
+      <div class="hero-mini-row"><span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Transparent, competitive pricing</span></div>
+      <div class="hero-mini-row"><span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Responsive customer communication</span></div>
+      <a href="#calculator" class="btn btn-primary btn-block">Get Your Estimate →</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="bg-fade">
+  <div class="container">
+    <div class="about-wrap">
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <h3>About E-Clean Pro Services LLC</h3>
+          <p>A professional commercial cleaning and facility maintenance company serving businesses throughout Illinois — committed to clean, safe, healthy, and welcoming environments through reliable service and customized solutions.</p>
+          <p class="about-quote">"We believe our responsibility extends beyond simply cleaning a building. Our goal is to become a trusted extension of your organization."</p>
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <span class="eyebrow"><span class="dot"></span>About Us</span>
+        <h3 style="margin-top:0;">A Clean Facility Is More Than Appearance</h3>
+        <p>We understand that a clean facility contributes to employee productivity, customer confidence, workplace safety, and the overall reputation of an organization. That's why we approach every facility with attention to detail, consistency, and a commitment to delivering results our clients can depend on.</p>
+        <p><strong>Our mission</strong> is simple: to provide dependable, high-quality commercial cleaning services while building lasting relationships with the businesses and organizations we serve.</p>
+
+        <h3>Built Around Four Core Principles</h3>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="icon-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5.25 3.75 9.74 9 11 5.25-1.26 9-5.75 9-11V7l-9-5z"/></svg></div>
+            <h4>Professional Service</h4>
+            <p>Professional standards in everything we do — communication, appearance, and quality of work.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <h4>Reliable Performance</h4>
+            <p>We show up, follow the agreed schedule, and consistently deliver the services promised.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div>
+            <h4>Customized Solutions</h4>
+            <p>Cleaning programs built around each client's facility, schedule, and operational needs.</p>
+          </div>
+          <div class="pillar">
+            <div class="icon-sq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <h4>Customer Satisfaction</h4>
+            <p>Built on communication, responsiveness, accountability, and trust.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHO WE SERVE ================= -->
+<section id="services">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow" style="margin-left:auto;margin-right:auto;"><span class="dot"></span>Who We Serve</span>
+      <h2>Trusted Across Illinois Industries</h2>
+      <p>E-Clean Pro Services LLC focuses on commercial and institutional customers, developing long-term relationships through consistent, dependable service.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY US / APPROACH ================= -->
+<section id="why-us" class="bg-deep">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="background:rgba(255,255,255,0.1); color:var(--mint-300); border-color:rgba(255,255,255,0.2);"><span class="dot"></span>Our Approach</span>
+      <h2 style="color:#fff;">Quality You Can See. Service You Can Feel.</h2>
+      <p style="color:rgba(255,255,255,0.7);">We don't believe in a one-size-fits-all approach. We begin by understanding your facility, schedule, priorities, and expectations — then build a customized program supported by standardized procedures, inspections, and responsive communication.</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Consistent cleaning quality</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Reliable scheduling</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Responsive communication</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Flexible cleaning programs</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Documented quality control</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Competitive, transparent pricing</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Environmentally responsible practices</p></div>
+      <div class="why-item"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><p>Statewide Illinois coverage</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICE CALCULATOR ================= -->
+<section id="calculator" class="bg-fade">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow" style="margin-left:auto;margin-right:auto;"><span class="dot"></span>Instant Pricing</span>
+      <h2>Calculate Your Cleaning Estimate</h2>
+      <p>Answer a few quick questions about your facility to get a real-time price estimate. Final pricing is confirmed after a brief walkthrough or facility details review.</p>
+    </div>
+
+    <div class="calc-wrap reveal">
+      <div class="calc-form">
+        <h3>Tell Us About Your Facility</h3>
+        <p>Adjust the options below — your estimate updates instantly.</p>
+
+        <div class="field">
+          <label for="facilityType">Facility Type</label>
+          <select id="facilityType">
+            <option value="0.12" data-name="Corporate / Professional Office">Corporate / Professional Office</option>
+            <option value="0.18" data-name="Medical / Healthcare Facility">Medical / Healthcare Facility</option>
+            <option value="0.18" data-name="Dental Practice / Clinic">Dental Practice / Clinic</option>
+            <option value="0.10" data-name="School / Educational Institution">School / Educational Institution</option>
+            <option value="0.09" data-name="Property Management / Apartments">Property Management / Apartments</option>
+            <option value="0.06" data-name="Warehouse / Distribution Center">Warehouse / Distribution Center</option>
+            <option value="0.07" data-name="Manufacturing Facility">Manufacturing Facility</option>
+            <option value="0.11" data-name="Retail Business">Retail Business</option>
+            <option value="0.08" data-name="Church / Religious Facility">Church / Religious Facility</option>
+            <option value="0.13" data-name="Government / Institutional">Government / Institutional</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sqft">Approximate Facility Size <span class="val" id="sqftVal">5,000 sq ft</span></label>
+          <input type="range" id="sqft" min="500" max="50000" step="500" value="5000">
+        </div>
+
+        <div class="field">
+          <label>Cleaning Frequency</label>
+          <div class="chips" id="freqChips">
+            <label class="chip" data-visits="1" data-mult="1.3"><input type="radio" name="freq">One-Time</label>
+            <label class="chip active" data-visits="4.33" data-mult="0.95"><input type="radio" name="freq" checked>Weekly</label>
+            <label class="chip" data-visits="2.16" data-mult="1"><input type="radio" name="freq">Bi-Weekly</label>
+            <label class="chip" data-visits="1" data-mult="1.08"><input type="radio" name="freq">Monthly</label>
+            <label class="chip" data-visits="21.7" data-mult="0.85"><input type="radio" name="freq">Daily (M–F)</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Add-On Services</label>
+          <div class="addon-list" id="addonList">
+            <label class="addon" data-price="40"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Window Cleaning</span><span class="price">+$40</span><input type="checkbox"></label>
+            <label class="addon" data-price="60"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Carpet Cleaning</span><span class="price">+$60</span><input type="checkbox"></label>
+            <label class="addon" data-price="80"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Floor Strip &amp; Wax</span><span class="price">+$80</span><input type="checkbox"></label>
+            <label class="addon" data-price="50"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Disinfection Service</span><span class="price">+$50</span><input type="checkbox"></label>
+            <label class="addon" data-price="25"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Restroom Restocking</span><span class="price">+$25</span><input type="checkbox"></label>
+            <label class="addon" data-price="70"><span class="a-left"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Post-Construction Cleanup</span><span class="price">+$70</span><input type="checkbox"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <div class="r-label">Estimated Investment</div>
+        <div class="r-price">$<span id="monthlyTotal">0</span><span>/month</span></div>
+        <div class="r-sub" id="perVisitSub">$0 per visit · 0 visits/month</div>
+
+        <div class="r-breakdown">
+          <div class="r-line"><span>Base rate (per visit)</span><strong id="lineBase">$0</strong></div>
+          <div class="r-line"><span>Add-on services</span><strong id="lineAddons">$0</strong></div>
+          <div class="r-line"><span>Visits per month</span><strong id="lineVisits">0</strong></div>
+          <div class="r-line total"><span>Estimated Annual</span><strong id="lineAnnual">$0</strong></div>
+        </div>
+
+        <div class="r-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          This is a real-time estimate based on typical Illinois commercial rates. Final pricing is confirmed after reviewing your facility's specific requirements.
+        </div>
+
+        <a href="#booking" class="btn btn-primary btn-block" id="carryToBooking">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Book This Estimate
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOOKING ================= -->
+<section id="booking">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Booking</span>
+      <h2>Ready for a Cleaner Facility?</h2>
+      <p>Let us create a customized cleaning solution for your business. Fill out the form and our team will confirm your booking directly.</p>
+    </div>
+
+    <div class="booking-wrap reveal">
+      <div class="booking-info">
+        <h3>How Booking Works</h3>
+        <p>A simple, three-step process to get your facility on a reliable cleaning schedule.</p>
+
+        <div class="b-step">
+          <div class="num">1</div>
+          <div><h5>Submit Your Details</h5><p>Share your facility info and preferred schedule below — your calculator estimate carries over automatically.</p></div>
+        </div>
+        <div class="b-step">
+          <div class="num">2</div>
+          <div><h5>We Confirm by Phone</h5><p>Our team reviews your request and calls to confirm scope, schedule, and final pricing.</p></div>
+        </div>
+        <div class="b-step">
+          <div class="num">3</div>
+          <div><h5>We Get to Work</h5><p>Trained staff arrive on schedule and your recurring cleaning program begins.</p></div>
+        </div>
+
+        <div class="booking-contact-mini">
+          <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> 464-927-6146</div>
+          <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 19980 Aine Drive, Frankfort, IL 60423</div>
+          <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Mon–Sat, 7:00 AM – 7:00 PM</div>
+        </div>
+      </div>
+
+      <div class="booking-form">
+        <div id="bookingFormView">
+          <div class="booking-summary" id="bookingSummary"></div>
+          <form id="bookingForm">
+            <div class="row2">
+              <div class="field">
+                <label for="bName">Full Name</label>
+                <input type="text" id="bName" required placeholder="Jane Smith">
+              </div>
+              <div class="field">
+                <label for="bCompany">Company Name</label>
+                <input type="text" id="bCompany" required placeholder="Smith & Co.">
+              </div>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="bPhone">Phone Number</label>
+                <input type="tel" id="bPhone" required placeholder="(555) 555-5555">
+              </div>
+              <div class="field">
+                <label for="bEmail">Email Address</label>
+                <input type="email" id="bEmail" required placeholder="jane@company.com">
+              </div>
+            </div>
+            <div class="field">
+              <label for="bAddress">Facility Address</label>
+              <input type="text" id="bAddress" required placeholder="Street, City, IL, ZIP">
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="bDate">Preferred Start Date</label>
+                <input type="date" id="bDate">
+              </div>
+              <div class="field">
+                <label for="bTime">Preferred Contact Time</label>
+                <select id="bTime">
+                  <option>Morning (7am–11am)</option>
+                  <option>Midday (11am–3pm)</option>
+                  <option>Afternoon (3pm–7pm)</option>
+                  <option>Anytime</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="bNotes">Additional Notes</label>
+              <textarea id="bNotes" rows="3" placeholder="Tell us anything else about your facility or requirements..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              Submit Booking Request
+            </button>
+          </form>
+        </div>
+
+        <div class="success-panel" id="successPanel">
+          <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3>Request Received!</h3>
+          <p id="successMsg">Thank you — we've captured your facility details and estimate. Our team confirms every booking by phone, so please call us to finalize your scheduling, or we'll reach out during business hours.</p>
+          <div class="success-actions">
+            <a href="tel:4649276146" class="btn btn-primary">Call 464-927-6146</a>
+            <button class="btn btn-ghost" id="bookAnother">Submit Another Request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="bg-fade">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow" style="margin-left:auto;margin-right:auto;"><span class="dot"></span>Contact</span>
+      <h2>Get In Touch</h2>
+      <p>We show up with professionalism. We communicate with purpose. Reach out any time.</p>
+    </div>
+
+    <div class="contact-grid reveal">
+      <div class="contact-card">
+        <div class="icon-circ3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <h4>Call Us</h4>
+        <a href="tel:4649276146">464-927-6146</a>
+      </div>
+      <div class="contact-card">
+        <div class="icon-circ3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h4>Visit / Mail</h4>
+        <p>19980 Aine Drive<br>Frankfort, IL 60423</p>
+      </div>
+      <div class="contact-card">
+        <div class="icon-circ3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h4>Business Hours</h4>
+        <p>Mon–Sat: 7:00 AM – 7:00 PM<br>Sunday: By Appointment</p>
+      </div>
+    </div>
+
+    <div class="map-frame reveal">
+      <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=19980%20Aine%20Drive%2C%20Frankfort%2C%20IL%2060423&t=&z=13&ie=UTF8&iwloc=&output=embed" title="E-Clean Pro Services LLC location map"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21v-4M12 17a6 6 0 0 0 6-6V4H6v7a6 6 0 0 0 6 6z"/><path d="M9 4V2M15 4V2"/></svg>
+          </span>
+          <span>E-Clean Pro <small>Services LLC</small></span>
+        </div>
+        <p>Professional Cleaning. Reliable Service. Cleaner Spaces. Serving commercial and institutional clients throughout Illinois.</p>
+      </div>
+      <div>
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Who We Serve</a></li>
+          <li><a href="#why-us">Our Approach</a></li>
+          <li><a href="#calculator">Price Calculator</a></li>
+          <li><a href="#booking">Book Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Industries</h5>
+        <ul>
+          <li><a href="#services">Offices &amp; Corporate</a></li>
+          <li><a href="#services">Medical &amp; Dental</a></li>
+          <li><a href="#services">Schools</a></li>
+          <li><a href="#services">Warehouses</a></li>
+          <li><a href="#services">Property Management</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li>464-927-6146</li>
+          <li>19980 Aine Drive</li>
+          <li>Frankfort, IL 60423</li>
+          <li>Mon–Sat: 7am – 7pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> E-Clean Pro Services LLC. All rights reserved.</span>
+      <span>Cleaning With Purpose. Service You Can Trust.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="tel:4649276146" class="fab-call" aria-label="Call E-Clean Pro Services">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+</a>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- Navbar scroll state ---------- */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ---------- Mobile menu ---------- */
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+navToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+mobileMenu.addEventListener('click', (e) => { if(e.target === mobileMenu) mobileMenu.classList.remove('open'); });
+document.querySelectorAll('.mobile-panel a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+/* ---------- Reveal on scroll ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+/* ---------- Who We Serve grid ---------- */
+const industries = [
+  { name:"Corporate & Professional Offices", icon:"M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4" },
+  { name:"Medical & Healthcare Facilities", icon:"M12 2v20M2 12h20" },
+  { name:"Dental Practices & Clinics", icon:"M12 2c-3 0-5 2-5 5 0 4 2 5 2 9 0 2 1 3 3 3s3-1 3-3c0-4 2-5 2-9 0-3-2-5-5-5z" },
+  { name:"Schools & Educational Institutions", icon:"M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" },
+  { name:"Property Management Companies", icon:"M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6" },
+  { name:"Apartment & Commercial Properties", icon:"M4 21V8l8-5 8 5v13M9 21v-5h6v5M9 12h.01M15 12h.01M9 8h.01M15 8h.01" },
+  { name:"Warehouses & Distribution Centers", icon:"M3 9.5 12 4l9 5.5V20H3V9.5zM3 9.5 12 15l9-5.5" },
+  { name:"Manufacturing Facilities", icon:"M2 20h20M4 20V10l4 3V10l4 3V10l4 3V6l4 4v10" },
+  { name:"Retail Businesses", icon:"M6 2 3 7v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7l-3-5H6zM3 7h18M12 12a3 3 0 0 1-6 0" },
+  { name:"Churches & Religious Facilities", icon:"M12 2v20M9 6h6M6 21h12M8 21v-8l4-9 4 9v8" },
+  { name:"Government & Institutional Facilities", icon:"M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6M6 10h.01M18 10h.01" },
+  { name:"Recurring Commercial Contracts", icon:"M12 2a10 10 0 1 0 10 10M22 2 12 12M16 2h6v6" }
+];
+const grid = document.getElementById('servicesGrid');
+grid.innerHTML = industries.map(i => `
+  <div class="service-card">
+    <div class="icon-circ2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${i.icon}"/></svg></div>
+    <h4>${i.name}</h4>
+    <p>Reliable, customized cleaning programs built around your facility's schedule and needs.</p>
+  </div>
+`).join('');
+
+/* ---------- Frequency chips ---------- */
+const freqChips = document.querySelectorAll('#freqChips .chip');
+freqChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    freqChips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    chip.querySelector('input').checked = true;
+    calculate();
+  });
+});
+
+/* ---------- Add-ons ---------- */
+const addons = document.querySelectorAll('#addonList .addon');
+addons.forEach(a => {
+  a.addEventListener('click', () => {
+    a.classList.toggle('active');
+    a.querySelector('input').checked = a.classList.contains('active');
+    calculate();
+  });
+});
+
+/* ---------- Sqft slider ---------- */
+const sqftInput = document.getElementById('sqft');
+const sqftVal = document.getElementById('sqftVal');
+sqftInput.addEventListener('input', () => {
+  sqftVal.textContent = Number(sqftInput.value).toLocaleString() + ' sq ft';
+  calculate();
+});
+
+const facilityType = document.getElementById('facilityType');
+facilityType.addEventListener('change', calculate);
+
+function currency(n){
+  return Math.round(n).toLocaleString('en-US');
+}
+
+function calculate(){
+  const sqft = Number(sqftInput.value);
+  const rate = Number(facilityType.value);
+  const activeChip = document.querySelector('#freqChips .chip.active');
+  const visits = Number(activeChip.dataset.visits);
+  const mult = Number(activeChip.dataset.mult);
+
+  let perVisitBase = Math.max(sqft * rate * mult, 75); // $75 minimum per visit
+  let addonTotal = 0;
+  addons.forEach(a => { if(a.classList.contains('active')) addonTotal += Number(a.dataset.price); });
+
+  const perVisit = perVisitBase + addonTotal;
+  const visitsPerMonth = visits;
+  const monthlyTotal = perVisit * visitsPerMonth;
+  const annualTotal = monthlyTotal * 12;
+
+  document.getElementById('monthlyTotal').textContent = currency(monthlyTotal);
+  document.getElementById('perVisitSub').textContent = `$${currency(perVisit)} per visit · ${visitsPerMonth % 1 === 0 ? visitsPerMonth : visitsPerMonth.toFixed(1)} visits/month`;
+  document.getElementById('lineBase').textContent = `$${currency(perVisitBase)}`;
+  document.getElementById('lineAddons').textContent = `$${currency(addonTotal)}`;
+  document.getElementById('lineVisits').textContent = visitsPerMonth % 1 === 0 ? visitsPerMonth : visitsPerMonth.toFixed(1);
+  document.getElementById('lineAnnual').textContent = `$${currency(annualTotal)}`;
+
+  window.__ecleanEstimate = {
+    facility: facilityType.options[facilityType.selectedIndex].dataset.name,
+    sqft, perVisit, monthlyTotal, annualTotal, frequency: activeChip.textContent.trim()
+  };
+}
+calculate();
+
+/* ---------- Carry estimate into booking summary ---------- */
+document.getElementById('carryToBooking').addEventListener('click', () => {
+  const est = window.__ecleanEstimate;
+  const summary = document.getElementById('bookingSummary');
+  summary.innerHTML = `<strong>Your Estimate:</strong> ${est.facility}, ${est.sqft.toLocaleString()} sq ft, ${est.frequency} — approx. <strong>$${currency(est.monthlyTotal)}/month</strong>. This will be shared with our team when you submit your booking request.`;
+  summary.classList.add('show');
+});
+
+/* ---------- Booking form submit ---------- */
+const bookingForm = document.getElementById('bookingForm');
+bookingForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('bName').value;
+  const est = window.__ecleanEstimate;
+  document.getElementById('successMsg').textContent =
+    `Thank you, ${name.split(' ')[0]} — we've received your request for ${est.facility.toLowerCase()} cleaning (approx. $${currency(est.monthlyTotal)}/month). Our team confirms every booking by phone — call us at 464-927-6146, or we'll reach out during business hours (Mon–Sat, 7am–7pm).`;
+  document.getElementById('bookingFormView').style.display = 'none';
+  document.getElementById('successPanel').classList.add('show');
+});
+document.getElementById('bookAnother').addEventListener('click', () => {
+  document.getElementById('successPanel').classList.remove('show');
+  document.getElementById('bookingFormView').style.display = 'block';
+  bookingForm.reset();
+  document.getElementById('bookingSummary').classList.remove('show');
+});
+</script>
+</body>
+</html>
