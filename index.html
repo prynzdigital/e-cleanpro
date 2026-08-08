@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-Clean Pro Services LLC | Commercial Cleaning Across Illinois</title>
 <meta name="description" content="E-Clean Pro Services LLC provides professional commercial cleaning and facility maintenance across Illinois. Get an instant price estimate and book your cleaning today.">
+<link rel="icon" type="image/png" href="eclean-logo-color.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -99,14 +100,7 @@
   }
   .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:20px;}
   .brand{display:flex; align-items:center; gap:11px; font-family:'Sora',sans-serif; font-weight:800; font-size:19px; color:var(--teal-900);}
-  .brand-mark{
-    width:42px; height:42px; border-radius:13px;
-    background:linear-gradient(145deg, var(--teal-400), var(--teal-700));
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 20px -6px rgba(14,125,112,0.6), inset 0 1px 1px rgba(255,255,255,0.4);
-    flex-shrink:0;
-  }
-  .brand-mark svg{width:23px;height:23px;color:#fff;}
+  .brand-logo{height:38px; width:auto; display:block;}
   .brand small{display:block; font-size:10.5px; font-weight:600; letter-spacing:0.1em; color:var(--teal-600); text-transform:uppercase;}
 
   .nav-links{display:flex; align-items:center; gap:2px;}
@@ -434,7 +428,7 @@
 
   footer{background:var(--teal-900); color:rgba(255,255,255,0.7); padding:60px 0 26px;}
   .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px; margin-bottom:44px;}
-  .footer-brand .brand{color:#fff; margin-bottom:14px;}
+  .footer-logo{height:40px; width:auto; margin-bottom:16px;}
   .footer-brand p{font-size:13.5px; line-height:1.7; color:rgba(255,255,255,0.55); max-width:280px;}
   footer h5{font-size:13.5px; color:#fff; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;}
   footer ul li{margin-bottom:11px;}
@@ -505,6 +499,7 @@
   }
   .mobile-menu.open .mobile-panel{transform:translateX(0);}
   .mobile-panel a{padding:14px 8px; color:#fff; font-weight:600; font-size:16px; border-bottom:1px solid rgba(255,255,255,0.08);}
+  .mobile-logo{height:32px; width:auto; margin-bottom:14px;}
   .mobile-close{align-self:flex-end; background:rgba(255,255,255,0.1); border:none; width:38px;height:38px; border-radius:50%; color:#fff; font-size:20px; margin-bottom:10px;}
   .mobile-panel .btn{margin-top:18px;}
 </style>
@@ -541,10 +536,7 @@
 <nav class="navbar" id="navbar">
   <div class="container nav-inner">
     <a href="#home" class="brand">
-      <span class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21v-4M12 17a6 6 0 0 0 6-6V4H6v7a6 6 0 0 0 6 6z"/><path d="M9 4V2M15 4V2"/></svg>
-      </span>
-      <span>E-Clean Pro <small>Services LLC</small></span>
+      <img src="eclean-logo-color.png" alt="E-Clean Pro Services LLC" class="brand-logo">
     </a>
 
     <div class="nav-links">
@@ -577,6 +569,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-panel">
     <button class="mobile-close" id="mobileClose">&times;</button>
+    <img src="eclean-logo-white.png" alt="E-Clean Pro Services LLC" class="mobile-logo">
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#services">Services</a>
@@ -939,12 +932,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="brand">
-          <span class="brand-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21v-4M12 17a6 6 0 0 0 6-6V4H6v7a6 6 0 0 0 6 6z"/><path d="M9 4V2M15 4V2"/></svg>
-          </span>
-          <span>E-Clean Pro <small>Services LLC</small></span>
-        </div>
+        <img src="eclean-logo-white.png" alt="E-Clean Pro Services LLC" class="footer-logo">
         <p>Professional Cleaning. Reliable Service. Cleaner Spaces. Serving commercial and institutional clients throughout Illinois.</p>
       </div>
       <div>
