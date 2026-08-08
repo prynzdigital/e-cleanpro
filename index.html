@@ -6,6 +6,10 @@
 <title>E-Clean Pro Services LLC | Commercial Cleaning Across Illinois</title>
 <meta name="description" content="E-Clean Pro Services LLC provides professional commercial cleaning and facility maintenance across Illinois. Get an instant price estimate and book your cleaning today.">
 <link rel="icon" type="image/png" href="eclean-logo-color.png">
+<meta property="og:title" content="E-Clean Pro Services LLC | Commercial Cleaning Across Illinois">
+<meta property="og:description" content="Professional commercial cleaning and facility maintenance for businesses throughout Illinois. Get an instant price estimate and book online.">
+<meta property="og:image" content="eclean-hero.jpg">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -138,18 +142,17 @@
   .hero{
     position:relative; overflow:hidden;
     background:
-      radial-gradient(ellipse 90% 60% at 15% -10%, rgba(46,196,182,0.35), transparent 55%),
-      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(245,185,66,0.18), transparent 50%),
+      linear-gradient(100deg, rgba(5,46,43,0.96) 0%, rgba(5,46,43,0.88) 26%, rgba(7,64,60,0.62) 55%, rgba(7,64,60,0.4) 100%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(245,185,66,0.14), transparent 50%),
+      url('eclean-hero.jpg') center 22%/cover no-repeat,
       linear-gradient(160deg, var(--teal-900) 0%, var(--teal-800) 45%, var(--teal-700) 100%);
     padding:88px 0 130px;
     color:#fff;
   }
   .hero::before{
     content:""; position:absolute; inset:0;
-    background-image:
-      radial-gradient(circle at 2px 2px, rgba(255,255,255,0.14) 1.4px, transparent 0);
-    background-size:26px 26px;
-    opacity:.4; pointer-events:none;
+    background:linear-gradient(0deg, rgba(5,46,43,0.85) 0%, rgba(5,46,43,0) 22%, rgba(5,46,43,0) 78%, rgba(5,46,43,0.5) 100%);
+    pointer-events:none;
   }
   .hero-blob{position:absolute; border-radius:50%; filter:blur(70px); opacity:.55; pointer-events:none;}
   .hero-blob.b1{width:420px; height:420px; background:var(--teal-400); top:-160px; right:-120px;}
