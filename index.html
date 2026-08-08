@@ -415,7 +415,10 @@
   .success-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
 
   /* ===== CONTACT / MAP / FOOTER ===== */
-  .contact-wrap{display:grid; grid-template-columns:0.85fr 1.15fr; gap:28px; align-items:stretch;}
+  .contact-wrap{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:28px; align-items:stretch;
+    width:100%; max-width:1800px; margin:0 auto; padding:0 clamp(20px, 4vw, 64px);
+  }
   .contact-panel{
     background:linear-gradient(160deg, var(--teal-700), var(--teal-900));
     border-radius:var(--radius-lg); padding:38px 32px; color:#fff; position:relative; overflow:hidden;
@@ -931,8 +934,9 @@
       <h2>Get In Touch</h2>
       <p>We show up with professionalism. We communicate with purpose. Reach out any time.</p>
     </div>
+  </div>
 
-    <div class="contact-wrap reveal">
+  <div class="contact-wrap reveal">
       <div class="contact-panel">
         <h3>Reach Us Directly</h3>
         <p>Every inquiry is answered by our team — no call centers, no automated runaround. Reach out any way that's convenient for you.</p>
@@ -967,7 +971,6 @@
       <div class="map-frame">
         <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=19980%20Aine%20Drive%2C%20Frankfort%2C%20IL%2060423&t=&z=13&ie=UTF8&iwloc=&output=embed" title="E-Clean Pro Services LLC location map"></iframe>
       </div>
-    </div>
   </div>
 </section>
 
