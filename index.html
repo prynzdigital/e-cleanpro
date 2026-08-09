@@ -1179,8 +1179,11 @@ function calculate(){
   const mult = Number(activeChip.dataset.mult);
 
   // Multi-floor / multi-building facilities take longer to service (extra stairwells,
-  // common areas, and restrooms per floor), so each additional floor adds 8% to the base rate.
-  const floorMult = 1 + (floors - 1) * 0.08;
+  // elevators, common areas, and restrooms per floor). Each additional floor/building
+  // adds a 5% surcharge, capped at 30% (reached at 7) -- costs don't keep climbing
+  // linearly forever since larger sites get dedicated equipment and crew efficiencies.
+  const floorSurchargePct = Math.min(30, (floors - 1) * 5);
+  const floorMult = 1 + floorSurchargePct / 100;
 
   let perVisitBase = Math.max(sqft * rate * mult * floorMult, 75); // $75 minimum per visit
   let addonTotal = 0;
@@ -1194,7 +1197,7 @@ function calculate(){
   document.getElementById('monthlyTotal').textContent = currency(monthlyTotal);
   document.getElementById('perVisitSub').textContent = `$${currency(perVisit)} per visit · ${visitsPerMonth % 1 === 0 ? visitsPerMonth : visitsPerMonth.toFixed(1)} visits/month`;
   document.getElementById('lineBase').textContent = `$${currency(perVisitBase)}`;
-  document.getElementById('lineFloors').textContent = floors;
+  document.getElementById('lineFloors').textContent = floorSurchargePct > 0 ? `${floors} (+${floorSurchargePct}%)` : `${floors}`;
   document.getElementById('lineAddons').textContent = `$${currency(addonTotal)}`;
   document.getElementById('lineVisits').textContent = visitsPerMonth % 1 === 0 ? visitsPerMonth : visitsPerMonth.toFixed(1);
   document.getElementById('lineAnnual').textContent = `$${currency(annualTotal)}`;
