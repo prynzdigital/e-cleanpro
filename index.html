@@ -235,9 +235,9 @@
   .about-visual{position:relative;}
   .about-video{
     border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-lg);
-    background:var(--teal-900); position:relative;
+    background:#000; position:relative;
   }
-  .about-video video{width:100%; aspect-ratio:16/9; display:block; object-fit:cover; background:#000;}
+  .about-video video{width:100%; max-height:520px; display:block; object-fit:contain; background:#000; margin:0 auto;}
   .about-quote-standalone{
     margin-top:22px; font-family:'Sora',sans-serif; font-weight:700; font-size:16.5px; line-height:1.5;
     color:var(--teal-800); border-left:3px solid var(--teal-500); padding-left:16px;
