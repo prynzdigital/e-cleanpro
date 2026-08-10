@@ -1135,9 +1135,14 @@ freqChips.forEach(chip => {
 /* ---------- Add-ons ---------- */
 const addons = document.querySelectorAll('#addonList .addon');
 addons.forEach(a => {
-  a.addEventListener('click', () => {
-    a.classList.toggle('active');
-    a.querySelector('input').checked = a.classList.contains('active');
+  const checkbox = a.querySelector('input');
+  // Listen on the checkbox's own 'change' event rather than the label's 'click'.
+  // A click on a <label> wrapping a checkbox makes the browser natively forward
+  // a synthetic click to the checkbox, which bubbles back through the label and
+  // re-fires a label-level click listener a second time -- classList.toggle()
+  // then flips on, then immediately back off, silently cancelling the selection.
+  checkbox.addEventListener('change', () => {
+    a.classList.toggle('active', checkbox.checked);
     calculate();
   });
 });
