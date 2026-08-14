@@ -1233,12 +1233,48 @@ document.getElementById('carryToBooking').addEventListener('click', () => {
 
 /* ---------- Booking form submit ---------- */
 const bookingForm = document.getElementById('bookingForm');
-bookingForm.addEventListener('submit', (e) => {
+const bookingSubmitBtn = bookingForm.querySelector('button[type="submit"]');
+
+bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('bName').value;
   const est = window.__ecleanEstimate;
-  document.getElementById('successMsg').textContent =
-    `Thank you, ${name.split(' ')[0]} — we've received your request for ${est.facility.toLowerCase()} cleaning (approx. $${currency(est.monthlyTotal)}/month). Our team confirms every booking by phone — call us at 464-927-6146, or we'll reach out during business hours (Mon–Sun, 8am–8pm).`;
+
+  const payload = {
+    name,
+    company: document.getElementById('bCompany').value,
+    phone: document.getElementById('bPhone').value,
+    email: document.getElementById('bEmail').value,
+    address: document.getElementById('bAddress').value,
+    date: document.getElementById('bDate').value,
+    time: document.getElementById('bTime').value,
+    notes: document.getElementById('bNotes').value,
+    estimate: est,
+  };
+
+  const originalBtnHtml = bookingSubmitBtn.innerHTML;
+  bookingSubmitBtn.disabled = true;
+  bookingSubmitBtn.innerHTML = 'Sending…';
+
+  let emailSent = false;
+  try {
+    const resp = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    emailSent = resp.ok;
+    if (!resp.ok) console.error('Booking email failed:', await resp.text());
+  } catch (err) {
+    console.error('Booking email request failed:', err);
+  }
+
+  bookingSubmitBtn.disabled = false;
+  bookingSubmitBtn.innerHTML = originalBtnHtml;
+
+  document.getElementById('successMsg').textContent = emailSent
+    ? `Thank you, ${name.split(' ')[0]} — we've emailed your request for ${est.facility.toLowerCase()} cleaning (approx. $${currency(est.monthlyTotal)}/month) to our team. We confirm every booking by phone, so expect a call from us — or reach us anytime at 464-927-6146 (Mon–Sun, 8am–8pm).`
+    : `Thank you, ${name.split(' ')[0]} — we've captured your request for ${est.facility.toLowerCase()} cleaning (approx. $${currency(est.monthlyTotal)}/month). Our team confirms every booking by phone — call us at 464-927-6146, or we'll reach out during business hours (Mon–Sun, 8am–8pm).`;
   document.getElementById('bookingFormView').style.display = 'none';
   document.getElementById('successPanel').classList.add('show');
 });
