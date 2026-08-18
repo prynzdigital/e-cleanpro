@@ -12,6 +12,12 @@ function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function isValidPhone(phone) {
+  if (typeof phone !== 'string') return false;
+  const digits = phone.replace(/[^\d]/g, '');
+  return digits.length >= 10 && digits.length <= 15;
+}
+
 async function saveBooking(fields) {
   const { name, company, phone, email, address, date, time, notes, estimate } = fields;
   await ensureSchema();
@@ -83,8 +89,20 @@ module.exports = async (req, res) => {
   const body = req.body || {};
   const { name, phone, email, address } = body;
 
-  if (!name || !phone || !isValidEmail(email) || !address) {
-    res.status(400).json({ error: 'Missing or invalid required fields' });
+  if (!name || typeof name !== 'string' || name.trim().length < 2) {
+    res.status(400).json({ error: 'Please provide your full name.' });
+    return;
+  }
+  if (!isValidPhone(phone)) {
+    res.status(400).json({ error: 'Please provide a valid phone number.' });
+    return;
+  }
+  if (!isValidEmail(email)) {
+    res.status(400).json({ error: 'Please provide a valid email address.' });
+    return;
+  }
+  if (!address || typeof address !== 'string' || address.trim().length < 5) {
+    res.status(400).json({ error: 'Please provide the facility address.' });
     return;
   }
 

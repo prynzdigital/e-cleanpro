@@ -333,6 +333,10 @@
     background:rgba(255,255,255,0.85); font-family:inherit; font-size:14.5px; color:var(--ink); transition:.2s;
   }
   .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--teal-500); box-shadow:0 0 0 4px rgba(18,163,148,0.15); background:#fff;}
+  .field-error{display:none; font-size:12.5px; font-weight:600; color:var(--danger); margin-top:6px;}
+  .field.invalid input{border-color:var(--danger); background:#fff;}
+  .field.invalid input:focus{box-shadow:0 0 0 4px rgba(229,72,77,0.15);}
+  .field.invalid .field-error{display:block;}
   .field input[type=range]{
     width:100%; height:6px; border-radius:99px; background:linear-gradient(90deg, var(--teal-400), var(--teal-500));
     appearance:none; -webkit-appearance:none; cursor:pointer;
@@ -978,25 +982,30 @@
               <div class="field">
                 <label for="bName">Full Name</label>
                 <input type="text" id="bName" required placeholder="Jane Smith">
+                <span class="field-error" id="err-bName"></span>
               </div>
               <div class="field">
                 <label for="bCompany">Company Name</label>
                 <input type="text" id="bCompany" required placeholder="Smith & Co.">
+                <span class="field-error" id="err-bCompany"></span>
               </div>
             </div>
             <div class="row2">
               <div class="field">
                 <label for="bPhone">Phone Number</label>
                 <input type="tel" id="bPhone" required placeholder="(555) 555-5555">
+                <span class="field-error" id="err-bPhone"></span>
               </div>
               <div class="field">
                 <label for="bEmail">Email Address</label>
                 <input type="email" id="bEmail" required placeholder="jane@company.com">
+                <span class="field-error" id="err-bEmail"></span>
               </div>
             </div>
             <div class="field">
               <label for="bAddress">Facility Address</label>
               <input type="text" id="bAddress" required placeholder="Street, City, IL, ZIP">
+              <span class="field-error" id="err-bAddress"></span>
             </div>
             <div class="row2">
               <div class="field">
@@ -1298,12 +1307,80 @@ document.getElementById('carryToBooking').addEventListener('click', () => {
   summary.classList.add('show');
 });
 
-/* ---------- Booking form submit ---------- */
+/* ---------- Booking form validation ---------- */
 const bookingForm = document.getElementById('bookingForm');
 const bookingSubmitBtn = bookingForm.querySelector('button[type="submit"]');
 
+function isValidEmailFormat(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+function isValidPhoneFormat(phone){
+  const digits = phone.replace(/[^\d]/g, '');
+  return digits.length >= 10 && digits.length <= 15;
+}
+function setFieldError(id, message){
+  const input = document.getElementById(id);
+  const field = input.closest('.field');
+  const errEl = document.getElementById('err-' + id);
+  field.classList.add('invalid');
+  errEl.textContent = message;
+}
+function clearFieldError(id){
+  const input = document.getElementById(id);
+  input.closest('.field').classList.remove('invalid');
+  document.getElementById('err-' + id).textContent = '';
+}
+
+const BOOKING_VALIDATORS = {
+  bName: (v) => v.trim().length >= 2 || 'Please enter your full name.',
+  bCompany: (v) => v.trim().length >= 1 || 'Please enter a company or property name.',
+  bPhone: (v) => isValidPhoneFormat(v) || 'Enter a valid phone number (at least 10 digits).',
+  bEmail: (v) => isValidEmailFormat(v) || 'Enter a valid email address, e.g. name@company.com.',
+  bAddress: (v) => v.trim().length >= 5 || 'Please enter the facility address.',
+};
+
+function validateField(id){
+  const value = document.getElementById(id).value;
+  const result = BOOKING_VALIDATORS[id](value);
+  if (result === true){
+    clearFieldError(id);
+    return true;
+  }
+  setFieldError(id, result);
+  return false;
+}
+
+Object.keys(BOOKING_VALIDATORS).forEach((id) => {
+  const input = document.getElementById(id);
+  input.addEventListener('blur', () => validateField(id));
+  input.addEventListener('input', () => {
+    if (input.closest('.field').classList.contains('invalid')) validateField(id);
+  });
+});
+
+function validateBookingForm(){
+  const ids = Object.keys(BOOKING_VALIDATORS);
+  let firstInvalid = null;
+  let allValid = true;
+  ids.forEach((id) => {
+    const ok = validateField(id);
+    if (!ok){
+      allValid = false;
+      if (!firstInvalid) firstInvalid = id;
+    }
+  });
+  if (firstInvalid){
+    document.getElementById(firstInvalid).focus();
+  }
+  return allValid;
+}
+
+/* ---------- Booking form submit ---------- */
 bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  if (!validateBookingForm()) return;
+
   const name = document.getElementById('bName').value;
   const est = window.__ecleanEstimate;
 
@@ -1324,20 +1401,42 @@ bookingForm.addEventListener('submit', async (e) => {
   bookingSubmitBtn.innerHTML = 'Sending…';
 
   let emailSent = false;
+  let recorded = false;
+  let serverError = null;
   try {
     const resp = await fetch('/api/booking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    emailSent = resp.ok;
-    if (!resp.ok) console.error('Booking email failed:', await resp.text());
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok) {
+      recorded = true;
+      emailSent = !!data.emailSent;
+    } else {
+      serverError = data.error || 'Something went wrong. Please check your details and try again.';
+      console.error('Booking submission failed:', serverError);
+    }
   } catch (err) {
-    console.error('Booking email request failed:', err);
+    serverError = 'Network error — please check your connection and try again.';
+    console.error('Booking request failed:', err);
   }
 
   bookingSubmitBtn.disabled = false;
   bookingSubmitBtn.innerHTML = originalBtnHtml;
+
+  if (!recorded) {
+    let banner = document.getElementById('bookingSubmitError');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'bookingSubmitError';
+      banner.className = 'field-error';
+      banner.style.cssText = 'display:block; margin-bottom:16px; font-size:13.5px;';
+      bookingForm.prepend(banner);
+    }
+    banner.textContent = serverError;
+    return;
+  }
 
   document.getElementById('successMsg').textContent = emailSent
     ? `Thank you, ${name.split(' ')[0]} — we've emailed your request for ${est.facility.toLowerCase()} cleaning (approx. $${currency(est.monthlyTotal)}/month) to our team. We confirm every booking by phone, so expect a call from us — or reach us anytime at ${siteContent.contact_phone} (${siteContent.contact_hours}).`
