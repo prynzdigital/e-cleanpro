@@ -62,9 +62,7 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // Using the Resend sandbox sender until mail.ecleanproservices.com finishes
-        // domain verification in the Resend dashboard (resend.com/domains).
-        from: 'E-Clean Pro Website <onboarding@resend.dev>',
+        from: 'E-Clean Pro Website <bookings@mail.ecleanproservices.com>',
         to: [BUSINESS_EMAIL],
         reply_to: email,
         subject: `New Booking Request from ${name}`,
@@ -75,7 +73,7 @@ module.exports = async (req, res) => {
     if (!resendRes.ok) {
       const errText = await resendRes.text();
       console.error('Resend error:', errText);
-      res.status(502).json({ error: 'Failed to send email', detail: errText });
+      res.status(502).json({ error: 'Failed to send email' });
       return;
     }
 
