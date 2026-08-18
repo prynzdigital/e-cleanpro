@@ -1,3 +1,5 @@
+const { sql, ensureSchema } = require('../lib/db');
+
 const BUSINESS_EMAIL = 'info@ecleanproservices.com';
 
 function escapeHtml(str) {
@@ -10,26 +12,21 @@ function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
+async function saveBooking(fields) {
+  const { name, company, phone, email, address, date, time, notes, estimate } = fields;
+  await ensureSchema();
+  await sql`
+    INSERT INTO bookings (name, company, phone, email, address, preferred_date, preferred_time, notes, estimate)
+    VALUES (${name}, ${company || null}, ${phone}, ${email}, ${address}, ${date || null}, ${time || null}, ${notes || null}, ${estimate ? JSON.stringify(estimate) : null})
+  `;
+}
 
-  const body = req.body || {};
-  const { name, company, phone, email, address, date, time, notes, estimate } = body;
-
-  if (!name || !phone || !isValidEmail(email) || !address) {
-    res.status(400).json({ error: 'Missing or invalid required fields' });
-    return;
-  }
-
+async function sendEmail(fields) {
+  const { name, company, phone, email, address, date, time, notes, estimate } = fields;
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.error('RESEND_API_KEY is not configured');
-    res.status(500).json({ error: 'Email service is not configured' });
-    return;
+    console.error('RESEND_API_KEY is not configured; skipping email');
+    return false;
   }
 
   const estimateLine = estimate
@@ -54,32 +51,62 @@ module.exports = async (req, res) => {
     </div>
   `;
 
-  try {
-    const resendRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'E-Clean Pro Website <bookings@mail.ecleanproservices.com>',
-        to: [BUSINESS_EMAIL],
-        reply_to: email,
-        subject: `New Booking Request from ${name}`,
-        html,
-      }),
-    });
+  const resendRes = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'E-Clean Pro Website <bookings@mail.ecleanproservices.com>',
+      to: [BUSINESS_EMAIL],
+      reply_to: email,
+      subject: `New Booking Request from ${name}`,
+      html,
+    }),
+  });
 
-    if (!resendRes.ok) {
-      const errText = await resendRes.text();
-      console.error('Resend error:', errText);
-      res.status(502).json({ error: 'Failed to send email' });
-      return;
-    }
-
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Unexpected error' });
+  if (!resendRes.ok) {
+    console.error('Resend error:', await resendRes.text());
+    return false;
   }
+  return true;
+}
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  const body = req.body || {};
+  const { name, phone, email, address } = body;
+
+  if (!name || !phone || !isValidEmail(email) || !address) {
+    res.status(400).json({ error: 'Missing or invalid required fields' });
+    return;
+  }
+
+  let savedToDb = false;
+  try {
+    await saveBooking(body);
+    savedToDb = true;
+  } catch (err) {
+    console.error('Failed to save booking to database:', err.message);
+  }
+
+  let emailSent = false;
+  try {
+    emailSent = await sendEmail(body);
+  } catch (err) {
+    console.error('Failed to send booking email:', err);
+  }
+
+  if (!savedToDb && !emailSent) {
+    res.status(502).json({ error: 'Failed to record booking' });
+    return;
+  }
+
+  res.status(200).json({ ok: true, savedToDb, emailSent });
 };
