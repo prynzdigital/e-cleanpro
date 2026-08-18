@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'E-Clean Pro Website <onboarding@resend.dev>',
+        from: 'E-Clean Pro Website <bookings@mail.ecleanproservices.com>',
         to: [BUSINESS_EMAIL],
         reply_to: email,
         subject: `New Booking Request from ${name}`,
