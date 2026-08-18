@@ -22,7 +22,7 @@ async function saveBooking(fields) {
   const { name, company, phone, email, address, date, time, notes, estimate } = fields;
   await ensureSchema();
   await sql`
-    INSERT INTO bookings (name, company, phone, email, address, preferred_date, preferred_time, notes, estimate)
+    INSERT INTO leads (name, company, phone, email, address, preferred_date, preferred_time, notes, estimate)
     VALUES (${name}, ${company || null}, ${phone}, ${email}, ${address}, ${date || null}, ${time || null}, ${notes || null}, ${estimate ? JSON.stringify(estimate) : null})
   `;
 }

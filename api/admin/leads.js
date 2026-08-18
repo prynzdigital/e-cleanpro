@@ -27,14 +27,14 @@ module.exports = async (req, res) => {
       const rows = await sql`
         SELECT id, name, company, phone, email, address, preferred_date,
                preferred_time, notes, estimate, status, created_at
-        FROM bookings
+        FROM leads
         ORDER BY created_at DESC
         LIMIT 500
       `;
-      res.status(200).json({ bookings: rows, statuses: STATUS_VALUES });
+      res.status(200).json({ leads: rows, statuses: STATUS_VALUES });
     } catch (err) {
-      console.error('Failed to fetch bookings:', err);
-      res.status(500).json({ error: 'Failed to fetch bookings' });
+      console.error('Failed to fetch leads:', err);
+      res.status(500).json({ error: 'Failed to fetch leads' });
     }
     return;
   }
@@ -60,14 +60,14 @@ module.exports = async (req, res) => {
     try {
       await ensureSchema();
       const rows = await sql`
-        INSERT INTO bookings (name, company, phone, email, address, preferred_date, preferred_time, notes, estimate, status)
+        INSERT INTO leads (name, company, phone, email, address, preferred_date, preferred_time, notes, estimate, status)
         VALUES (${name}, ${company || null}, ${phone}, ${email || null}, ${address || null}, ${date || null}, ${time || null}, ${notes || null}, ${buildEstimate(estimatedValue)}, ${normalizeStatus(status)})
         RETURNING id, name, company, phone, email, address, preferred_date, preferred_time, notes, estimate, status, created_at
       `;
-      res.status(201).json({ ok: true, booking: rows[0] });
+      res.status(201).json({ ok: true, lead: rows[0] });
     } catch (err) {
-      console.error('Failed to create booking:', err);
-      res.status(500).json({ error: 'Failed to create booking' });
+      console.error('Failed to create lead:', err);
+      res.status(500).json({ error: 'Failed to create lead' });
     }
     return;
   }
@@ -80,7 +80,7 @@ module.exports = async (req, res) => {
 
     const id = Number(req.query.id);
     if (!Number.isInteger(id) || id <= 0) {
-      res.status(400).json({ error: 'Invalid booking id' });
+      res.status(400).json({ error: 'Invalid lead id' });
       return;
     }
 
@@ -99,7 +99,7 @@ module.exports = async (req, res) => {
     try {
       await ensureSchema();
       const rows = await sql`
-        UPDATE bookings SET
+        UPDATE leads SET
           name = ${name},
           company = ${company || null},
           phone = ${phone},
@@ -114,13 +114,13 @@ module.exports = async (req, res) => {
         RETURNING id, name, company, phone, email, address, preferred_date, preferred_time, notes, estimate, status, created_at
       `;
       if (rows.length === 0) {
-        res.status(404).json({ error: 'Booking not found' });
+        res.status(404).json({ error: 'Lead not found' });
         return;
       }
-      res.status(200).json({ ok: true, booking: rows[0] });
+      res.status(200).json({ ok: true, lead: rows[0] });
     } catch (err) {
-      console.error('Failed to update booking:', err);
-      res.status(500).json({ error: 'Failed to update booking' });
+      console.error('Failed to update lead:', err);
+      res.status(500).json({ error: 'Failed to update lead' });
     }
     return;
   }
@@ -133,21 +133,21 @@ module.exports = async (req, res) => {
 
     const id = Number(req.query.id);
     if (!Number.isInteger(id) || id <= 0) {
-      res.status(400).json({ error: 'Invalid booking id' });
+      res.status(400).json({ error: 'Invalid lead id' });
       return;
     }
 
     try {
       await ensureSchema();
-      const deleted = await sql`DELETE FROM bookings WHERE id = ${id} RETURNING id`;
+      const deleted = await sql`DELETE FROM leads WHERE id = ${id} RETURNING id`;
       if (deleted.length === 0) {
-        res.status(404).json({ error: 'Booking not found' });
+        res.status(404).json({ error: 'Lead not found' });
         return;
       }
       res.status(200).json({ ok: true, id });
     } catch (err) {
-      console.error('Failed to delete booking:', err);
-      res.status(500).json({ error: 'Failed to delete booking' });
+      console.error('Failed to delete lead:', err);
+      res.status(500).json({ error: 'Failed to delete lead' });
     }
     return;
   }

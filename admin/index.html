@@ -21,7 +21,7 @@
   body{font-family:'Plus Jakarta Sans',system-ui,sans-serif; background:var(--paper); color:var(--ink); -webkit-font-smoothing:antialiased;}
   h1,h2,h3{font-family:'Sora','Plus Jakarta Sans',sans-serif; letter-spacing:-0.02em;}
   button{font-family:inherit; cursor:pointer;}
-  input, textarea{font-family:inherit;}
+  input, textarea, select{font-family:inherit;}
   svg{flex-shrink:0;}
 
   /* ===== LOGIN ===== */
@@ -56,6 +56,7 @@
   .btn-sm{width:auto; padding:9px 16px; font-size:13px;}
   .btn-ghost{background:rgba(255,255,255,0.08); color:var(--ink-soft); box-shadow:none; border:1px solid rgba(10,92,83,0.15);}
   .btn-danger{background:rgba(229,72,77,0.1); color:var(--danger); box-shadow:none; border:1px solid rgba(229,72,77,0.35);}
+  .btn-accent{background:rgba(18,163,148,0.1); color:var(--teal-600); box-shadow:none; border:1px solid rgba(18,163,148,0.35);}
   .error-msg{
     background:rgba(229,72,77,0.15); border:1px solid rgba(229,72,77,0.4); color:#ffb4b6;
     padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:none;
@@ -102,7 +103,7 @@
   .mobile-topbar{display:none; align-items:center; gap:14px; padding:14px 20px; background:var(--teal-900); color:#fff; position:sticky; top:0; z-index:20;}
   .hamburger{background:none; border:none; color:#fff; padding:4px;}
   .mobile-topbar .brand{font-family:'Sora',sans-serif; font-weight:800; font-size:15px;}
-  .dash-body{max-width:1000px; margin:0 auto; padding:36px 28px 80px; width:100%;}
+  .dash-body{max-width:1100px; margin:0 auto; padding:36px 28px 80px; width:100%;}
   .panel{display:none;}
   .panel.active{display:block;}
   .panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px;}
@@ -117,6 +118,22 @@
   /* Sidebar overlay (mobile) */
   .sidebar-overlay{position:fixed; inset:0; background:rgba(5,46,43,0.5); z-index:29; display:none;}
   .sidebar-overlay.show{display:block;}
+
+  /* ===== DASHBOARD ===== */
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:16px; margin-bottom:24px;}
+  .stat-card{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); box-shadow:var(--shadow-md); padding:22px;}
+  .stat-card .stat-label{font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); font-weight:700; margin-bottom:10px;}
+  .stat-card .stat-value{font-size:27px; font-weight:800; color:var(--teal-900); font-family:'Sora',sans-serif; line-height:1;}
+  .stat-card .stat-sub{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+  .dash-section{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); box-shadow:var(--shadow-md); padding:22px; margin-bottom:20px;}
+  .dash-section h3{font-size:15px; color:var(--teal-900); margin-bottom:14px;}
+  .pipeline-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .pipeline-chip{
+    display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:99px; background:var(--aqua-100);
+    font-size:12.8px; font-weight:700; color:var(--teal-800);
+  }
+  .pipeline-chip .n{font-family:'Sora',sans-serif; font-size:14px;}
+  .dash-note{font-size:12.5px; color:var(--ink-soft); background:var(--aqua-100); border-radius:var(--radius-sm); padding:14px 16px;}
 
   /* ===== DATA TABLE: toolbar, sortable header, pagination ===== */
   .table-toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
@@ -164,26 +181,24 @@
   /* Row detail modal */
   .modal-overlay{position:fixed; inset:0; background:rgba(5,46,43,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
   .modal-overlay.show{display:flex;}
-  .modal{background:#fff; border-radius:var(--radius-lg); max-width:520px; width:100%; max-height:85vh; overflow-y:auto; padding:28px;}
+  .modal{background:#fff; border-radius:var(--radius-lg); max-width:540px; width:100%; max-height:88vh; overflow-y:auto; padding:28px;}
   .modal h3{font-size:19px; color:var(--teal-900); margin-bottom:16px;}
-  .modal dl{display:grid; grid-template-columns:120px 1fr; gap:10px 12px; font-size:13.5px; margin-bottom:22px;}
-  .modal dt{font-weight:700; color:var(--teal-800);}
-  .modal dd{color:var(--ink-soft);}
-  .modal-actions{display:flex; gap:10px;}
+  .modal-actions{display:flex; gap:10px; flex-wrap:wrap;}
 
-  /* ===== CONTENT EDITOR ===== */
+  /* ===== FORM SECTIONS (content editor, add/edit forms) ===== */
   .content-section{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); box-shadow:var(--shadow-md); padding:24px;}
   .content-section h3{font-size:16px; color:var(--teal-900); margin-bottom:4px;}
   .content-section > p.hint{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
   .cfield{margin-bottom:16px;}
   .cfield label{display:block; font-size:12.5px; font-weight:700; color:var(--teal-800); margin-bottom:6px;}
-  .cfield input, .cfield textarea{
+  .cfield input, .cfield textarea, .cfield select{
     width:100%; padding:10px 13px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.16);
     font-size:13.5px; color:var(--ink); background:var(--paper);
   }
-  .cfield input:focus, .cfield textarea:focus{outline:none; border-color:var(--teal-500); background:#fff;}
+  .cfield input:focus, .cfield textarea:focus, .cfield select:focus{outline:none; border-color:var(--teal-500); background:#fff;}
   .cfield textarea{min-height:70px; resize:vertical;}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
   .list-row{display:grid; grid-template-columns:1fr 110px 36px; gap:10px; margin-bottom:10px; align-items:center;}
   .list-row input{padding:9px 12px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.16); font-size:13px;}
   .list-row .remove-row{
@@ -194,7 +209,7 @@
     font-size:12.5px; font-weight:700; color:var(--teal-600); background:none; border:1.5px dashed rgba(18,163,148,0.35);
     padding:8px 14px; border-radius:var(--radius-sm); width:100%; margin-top:4px;
   }
-  .save-row{display:flex; align-items:center; gap:12px; margin-top:18px;}
+  .save-row{display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap;}
   .save-status{font-size:12.5px; color:var(--teal-600); opacity:0; transition:opacity .3s;}
   .save-status.show{opacity:1;}
 
@@ -205,13 +220,13 @@
     .dash-body{padding:24px 18px 60px;}
   }
   @media (max-width:760px){
-    .row2, .list-row{grid-template-columns:1fr;}
+    .row2, .row3, .list-row{grid-template-columns:1fr;}
     table{font-size:12.5px;}
     th button.sort-btn, th.unsortable{padding:9px 10px;}
     td{padding:9px 10px;}
     .pagination-bar{justify-content:center; text-align:center;}
     .table-toolbar .search-input{width:100%;}
-    #exportCsv{margin-left:0; width:100%; justify-content:center;}
+    .table-toolbar [id$="-export"]{margin-left:0; width:100%; justify-content:center;}
   }
 </style>
 </head>
@@ -222,7 +237,7 @@
   <div class="login-card">
     <img src="/eclean-logo-white.png" alt="E-Clean Pro Services">
     <h1>Admin Dashboard</h1>
-    <p>Sign in to manage bookings and site content.</p>
+    <p>Sign in to manage your business.</p>
     <div class="error-msg" id="loginError"></div>
     <form id="loginForm">
       <div class="field">
@@ -238,7 +253,7 @@
   </div>
 </div>
 
-<!-- ================= DASHBOARD ================= -->
+<!-- ================= DASHBOARD SHELL ================= -->
 <div class="dash" id="dash">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -248,21 +263,54 @@
       E-Clean Admin
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-group open" id="bookingsGroup">
-        <button class="nav-group-toggle" id="bookingsGroupToggle">
+      <button class="nav-item active" data-panel="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </button>
+
+      <div class="nav-group open" id="leadsGroup">
+        <button class="nav-group-toggle" id="leadsGroupToggle">
           <span class="toggle-left">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Bookings
+            Leads
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
         <div class="nav-submenu">
-          <button class="nav-subitem active" data-panel="bookings-list">All Bookings</button>
-          <button class="nav-subitem" data-panel="bookings-add">Add Booking</button>
+          <button class="nav-subitem active" data-panel="leads-list">All Leads</button>
+          <button class="nav-subitem" data-panel="leads-add">Add Lead</button>
         </div>
       </div>
 
-      <div class="nav-group open" id="contentGroup">
+      <div class="nav-group" id="clientsGroup">
+        <button class="nav-group-toggle" id="clientsGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Clients
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="clients-list">All Clients</button>
+          <button class="nav-subitem" data-panel="clients-add">Add Client</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="quotesGroup">
+        <button class="nav-group-toggle" id="quotesGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9.5 9a2.5 2.5 0 0 1 2.5-2h.5a2.25 2.25 0 1 1 0 4.5h-1a2.25 2.25 0 1 0 0 4.5h.5a2.5 2.5 0 0 0 2.5-2"/></svg>
+            Quotes
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="quotes-list">All Quotes</button>
+          <button class="nav-subitem" data-panel="quotes-add">Add Quote</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="contentGroup">
         <button class="nav-group-toggle" id="contentGroupToggle">
           <span class="toggle-left">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
@@ -271,7 +319,7 @@
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
         <div class="nav-submenu">
-          <button class="nav-subitem active" data-panel="content-contact">Contact Info</button>
+          <button class="nav-subitem" data-panel="content-contact">Contact Info</button>
           <button class="nav-subitem" data-panel="content-text">Hero &amp; About</button>
           <button class="nav-subitem" data-panel="content-facility-types">Facility Types</button>
           <button class="nav-subitem" data-panel="content-addons">Add-On Services</button>
@@ -297,93 +345,138 @@
     </div>
 
     <div class="dash-body">
-      <!-- BOOKINGS: ALL BOOKINGS -->
-      <div class="panel active" id="panel-bookings-list">
-        <div class="panel-head">
-          <div>
-            <h2>Bookings</h2>
-            <p id="bookingsCount">Loading…</p>
-          </div>
+      <!-- ================= DASHBOARD ================= -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="panel-head"><div><h2>Dashboard</h2><p>Your business at a glance.</p></div></div>
+        <div class="stat-grid" id="statGrid"><p style="color:var(--ink-soft); font-size:13.5px;">Loading…</p></div>
+        <div class="dash-section">
+          <h3>Leads by Stage</h3>
+          <div class="pipeline-row" id="pipelineRow"><p style="color:var(--ink-soft); font-size:13px;">Loading…</p></div>
         </div>
+        <div class="dash-note">Showing Leads, Clients, and Quotes metrics (Phase 1). Today's Jobs, Unpaid Invoices, Expenses, and Estimated Profit will appear here as those modules are added in later phases.</div>
+      </div>
 
-        <div class="table-toolbar">
-          <input type="text" class="search-input" id="bookingSearch" placeholder="Search name, company, email, phone…">
-          <select class="filter-select" id="statusFilter">
-            <option value="">All Statuses</option>
-          </select>
-          <button class="btn btn-sm btn-ghost" id="clearFilters" type="button">Clear</button>
-          <button class="btn btn-sm btn-ghost" id="exportCsv" type="button" style="margin-left:auto;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-            Export CSV
-          </button>
-        </div>
+      <!-- ================= LEADS: ALL LEADS ================= -->
+      <div class="panel" id="panel-leads-list">
+        <div class="panel-head"><div><h2>Leads</h2><p id="lead-count">Loading…</p></div></div>
+        <div id="lead-shell"></div>
+      </div>
 
-        <div class="card">
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr id="bookingsHeadRow"></tr>
-              </thead>
-              <tbody id="bookingsBody"></tbody>
-            </table>
+      <!-- ================= LEADS: ADD LEAD ================= -->
+      <div class="panel" id="panel-leads-add">
+        <div class="panel-head"><div><h2>Add Lead</h2><p>Log a lead that came in by phone or in person.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addLeadError"></div>
+          <div class="row2">
+            <div class="cfield"><label>Full Name *</label><input id="al_name" required></div>
+            <div class="cfield"><label>Company</label><input id="al_company"></div>
           </div>
-          <div class="empty-state" id="bookingsEmpty" style="display:none;">No bookings yet.</div>
-        </div>
-
-        <div class="pagination-bar" id="paginationBar">
-          <div class="page-size">
-            <label for="pageSizeSelect">Rows per page</label>
-            <select id="pageSizeSelect">
-              <option value="10">10</option>
-              <option value="25" selected>25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
+          <div class="row2">
+            <div class="cfield"><label>Phone *</label><input id="al_phone" required></div>
+            <div class="cfield"><label>Email</label><input id="al_email" type="email"></div>
           </div>
-          <div class="page-controls">
-            <button class="page-btn" id="firstPageBtn" title="First page">&laquo;</button>
-            <button class="page-btn" id="prevPageBtn" title="Previous page">&lsaquo;</button>
-            <span class="page-indicator" id="pageIndicator">Page 1 of 1</span>
-            <button class="page-btn" id="nextPageBtn" title="Next page">&rsaquo;</button>
-            <button class="page-btn" id="lastPageBtn" title="Last page">&raquo;</button>
+          <div class="cfield"><label>Facility Address</label><input id="al_address"></div>
+          <div class="row2">
+            <div class="cfield"><label>Preferred Start Date</label><input id="al_date" type="date"></div>
+            <div class="cfield"><label>Preferred Contact Time</label><input id="al_time" placeholder="e.g. Midday (11am–3pm)"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="al_estimatedValue" type="number" step="1" min="0"></div>
+            <div class="cfield"><label>Status</label><select id="al_status"></select></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="al_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addLeadSubmit">Add Lead</button>
+            <span class="save-status" data-status="add-lead">Added</span>
           </div>
         </div>
       </div>
 
-      <!-- BOOKINGS: ADD BOOKING -->
-      <div class="panel" id="panel-bookings-add">
-        <div class="panel-head"><div><h2>Add Booking</h2><p>Log a lead that came in by phone or in person.</p></div></div>
+      <!-- ================= CLIENTS: ALL CLIENTS ================= -->
+      <div class="panel" id="panel-clients-list">
+        <div class="panel-head"><div><h2>Clients</h2><p id="client-count">Loading…</p></div></div>
+        <div id="client-shell"></div>
+      </div>
+
+      <!-- ================= CLIENTS: ADD CLIENT ================= -->
+      <div class="panel" id="panel-clients-add">
+        <div class="panel-head"><div><h2>Add Client</h2><p>Add a client directly (most clients come from converting a Won lead).</p></div></div>
         <div class="content-section">
-          <div class="error-msg" id="addBookingError" style="margin-bottom:16px;"></div>
+          <div class="error-msg" id="addClientError"></div>
           <div class="row2">
-            <div class="cfield"><label>Full Name *</label><input id="ab_name" required></div>
-            <div class="cfield"><label>Company</label><input id="ab_company"></div>
+            <div class="cfield"><label>Name *</label><input id="ac_name" required></div>
+            <div class="cfield"><label>Company</label><input id="ac_company"></div>
           </div>
           <div class="row2">
-            <div class="cfield"><label>Phone *</label><input id="ab_phone" required></div>
-            <div class="cfield"><label>Email</label><input id="ab_email" type="email"></div>
+            <div class="cfield"><label>Phone *</label><input id="ac_phone" required></div>
+            <div class="cfield"><label>Email</label><input id="ac_email" type="email"></div>
           </div>
-          <div class="cfield"><label>Facility Address</label><input id="ab_address"></div>
-          <div class="row2">
-            <div class="cfield"><label>Preferred Start Date</label><input id="ab_date" type="date"></div>
-            <div class="cfield"><label>Preferred Contact Time</label><input id="ab_time" placeholder="e.g. Midday (11am–3pm)"></div>
-          </div>
-          <div class="row2">
-            <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="ab_estimatedValue" type="number" step="1" min="0"></div>
+          <div class="cfield"><label>Address</label><input id="ac_address"></div>
+          <div class="row3">
+            <div class="cfield"><label>Service Type</label><input id="ac_serviceType" placeholder="e.g. Office Cleaning"></div>
+            <div class="cfield"><label>Square Footage</label><input id="ac_squareFootage" type="number" step="1" min="0"></div>
             <div class="cfield">
-              <label>Status</label>
-              <select id="ab_status"></select>
+              <label>Cleaning Frequency</label>
+              <select id="ac_cleaningFrequency">
+                <option value="">—</option>
+                <option>One-Time</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>Daily (M–F)</option>
+              </select>
             </div>
           </div>
-          <div class="cfield"><label>Notes</label><textarea id="ab_notes"></textarea></div>
+          <div class="row2">
+            <div class="cfield"><label>Contract Amount ($/month)</label><input id="ac_contractAmount" type="number" step="1" min="0"></div>
+            <div class="cfield"><label>Status</label><select id="ac_status"></select></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="ac_notes"></textarea></div>
           <div class="save-row">
-            <button class="btn btn-sm" id="addBookingSubmit">Add Booking</button>
-            <span class="save-status" data-status="add-booking">Saved</span>
+            <button class="btn btn-sm" id="addClientSubmit">Add Client</button>
+            <span class="save-status" data-status="add-client">Added</span>
           </div>
         </div>
       </div>
 
-      <!-- CONTENT: CONTACT INFO -->
+      <!-- ================= QUOTES: ALL QUOTES ================= -->
+      <div class="panel" id="panel-quotes-list">
+        <div class="panel-head"><div><h2>Quotes</h2><p id="quote-count">Loading…</p></div></div>
+        <div id="quote-shell"></div>
+      </div>
+
+      <!-- ================= QUOTES: ADD QUOTE ================= -->
+      <div class="panel" id="panel-quotes-add">
+        <div class="panel-head"><div><h2>Add Quote</h2><p>Create a quote for an existing client.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addQuoteError"></div>
+          <div class="cfield">
+            <label>Client *</label>
+            <select id="aq_clientId"></select>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Property Address</label><input id="aq_propertyAddress"></div>
+            <div class="cfield"><label>Square Footage</label><input id="aq_squareFootage" type="number" step="1" min="0"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield">
+              <label>Cleaning Frequency</label>
+              <select id="aq_cleaningFrequency">
+                <option value="">—</option>
+                <option>One-Time</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>Daily (M–F)</option>
+              </select>
+            </div>
+            <div class="cfield"><label>Price ($)</label><input id="aq_price" type="number" step="1" min="0"></div>
+          </div>
+          <div class="cfield"><label>Services Included</label><textarea id="aq_services" placeholder="e.g. Weekly office cleaning, restroom sanitation, trash removal"></textarea></div>
+          <div class="row2">
+            <div class="cfield"><label>Status</label><select id="aq_status"></select></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="aq_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addQuoteSubmit">Add Quote</button>
+            <span class="save-status" data-status="add-quote">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CONTENT: CONTACT INFO ================= -->
       <div class="panel" id="panel-content-contact">
         <div class="panel-head"><div><h2>Contact Info</h2><p>Shown in the topbar, booking panel, and footer.</p></div></div>
         <div class="content-section">
@@ -402,7 +495,7 @@
         </div>
       </div>
 
-      <!-- CONTENT: HERO & ABOUT -->
+      <!-- ================= CONTENT: HERO & ABOUT ================= -->
       <div class="panel" id="panel-content-text">
         <div class="panel-head"><div><h2>Hero &amp; About Text</h2><p>Homepage headline and About section copy.</p></div></div>
         <div class="content-section">
@@ -421,7 +514,7 @@
         </div>
       </div>
 
-      <!-- CONTENT: FACILITY TYPES -->
+      <!-- ================= CONTENT: FACILITY TYPES ================= -->
       <div class="panel" id="panel-content-facility-types">
         <div class="panel-head"><div><h2>Calculator — Facility Types</h2><p>Rate is dollars per square foot, per visit.</p></div></div>
         <div class="content-section">
@@ -434,7 +527,7 @@
         </div>
       </div>
 
-      <!-- CONTENT: ADD-ONS -->
+      <!-- ================= CONTENT: ADD-ONS ================= -->
       <div class="panel" id="panel-content-addons">
         <div class="panel-head"><div><h2>Calculator — Add-On Services</h2><p>Flat dollar amount added per visit.</p></div></div>
         <div class="content-section">
@@ -447,7 +540,7 @@
         </div>
       </div>
 
-      <!-- CONTENT: OTHER SETTINGS -->
+      <!-- ================= CONTENT: OTHER SETTINGS ================= -->
       <div class="panel" id="panel-content-floor-settings">
         <div class="panel-head"><div><h2>Calculator — Other Settings</h2></div></div>
         <div class="content-section">
@@ -472,37 +565,106 @@
   </div>
 </div>
 
-<!-- Booking edit modal -->
-<div class="modal-overlay" id="bookingModal">
+<!-- ================= LEAD EDIT MODAL ================= -->
+<div class="modal-overlay" id="leadModal">
   <div class="modal">
-    <h3>Edit Booking</h3>
-    <div class="error-msg" id="modalError" style="margin-bottom:14px;"></div>
+    <h3>Edit Lead</h3>
+    <div class="error-msg" id="leadModalError"></div>
     <div class="row2">
-      <div class="cfield"><label>Full Name *</label><input id="m_name" required></div>
-      <div class="cfield"><label>Company</label><input id="m_company"></div>
+      <div class="cfield"><label>Full Name *</label><input id="lm_name" required></div>
+      <div class="cfield"><label>Company</label><input id="lm_company"></div>
     </div>
     <div class="row2">
-      <div class="cfield"><label>Phone *</label><input id="m_phone" required></div>
-      <div class="cfield"><label>Email</label><input id="m_email" type="email"></div>
+      <div class="cfield"><label>Phone *</label><input id="lm_phone" required></div>
+      <div class="cfield"><label>Email</label><input id="lm_email" type="email"></div>
     </div>
-    <div class="cfield"><label>Facility Address</label><input id="m_address"></div>
+    <div class="cfield"><label>Facility Address</label><input id="lm_address"></div>
     <div class="row2">
-      <div class="cfield"><label>Preferred Start Date</label><input id="m_date" type="date"></div>
-      <div class="cfield"><label>Preferred Contact Time</label><input id="m_time"></div>
+      <div class="cfield"><label>Preferred Start Date</label><input id="lm_date" type="date"></div>
+      <div class="cfield"><label>Preferred Contact Time</label><input id="lm_time"></div>
     </div>
     <div class="row2">
-      <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="m_estimatedValue" type="number" step="1" min="0"></div>
+      <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="lm_estimatedValue" type="number" step="1" min="0"></div>
+      <div class="cfield"><label>Status</label><select id="lm_status"></select></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="lm_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="leadModalReceived"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="leadModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-accent" id="leadModalConvert">Convert to Client</button>
+      <button class="btn btn-sm btn-ghost" id="leadModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="leadModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CLIENT EDIT MODAL ================= -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal">
+    <h3>Edit Client</h3>
+    <div class="error-msg" id="clientModalError"></div>
+    <div class="row2">
+      <div class="cfield"><label>Name *</label><input id="cm_name" required></div>
+      <div class="cfield"><label>Company</label><input id="cm_company"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Phone *</label><input id="cm_phone" required></div>
+      <div class="cfield"><label>Email</label><input id="cm_email" type="email"></div>
+    </div>
+    <div class="cfield"><label>Address</label><input id="cm_address"></div>
+    <div class="row3">
+      <div class="cfield"><label>Service Type</label><input id="cm_serviceType"></div>
+      <div class="cfield"><label>Square Footage</label><input id="cm_squareFootage" type="number" step="1" min="0"></div>
       <div class="cfield">
-        <label>Status</label>
-        <select id="m_status"></select>
+        <label>Cleaning Frequency</label>
+        <select id="cm_cleaningFrequency">
+          <option value="">—</option>
+          <option>One-Time</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>Daily (M–F)</option>
+        </select>
       </div>
     </div>
-    <div class="cfield"><label>Notes</label><textarea id="m_notes"></textarea></div>
-    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="modalReceived"></p>
+    <div class="row2">
+      <div class="cfield"><label>Contract Amount ($/month)</label><input id="cm_contractAmount" type="number" step="1" min="0"></div>
+      <div class="cfield"><label>Status</label><select id="cm_status"></select></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="cm_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="clientModalAdded"></p>
     <div class="modal-actions">
-      <button class="btn btn-sm" id="modalSave">Save Changes</button>
-      <button class="btn btn-sm btn-ghost" id="modalClose">Close</button>
-      <button class="btn btn-sm btn-danger" id="modalDelete">Delete</button>
+      <button class="btn btn-sm" id="clientModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="clientModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="clientModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= QUOTE EDIT MODAL ================= -->
+<div class="modal-overlay" id="quoteModal">
+  <div class="modal">
+    <h3>Edit Quote</h3>
+    <div class="error-msg" id="quoteModalError"></div>
+    <div class="cfield"><label>Client *</label><select id="qm_clientId"></select></div>
+    <div class="row2">
+      <div class="cfield"><label>Property Address</label><input id="qm_propertyAddress"></div>
+      <div class="cfield"><label>Square Footage</label><input id="qm_squareFootage" type="number" step="1" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield">
+        <label>Cleaning Frequency</label>
+        <select id="qm_cleaningFrequency">
+          <option value="">—</option>
+          <option>One-Time</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>Daily (M–F)</option>
+        </select>
+      </div>
+      <div class="cfield"><label>Price ($)</label><input id="qm_price" type="number" step="1" min="0"></div>
+    </div>
+    <div class="cfield"><label>Services Included</label><textarea id="qm_services"></textarea></div>
+    <div class="cfield"><label>Status</label><select id="qm_status"></select></div>
+    <div class="cfield"><label>Notes</label><textarea id="qm_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="quoteModalCreated"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="quoteModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="quoteModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="quoteModalDelete">Delete</button>
     </div>
   </div>
 </div>
@@ -511,16 +673,25 @@
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function statusBadge(status, colorMap, fallback) {
+  const s = status || fallback;
+  const color = colorMap[s] || '#0e7d70';
+  return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(s)}</span>`;
+}
+function populateSelect(select, values, selected) {
+  select.innerHTML = values.map((s) => `<option value="${s}" ${s === selected ? 'selected' : ''}>${s}</option>`).join('');
+}
+
 /* ---------- Session / Login ---------- */
 async function checkSession() {
   try {
     const r = await fetch('/api/admin/session');
     const data = await r.json();
-    if (data.authenticated) {
-      showDashboard(data.username);
-    } else {
-      showLogin();
-    }
+    if (data.authenticated) showDashboard(data.username);
+    else showLogin();
   } catch {
     showLogin();
   }
@@ -535,8 +706,11 @@ function showDashboard(username) {
   $('#loginScreen').style.display = 'none';
   $('#dash').classList.add('show');
   if (username) $('#sessionUser').textContent = username;
-  loadBookings();
+  leadTable.load();
+  clientTable.load();
+  quoteTable.load();
   loadContent();
+  loadDashboardStats();
 }
 
 $('#loginForm').addEventListener('submit', async (e) => {
@@ -589,382 +763,774 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
   btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
 });
 
-$('#contentGroupToggle').addEventListener('click', () => {
-  $('#contentGroup').classList.toggle('open');
-});
-$('#bookingsGroupToggle').addEventListener('click', () => {
-  $('#bookingsGroup').classList.toggle('open');
+['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contentGroupToggle'].forEach((id) => {
+  const groupId = id.replace('Toggle', '');
+  $('#' + id).addEventListener('click', () => $('#' + groupId).classList.toggle('open'));
 });
 
-/* Mobile sidebar toggle */
 function openMobileSidebar(){ $('#sidebar').classList.add('open'); $('#sidebarOverlay').classList.add('show'); }
 function closeMobileSidebar(){ $('#sidebar').classList.remove('open'); $('#sidebarOverlay').classList.remove('show'); }
 $('#hamburgerBtn').addEventListener('click', openMobileSidebar);
 $('#sidebarOverlay').addEventListener('click', closeMobileSidebar);
 
-/* ---------- Bookings ---------- */
-let allBookings = [];
-let selectedBookingId = null;
-const STATUS_VALUES = ['New', 'Contacted', 'Quoted', 'Scheduled', 'Won', 'Lost'];
-const STATUS_COLORS = {
-  New: '#0e7d70', Contacted: '#2563eb', Quoted: '#a16207',
-  Scheduled: '#7c3aed', Won: '#15803d', Lost: '#b91c1c',
-};
-
-function populateStatusSelect(select, selected) {
-  select.innerHTML = STATUS_VALUES.map((s) => `<option value="${s}" ${s === selected ? 'selected' : ''}>${s}</option>`).join('');
+/* ============================================================
+   GENERIC DATA TABLE (used for Leads, Clients, Quotes)
+   ============================================================ */
+function tableShellHtml(prefix, searchPlaceholder) {
+  return `
+    <div class="table-toolbar">
+      <input type="text" class="search-input" id="${prefix}-search" placeholder="${searchPlaceholder}">
+      <select class="filter-select" id="${prefix}-status-filter"><option value="">All Statuses</option></select>
+      <button class="btn btn-sm btn-ghost" id="${prefix}-clear" type="button">Clear</button>
+      <button class="btn btn-sm btn-ghost" id="${prefix}-export" type="button" style="margin-left:auto;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="card">
+      <div class="table-scroll">
+        <table><thead><tr id="${prefix}-head-row"></tr></thead><tbody id="${prefix}-body"></tbody></table>
+      </div>
+      <div class="empty-state" id="${prefix}-empty" style="display:none;"></div>
+    </div>
+    <div class="pagination-bar" id="${prefix}-pagination-bar">
+      <div class="page-size">
+        <label for="${prefix}-page-size">Rows per page</label>
+        <select id="${prefix}-page-size">
+          <option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option>
+        </select>
+      </div>
+      <div class="page-controls">
+        <button class="page-btn" id="${prefix}-first" title="First page">&laquo;</button>
+        <button class="page-btn" id="${prefix}-prev" title="Previous page">&lsaquo;</button>
+        <span class="page-indicator" id="${prefix}-page-indicator">Page 1 of 1</span>
+        <button class="page-btn" id="${prefix}-next" title="Next page">&rsaquo;</button>
+        <button class="page-btn" id="${prefix}-last" title="Last page">&raquo;</button>
+      </div>
+    </div>
+  `;
 }
-populateStatusSelect($('#ab_status'), 'New');
-populateStatusSelect($('#m_status'), 'New');
 
-async function loadBookings() {
-  try {
-    const r = await fetch('/api/admin/bookings');
-    if (!r.ok) throw new Error('failed');
-    const data = await r.json();
-    allBookings = data.bookings || [];
-    currentPage = 1;
-    renderTable();
-  } catch {
-    $('#bookingsCount').textContent = 'Failed to load bookings.';
+function createDataTable(opts) {
+  const {
+    prefix, fetchUrl, dataKey, columns, searchFields, statusField, statusValues,
+    renderRowCells, rowKey, onRowClick, csvHeaders, csvRow, csvFilenamePrefix,
+    nounSingular, nounPlural, emptyMessage, defaultSortKey, defaultSortDir,
+  } = opts;
+
+  const el = (id) => document.getElementById(prefix + '-' + id);
+  let allRows = [];
+  let sortKey = defaultSortKey;
+  let sortDir = defaultSortDir || 'desc';
+  let currentPage = 1;
+  let pageSize = 25;
+  let searchQuery = '';
+  let statusFilterValue = '';
+
+  function renderHead() {
+    const headRow = el('head-row');
+    headRow.innerHTML = columns.map((col) => {
+      if (!col.sortable) return `<th class="unsortable">${escapeHtml(col.label)}</th>`;
+      const isSorted = sortKey === col.key;
+      const cls = isSorted ? `sorted${sortDir === 'desc' ? ' sorted-desc' : ''}` : '';
+      return `
+        <th class="${cls}" data-key="${col.key}">
+          <button type="button" class="sort-btn">
+            ${escapeHtml(col.label)}
+            <svg class="sort-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </th>
+      `;
+    }).join('');
+
+    Array.from(headRow.querySelectorAll('th[data-key]')).forEach((th) => {
+      th.querySelector('.sort-btn').addEventListener('click', () => {
+        const key = th.dataset.key;
+        if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        else { sortKey = key; sortDir = 'asc'; }
+        currentPage = 1;
+        render();
+      });
+    });
   }
-}
 
-function statusBadge(status) {
-  const s = status || 'New';
-  const color = STATUS_COLORS[s] || '#0e7d70';
-  return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(s)}</span>`;
-}
+  function getFilteredSorted() {
+    let list = allRows;
+    if (searchQuery) {
+      list = list.filter((r) => searchFields(r).some((f) => (f || '').toLowerCase().includes(searchQuery)));
+    }
+    if (statusFilterValue) {
+      list = list.filter((r) => statusField(r) === statusFilterValue);
+    }
+    const col = columns.find((c) => c.key === sortKey);
+    if (col && col.get) {
+      list = [...list].sort((a, b) => {
+        const va = col.get(a), vb = col.get(b);
+        if (va < vb) return sortDir === 'asc' ? -1 : 1;
+        if (va > vb) return sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return list;
+  }
 
-/* ---- Data table: columns, sort, filter, paginate ---- */
-const COLUMNS = [
-  { key: 'created_at', label: 'Received', sortable: true, get: (b) => new Date(b.created_at).getTime() },
-  { key: 'name', label: 'Name', sortable: true, get: (b) => (b.name || '').toLowerCase() },
-  { key: 'company', label: 'Company', sortable: true, get: (b) => (b.company || '').toLowerCase() },
-  { key: 'phone', label: 'Phone', sortable: false },
-  { key: 'email', label: 'Email', sortable: false },
-  { key: 'address', label: 'Address', sortable: false },
-  { key: 'estimate', label: 'Estimate', sortable: true, get: (b) => (b.estimate && b.estimate.monthlyTotal) || -1 },
-  { key: 'status', label: 'Status', sortable: true, get: (b) => b.status || 'New' },
-];
+  function render() {
+    renderHead();
+    const filtered = getFilteredSorted();
+    const body = el('body');
+    const empty = el('empty');
+    const totalCount = allRows.length;
+    const matchCount = filtered.length;
 
-let sortKey = 'created_at';
-let sortDir = 'desc';
-let currentPage = 1;
-let pageSize = 25;
-let searchQuery = '';
-let statusFilterValue = '';
+    const countEl = document.getElementById(prefix + '-count');
+    if (countEl) {
+      countEl.textContent = (searchQuery || statusFilterValue)
+        ? `${matchCount} of ${totalCount} ${totalCount === 1 ? nounSingular : nounPlural} match`
+        : `${totalCount} ${totalCount === 1 ? nounSingular : nounPlural}`;
+    }
 
-function renderTableHead() {
-  const headRow = $('#bookingsHeadRow');
-  headRow.innerHTML = COLUMNS.map((col) => {
-    if (!col.sortable) return `<th class="unsortable">${escapeHtml(col.label)}</th>`;
-    const isSorted = sortKey === col.key;
-    const cls = isSorted ? `sorted${sortDir === 'desc' ? ' sorted-desc' : ''}` : '';
-    return `
-      <th class="${cls}" data-key="${col.key}">
-        <button type="button" class="sort-btn">
-          ${escapeHtml(col.label)}
-          <svg class="sort-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-      </th>
-    `;
-  }).join('');
+    if (matchCount === 0) {
+      body.innerHTML = '';
+      empty.textContent = totalCount === 0 ? emptyMessage : `No ${nounPlural} match your search/filter.`;
+      empty.style.display = 'block';
+      el('pagination-bar').style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    el('pagination-bar').style.display = 'flex';
 
-  $$('#bookingsHeadRow th[data-key]').forEach((th) => {
-    th.querySelector('.sort-btn').addEventListener('click', () => {
-      const key = th.dataset.key;
-      if (sortKey === key) {
-        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        sortKey = key;
-        sortDir = key === 'created_at' ? 'desc' : 'asc';
-      }
+    const totalPages = Math.max(1, Math.ceil(matchCount / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * pageSize;
+    const pageItems = filtered.slice(start, start + pageSize);
+
+    body.innerHTML = pageItems.map((r) => `<tr data-id="${rowKey(r)}">${renderRowCells(r)}</tr>`).join('');
+    Array.from(body.querySelectorAll('tr')).forEach((row) => {
+      row.addEventListener('click', () => {
+        const r = allRows.find((x) => String(rowKey(x)) === row.dataset.id);
+        if (r) onRowClick(r);
+      });
+    });
+
+    el('page-indicator').textContent = `Page ${currentPage} of ${totalPages}`;
+    el('first').disabled = currentPage === 1;
+    el('prev').disabled = currentPage === 1;
+    el('next').disabled = currentPage === totalPages;
+    el('last').disabled = currentPage === totalPages;
+  }
+
+  async function load() {
+    try {
+      const r = await fetch(fetchUrl);
+      if (!r.ok) throw new Error('failed');
+      const data = await r.json();
+      allRows = data[dataKey] || [];
       currentPage = 1;
-      renderTable();
-    });
+      render();
+    } catch {
+      const countEl = document.getElementById(prefix + '-count');
+      if (countEl) countEl.textContent = `Failed to load ${nounPlural}.`;
+    }
+  }
+
+  // Inject the shared shell HTML, then wire it up.
+  document.getElementById(prefix + '-shell').innerHTML = tableShellHtml(prefix, opts.searchPlaceholder);
+
+  el('search').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase().trim(); currentPage = 1; render(); });
+  if (statusValues) el('status-filter').insertAdjacentHTML('beforeend', statusValues.map((s) => `<option value="${s}">${s}</option>`).join(''));
+  el('status-filter').addEventListener('change', (e) => { statusFilterValue = e.target.value; currentPage = 1; render(); });
+  el('clear').addEventListener('click', () => {
+    searchQuery = ''; statusFilterValue = '';
+    el('search').value = ''; el('status-filter').value = '';
+    currentPage = 1; render();
   });
+  el('page-size').addEventListener('change', (e) => { pageSize = Number(e.target.value); currentPage = 1; render(); });
+  el('first').addEventListener('click', () => { currentPage = 1; render(); });
+  el('prev').addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); render(); });
+  el('next').addEventListener('click', () => { currentPage += 1; render(); });
+  el('last').addEventListener('click', () => { currentPage = Math.max(1, Math.ceil(getFilteredSorted().length / pageSize)); render(); });
+
+  el('export').addEventListener('click', () => {
+    const rows = getFilteredSorted();
+    if (rows.length === 0) { alert(`No ${nounPlural} to export.`); return; }
+    const csvEscape = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const lines = [csvHeaders.map(csvEscape).join(',')];
+    rows.forEach((r) => lines.push(csvRow(r).map(csvEscape).join(',')));
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `eclean-${csvFilenamePrefix}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  return { load, getData: () => allRows, render };
 }
 
-function getFilteredSorted() {
-  let list = allBookings;
+/* ============================================================
+   LEADS
+   ============================================================ */
+const LEAD_STATUS_VALUES = ['New', 'Contacted', 'Quoted', 'Scheduled', 'Won', 'Lost'];
+const LEAD_STATUS_COLORS = { New:'#0e7d70', Contacted:'#2563eb', Quoted:'#a16207', Scheduled:'#7c3aed', Won:'#15803d', Lost:'#b91c1c' };
+let selectedLeadId = null;
 
-  if (searchQuery) {
-    list = list.filter((b) =>
-      [b.name, b.company, b.email, b.phone, b.address].some((f) => (f || '').toLowerCase().includes(searchQuery))
-    );
-  }
-  if (statusFilterValue) {
-    list = list.filter((b) => (b.status || 'New') === statusFilterValue);
-  }
+populateSelect($('#al_status'), LEAD_STATUS_VALUES, 'New');
+populateSelect($('#lm_status'), LEAD_STATUS_VALUES, 'New');
 
-  const col = COLUMNS.find((c) => c.key === sortKey);
-  if (col && col.get) {
-    list = [...list].sort((a, b) => {
-      const va = col.get(a), vb = col.get(b);
-      if (va < vb) return sortDir === 'asc' ? -1 : 1;
-      if (va > vb) return sortDir === 'asc' ? 1 : -1;
-      return 0;
-    });
-  }
-  return list;
-}
-
-function renderTable() {
-  renderTableHead();
-
-  const filtered = getFilteredSorted();
-  const body = $('#bookingsBody');
-  const empty = $('#bookingsEmpty');
-
-  const totalCount = allBookings.length;
-  const matchCount = filtered.length;
-  $('#bookingsCount').textContent = (searchQuery || statusFilterValue)
-    ? `${matchCount} of ${totalCount} booking${totalCount === 1 ? '' : 's'} match`
-    : `${totalCount} booking${totalCount === 1 ? '' : 's'}`;
-
-  if (matchCount === 0) {
-    body.innerHTML = '';
-    empty.textContent = totalCount === 0 ? 'No bookings yet.' : 'No bookings match your search/filter.';
-    empty.style.display = 'block';
-    $('#paginationBar').style.display = 'none';
-    return;
-  }
-  empty.style.display = 'none';
-  $('#paginationBar').style.display = 'flex';
-
-  const totalPages = Math.max(1, Math.ceil(matchCount / pageSize));
-  if (currentPage > totalPages) currentPage = totalPages;
-  const start = (currentPage - 1) * pageSize;
-  const pageItems = filtered.slice(start, start + pageSize);
-
-  body.innerHTML = pageItems.map((b) => {
-    const est = b.estimate;
+const leadTable = createDataTable({
+  prefix: 'lead',
+  fetchUrl: '/api/admin/leads',
+  dataKey: 'leads',
+  searchPlaceholder: 'Search name, company, email, phone…',
+  columns: [
+    { key:'created_at', label:'Received', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'name', label:'Name', sortable:true, get:(r)=>(r.name||'').toLowerCase() },
+    { key:'company', label:'Company', sortable:true, get:(r)=>(r.company||'').toLowerCase() },
+    { key:'phone', label:'Phone', sortable:false },
+    { key:'email', label:'Email', sortable:false },
+    { key:'estimate', label:'Estimate', sortable:true, get:(r)=>(r.estimate && r.estimate.monthlyTotal)||-1 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'New' },
+  ],
+  searchFields: (r) => [r.name, r.company, r.email, r.phone, r.address],
+  statusField: (r) => r.status || 'New',
+  statusValues: LEAD_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const est = r.estimate;
     const estLine = est ? `${est.facility ? est.facility + ' · ' : ''}$${Math.round(est.monthlyTotal || 0).toLocaleString()}/mo` : '—';
-    const date = new Date(b.created_at);
+    const date = new Date(r.created_at);
     return `
-      <tr data-id="${b.id}">
-        <td>${date.toLocaleDateString()} <span class="est-line">${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></td>
-        <td>${escapeHtml(b.name)}</td>
-        <td>${escapeHtml(b.company || '—')}</td>
-        <td>${escapeHtml(b.phone)}</td>
-        <td>${escapeHtml(b.email || '—')}</td>
-        <td>${escapeHtml(b.address || '—')}</td>
-        <td>${escapeHtml(estLine)}</td>
-        <td>${statusBadge(b.status)}</td>
-      </tr>
+      <td>${date.toLocaleDateString()} <span class="est-line">${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></td>
+      <td>${escapeHtml(r.name)}</td>
+      <td>${escapeHtml(r.company || '—')}</td>
+      <td>${escapeHtml(r.phone)}</td>
+      <td>${escapeHtml(r.email || '—')}</td>
+      <td>${escapeHtml(estLine)}</td>
+      <td>${statusBadge(r.status, LEAD_STATUS_COLORS, 'New')}</td>
     `;
-  }).join('');
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openLeadModal,
+  csvHeaders: ['Received','Name','Company','Phone','Email','Address','Preferred Date','Preferred Time','Status','Estimated Monthly ($)','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.company, r.phone, r.email, r.address, r.preferred_date, r.preferred_time, r.status || 'New', r.estimate && r.estimate.monthlyTotal ? Math.round(r.estimate.monthlyTotal) : '', r.notes],
+  csvFilenamePrefix: 'leads',
+  nounSingular: 'lead', nounPlural: 'leads',
+  emptyMessage: 'No leads yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
 
-  $$('#bookingsBody tr').forEach((row) => {
-    row.addEventListener('click', () => {
-      const b = allBookings.find((x) => String(x.id) === row.dataset.id);
-      if (b) openBookingModal(b);
-    });
+function readForm(prefix, fields) {
+  const out = {};
+  fields.forEach((f) => {
+    const el = document.getElementById(prefix + '_' + f);
+    out[f] = el.value.trim ? el.value.trim() : el.value;
   });
-
-  $('#pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
-  $('#firstPageBtn').disabled = currentPage === 1;
-  $('#prevPageBtn').disabled = currentPage === 1;
-  $('#nextPageBtn').disabled = currentPage === totalPages;
-  $('#lastPageBtn').disabled = currentPage === totalPages;
+  return out;
 }
 
-$('#bookingSearch').addEventListener('input', (e) => {
-  searchQuery = e.target.value.toLowerCase().trim();
-  currentPage = 1;
-  renderTable();
-});
-
-$('#statusFilter').insertAdjacentHTML(
-  'beforeend',
-  STATUS_VALUES.map((s) => `<option value="${s}">${s}</option>`).join('')
-);
-$('#statusFilter').addEventListener('change', (e) => {
-  statusFilterValue = e.target.value;
-  currentPage = 1;
-  renderTable();
-});
-
-$('#clearFilters').addEventListener('click', () => {
-  searchQuery = '';
-  statusFilterValue = '';
-  $('#bookingSearch').value = '';
-  $('#statusFilter').value = '';
-  currentPage = 1;
-  renderTable();
-});
-
-$('#pageSizeSelect').addEventListener('change', (e) => {
-  pageSize = Number(e.target.value);
-  currentPage = 1;
-  renderTable();
-});
-$('#firstPageBtn').addEventListener('click', () => { currentPage = 1; renderTable(); });
-$('#prevPageBtn').addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); renderTable(); });
-$('#nextPageBtn').addEventListener('click', () => { currentPage += 1; renderTable(); });
-$('#lastPageBtn').addEventListener('click', () => {
-  currentPage = Math.max(1, Math.ceil(getFilteredSorted().length / pageSize));
-  renderTable();
-});
-
-$('#exportCsv').addEventListener('click', () => {
-  const rows = getFilteredSorted();
-  if (rows.length === 0) { alert('No bookings to export.'); return; }
-  const headers = ['Received', 'Name', 'Company', 'Phone', 'Email', 'Address', 'Preferred Date', 'Preferred Time', 'Status', 'Estimated Monthly ($)', 'Notes'];
-  const csvEscape = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const lines = [headers.map(csvEscape).join(',')];
-  rows.forEach((b) => {
-    lines.push([
-      new Date(b.created_at).toLocaleString(),
-      b.name, b.company, b.phone, b.email, b.address,
-      b.preferred_date, b.preferred_time, b.status || 'New',
-      b.estimate && b.estimate.monthlyTotal ? Math.round(b.estimate.monthlyTotal) : '',
-      b.notes,
-    ].map(csvEscape).join(','));
-  });
-  const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `eclean-bookings-${new Date().toISOString().slice(0, 10)}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-
-function openBookingModal(b) {
-  selectedBookingId = b.id;
-  $('#modalError').classList.remove('show');
-  $('#m_name').value = b.name || '';
-  $('#m_company').value = b.company || '';
-  $('#m_phone').value = b.phone || '';
-  $('#m_email').value = b.email || '';
-  $('#m_address').value = b.address || '';
-  $('#m_date').value = b.preferred_date || '';
-  $('#m_time').value = b.preferred_time || '';
-  $('#m_notes').value = b.notes || '';
-  $('#m_estimatedValue').value = b.estimate && b.estimate.monthlyTotal ? Math.round(b.estimate.monthlyTotal) : '';
-  populateStatusSelect($('#m_status'), b.status || 'New');
-  $('#modalReceived').textContent = 'Received ' + new Date(b.created_at).toLocaleString();
-  $('#bookingModal').classList.add('show');
+function openLeadModal(r) {
+  selectedLeadId = r.id;
+  $('#leadModalError').classList.remove('show');
+  $('#lm_name').value = r.name || '';
+  $('#lm_company').value = r.company || '';
+  $('#lm_phone').value = r.phone || '';
+  $('#lm_email').value = r.email || '';
+  $('#lm_address').value = r.address || '';
+  $('#lm_date').value = r.preferred_date || '';
+  $('#lm_time').value = r.preferred_time || '';
+  $('#lm_notes').value = r.notes || '';
+  $('#lm_estimatedValue').value = r.estimate && r.estimate.monthlyTotal ? Math.round(r.estimate.monthlyTotal) : '';
+  populateSelect($('#lm_status'), LEAD_STATUS_VALUES, r.status || 'New');
+  $('#leadModalReceived').textContent = 'Received ' + new Date(r.created_at).toLocaleString();
+  $('#leadModal').classList.add('show');
 }
-$('#modalClose').addEventListener('click', () => $('#bookingModal').classList.remove('show'));
-$('#bookingModal').addEventListener('click', (e) => { if (e.target.id === 'bookingModal') $('#bookingModal').classList.remove('show'); });
+$('#leadModalClose').addEventListener('click', () => $('#leadModal').classList.remove('show'));
+$('#leadModal').addEventListener('click', (e) => { if (e.target.id === 'leadModal') $('#leadModal').classList.remove('show'); });
 
-function readBookingForm(prefix) {
-  return {
-    name: $('#' + prefix + '_name').value.trim(),
-    company: $('#' + prefix + '_company').value.trim(),
-    phone: $('#' + prefix + '_phone').value.trim(),
-    email: $('#' + prefix + '_email').value.trim(),
-    address: $('#' + prefix + '_address').value.trim(),
-    date: $('#' + prefix + '_date').value,
-    time: $('#' + prefix + '_time').value.trim(),
-    notes: $('#' + prefix + '_notes').value.trim(),
-    status: $('#' + prefix + '_status').value,
-    estimatedValue: $('#' + prefix + '_estimatedValue').value,
-  };
+function readLeadForm(prefix) {
+  const f = readForm(prefix, ['name', 'company', 'phone', 'email', 'address', 'date', 'time', 'notes', 'status', 'estimatedValue']);
+  return f;
 }
 
-$('#modalSave').addEventListener('click', async () => {
-  if (!selectedBookingId) return;
-  const payload = readBookingForm('m');
-  const errBox = $('#modalError');
+$('#leadModalSave').addEventListener('click', async () => {
+  if (!selectedLeadId) return;
+  const payload = readLeadForm('lm');
+  const errBox = $('#leadModalError');
   errBox.classList.remove('show');
   if (!payload.name || !payload.phone) {
     errBox.textContent = 'Name and phone are required.';
     errBox.classList.add('show');
     return;
   }
-  const btn = $('#modalSave');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
+  const btn = $('#leadModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
   try {
-    const r = await fetch('/api/admin/bookings?id=' + encodeURIComponent(selectedBookingId), {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const r = await fetch('/api/admin/leads?id=' + encodeURIComponent(selectedLeadId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
-    if (!r.ok) {
-      const data = await r.json().catch(() => ({}));
-      throw new Error(data.error || 'Save failed');
-    }
-    $('#bookingModal').classList.remove('show');
-    await loadBookings();
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#leadModal').classList.remove('show');
+    await leadTable.load();
+    await loadDashboardStats();
   } catch (err) {
     errBox.textContent = err.message || 'Failed to save. Try again.';
     errBox.classList.add('show');
   }
-  btn.disabled = false;
-  btn.textContent = 'Save Changes';
+  btn.disabled = false; btn.textContent = 'Save Changes';
 });
 
-$('#modalDelete').addEventListener('click', async () => {
-  if (!selectedBookingId) return;
-  if (!confirm('Delete this booking permanently? This cannot be undone.')) return;
-  const btn = $('#modalDelete');
-  btn.disabled = true;
-  btn.textContent = 'Deleting…';
+$('#leadModalDelete').addEventListener('click', async () => {
+  if (!selectedLeadId) return;
+  if (!confirm('Delete this lead permanently? This cannot be undone.')) return;
+  const btn = $('#leadModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
   try {
-    const r = await fetch('/api/admin/bookings?id=' + encodeURIComponent(selectedBookingId), { method: 'DELETE' });
+    const r = await fetch('/api/admin/leads?id=' + encodeURIComponent(selectedLeadId), { method: 'DELETE' });
     if (!r.ok) throw new Error('delete failed');
-    $('#bookingModal').classList.remove('show');
-    await loadBookings();
+    $('#leadModal').classList.remove('show');
+    await leadTable.load();
+    await loadDashboardStats();
   } catch {
-    alert('Failed to delete booking. Try again.');
+    alert('Failed to delete lead. Try again.');
   }
-  btn.disabled = false;
-  btn.textContent = 'Delete';
+  btn.disabled = false; btn.textContent = 'Delete';
 });
 
-/* ---------- Add Booking ---------- */
-$('#addBookingSubmit').addEventListener('click', async () => {
-  const payload = readBookingForm('ab');
-  const errBox = $('#addBookingError');
-  const statusEl = document.querySelector('[data-status="add-booking"]');
+$('#leadModalConvert').addEventListener('click', async () => {
+  if (!selectedLeadId) return;
+  if (!confirm('Convert this lead into a client? You can fill in service details next.')) return;
+  const btn = $('#leadModalConvert');
+  btn.disabled = true; btn.textContent = 'Converting…';
+  const errBox = $('#leadModalError');
+  errBox.classList.remove('show');
+  try {
+    const payload = {
+      name: $('#lm_name').value.trim(),
+      company: $('#lm_company').value.trim(),
+      phone: $('#lm_phone').value.trim(),
+      email: $('#lm_email').value.trim(),
+      address: $('#lm_address').value.trim(),
+      status: 'Active',
+      sourceLeadId: selectedLeadId,
+    };
+    const r = await fetch('/api/admin/clients', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Conversion failed');
+    const { client } = await r.json();
+
+    // Mark the lead Won.
+    await fetch('/api/admin/leads?id=' + encodeURIComponent(selectedLeadId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...readLeadForm('lm'), status: 'Won' }),
+    });
+
+    $('#leadModal').classList.remove('show');
+    await leadTable.load();
+    await clientTable.load();
+    await loadDashboardStats();
+    setActivePanel('clients-list');
+    openClientModal(client);
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to convert. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Convert to Client';
+});
+
+$('#addLeadSubmit').addEventListener('click', async () => {
+  const payload = readLeadForm('al');
+  const errBox = $('#addLeadError');
+  const statusEl = document.querySelector('[data-status="add-lead"]');
   errBox.classList.remove('show');
   if (!payload.name || !payload.phone) {
     errBox.textContent = 'Name and phone are required.';
     errBox.classList.add('show');
     return;
   }
-  const btn = $('#addBookingSubmit');
-  btn.disabled = true;
-  btn.textContent = 'Adding…';
+  const btn = $('#addLeadSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
   try {
-    const r = await fetch('/api/admin/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const r = await fetch('/api/admin/leads', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
-    if (!r.ok) {
-      const data = await r.json().catch(() => ({}));
-      throw new Error(data.error || 'Failed to add booking');
-    }
-    ['name', 'company', 'phone', 'email', 'address', 'date', 'time', 'notes', 'estimatedValue'].forEach((f) => {
-      $('#ab_' + f).value = '';
-    });
-    populateStatusSelect($('#ab_status'), 'New');
-    statusEl.textContent = 'Added ✓';
-    statusEl.style.color = 'var(--teal-600)';
-    statusEl.classList.add('show');
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add lead');
+    ['name', 'company', 'phone', 'email', 'address', 'date', 'time', 'notes', 'estimatedValue'].forEach((f) => { $('#al_' + f).value = ''; });
+    populateSelect($('#al_status'), LEAD_STATUS_VALUES, 'New');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
     setTimeout(() => statusEl.classList.remove('show'), 2000);
-    await loadBookings();
+    await leadTable.load();
+    await loadDashboardStats();
   } catch (err) {
-    errBox.textContent = err.message || 'Failed to add booking. Try again.';
+    errBox.textContent = err.message || 'Failed to add lead. Try again.';
     errBox.classList.add('show');
   }
-  btn.disabled = false;
-  btn.textContent = 'Add Booking';
+  btn.disabled = false; btn.textContent = 'Add Lead';
 });
 
-function escapeHtml(str) {
-  return String(str ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* ============================================================
+   CLIENTS
+   ============================================================ */
+const CLIENT_STATUS_VALUES = ['Active', 'Paused', 'Inactive'];
+const CLIENT_STATUS_COLORS = { Active:'#15803d', Paused:'#a16207', Inactive:'#6b7280' };
+let selectedClientId = null;
+
+populateSelect($('#ac_status'), CLIENT_STATUS_VALUES, 'Active');
+populateSelect($('#cm_status'), CLIENT_STATUS_VALUES, 'Active');
+
+const clientTable = createDataTable({
+  prefix: 'client',
+  fetchUrl: '/api/admin/clients',
+  dataKey: 'clients',
+  searchPlaceholder: 'Search name, company, email, phone…',
+  columns: [
+    { key:'created_at', label:'Added', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'name', label:'Name', sortable:true, get:(r)=>(r.name||'').toLowerCase() },
+    { key:'company', label:'Company', sortable:true, get:(r)=>(r.company||'').toLowerCase() },
+    { key:'phone', label:'Phone', sortable:false },
+    { key:'service_type', label:'Service', sortable:false },
+    { key:'cleaning_frequency', label:'Frequency', sortable:false },
+    { key:'contract_amount', label:'Contract', sortable:true, get:(r)=>Number(r.contract_amount)||0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Active' },
+  ],
+  searchFields: (r) => [r.name, r.company, r.email, r.phone, r.address],
+  statusField: (r) => r.status || 'Active',
+  statusValues: CLIENT_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const date = new Date(r.created_at);
+    const contract = r.contract_amount ? `$${Math.round(r.contract_amount).toLocaleString()}/mo` : '—';
+    return `
+      <td>${date.toLocaleDateString()}</td>
+      <td>${escapeHtml(r.name)}</td>
+      <td>${escapeHtml(r.company || '—')}</td>
+      <td>${escapeHtml(r.phone)}</td>
+      <td>${escapeHtml(r.service_type || '—')}</td>
+      <td>${escapeHtml(r.cleaning_frequency || '—')}</td>
+      <td>${escapeHtml(contract)}</td>
+      <td>${statusBadge(r.status, CLIENT_STATUS_COLORS, 'Active')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openClientModal,
+  csvHeaders: ['Added','Name','Company','Phone','Email','Address','Service Type','Sq Ft','Frequency','Contract ($/mo)','Status','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.company, r.phone, r.email, r.address, r.service_type, r.square_footage, r.cleaning_frequency, r.contract_amount, r.status, r.notes],
+  csvFilenamePrefix: 'clients',
+  nounSingular: 'client', nounPlural: 'clients',
+  emptyMessage: 'No clients yet. Convert a Won lead, or add one directly.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openClientModal(r) {
+  selectedClientId = r.id;
+  $('#clientModalError').classList.remove('show');
+  $('#cm_name').value = r.name || '';
+  $('#cm_company').value = r.company || '';
+  $('#cm_phone').value = r.phone || '';
+  $('#cm_email').value = r.email || '';
+  $('#cm_address').value = r.address || '';
+  $('#cm_serviceType').value = r.service_type || '';
+  $('#cm_squareFootage').value = r.square_footage || '';
+  $('#cm_cleaningFrequency').value = r.cleaning_frequency || '';
+  $('#cm_contractAmount').value = r.contract_amount || '';
+  $('#cm_notes').value = r.notes || '';
+  populateSelect($('#cm_status'), CLIENT_STATUS_VALUES, r.status || 'Active');
+  $('#clientModalAdded').textContent = 'Added ' + new Date(r.created_at).toLocaleString();
+  $('#clientModal').classList.add('show');
+}
+$('#clientModalClose').addEventListener('click', () => $('#clientModal').classList.remove('show'));
+$('#clientModal').addEventListener('click', (e) => { if (e.target.id === 'clientModal') $('#clientModal').classList.remove('show'); });
+
+function readClientForm(prefix) {
+  return readForm(prefix, ['name', 'company', 'phone', 'email', 'address', 'serviceType', 'squareFootage', 'cleaningFrequency', 'contractAmount', 'notes', 'status']);
 }
 
-/* ---------- Content ---------- */
+$('#clientModalSave').addEventListener('click', async () => {
+  if (!selectedClientId) return;
+  const payload = readClientForm('cm');
+  const errBox = $('#clientModalError');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#clientModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/clients?id=' + encodeURIComponent(selectedClientId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#clientModal').classList.remove('show');
+    await clientTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#clientModalDelete').addEventListener('click', async () => {
+  if (!selectedClientId) return;
+  if (!confirm('Delete this client permanently? Any quotes for this client will also be removed. This cannot be undone.')) return;
+  const btn = $('#clientModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/clients?id=' + encodeURIComponent(selectedClientId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#clientModal').classList.remove('show');
+    await clientTable.load();
+    await quoteTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete client. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addClientSubmit').addEventListener('click', async () => {
+  const payload = readClientForm('ac');
+  const errBox = $('#addClientError');
+  const statusEl = document.querySelector('[data-status="add-client"]');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addClientSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/clients', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add client');
+    ['name', 'company', 'phone', 'email', 'address', 'serviceType', 'squareFootage', 'contractAmount', 'notes'].forEach((f) => { $('#ac_' + f).value = ''; });
+    $('#ac_cleaningFrequency').value = '';
+    populateSelect($('#ac_status'), CLIENT_STATUS_VALUES, 'Active');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await clientTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add client. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Client';
+});
+
+/* ============================================================
+   QUOTES
+   ============================================================ */
+const QUOTE_STATUS_VALUES = ['Draft', 'Sent', 'Accepted', 'Declined', 'Expired'];
+const QUOTE_STATUS_COLORS = { Draft:'#6b7280', Sent:'#2563eb', Accepted:'#15803d', Declined:'#b91c1c', Expired:'#a16207' };
+let selectedQuoteId = null;
+
+populateSelect($('#aq_status'), QUOTE_STATUS_VALUES, 'Draft');
+populateSelect($('#qm_status'), QUOTE_STATUS_VALUES, 'Draft');
+
+function populateClientDropdown(select, selectedId) {
+  const clients = clientTable.getData();
+  if (clients.length === 0) {
+    select.innerHTML = '<option value="">No clients yet — add one first</option>';
+    return;
+  }
+  select.innerHTML = clients.map((c) =>
+    `<option value="${c.id}" ${String(c.id) === String(selectedId) ? 'selected' : ''}>${escapeHtml(c.name)}${c.company ? ' — ' + escapeHtml(c.company) : ''}</option>`
+  ).join('');
+}
+
+const quoteTable = createDataTable({
+  prefix: 'quote',
+  fetchUrl: '/api/admin/quotes',
+  dataKey: 'quotes',
+  searchPlaceholder: 'Search client, property, services…',
+  columns: [
+    { key:'created_at', label:'Created', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'client_name', label:'Client', sortable:true, get:(r)=>(r.client_name||'').toLowerCase() },
+    { key:'property_address', label:'Property', sortable:false },
+    { key:'cleaning_frequency', label:'Frequency', sortable:false },
+    { key:'price', label:'Price', sortable:true, get:(r)=>Number(r.price)||0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Draft' },
+  ],
+  searchFields: (r) => [r.client_name, r.client_company, r.property_address, r.services],
+  statusField: (r) => r.status || 'Draft',
+  statusValues: QUOTE_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const date = new Date(r.created_at);
+    const price = r.price ? `$${Math.round(r.price).toLocaleString()}` : '—';
+    return `
+      <td>${date.toLocaleDateString()}</td>
+      <td>${escapeHtml(r.client_name)}${r.client_company ? '<br><span class="est-line">' + escapeHtml(r.client_company) + '</span>' : ''}</td>
+      <td>${escapeHtml(r.property_address || '—')}</td>
+      <td>${escapeHtml(r.cleaning_frequency || '—')}</td>
+      <td>${escapeHtml(price)}</td>
+      <td>${statusBadge(r.status, QUOTE_STATUS_COLORS, 'Draft')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openQuoteModal,
+  csvHeaders: ['Created','Client','Company','Property','Sq Ft','Frequency','Price','Status','Services','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.client_name, r.client_company, r.property_address, r.square_footage, r.cleaning_frequency, r.price, r.status, r.services, r.notes],
+  csvFilenamePrefix: 'quotes',
+  nounSingular: 'quote', nounPlural: 'quotes',
+  emptyMessage: 'No quotes yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openQuoteModal(r) {
+  selectedQuoteId = r.id;
+  $('#quoteModalError').classList.remove('show');
+  populateClientDropdown($('#qm_clientId'), r.client_id);
+  $('#qm_propertyAddress').value = r.property_address || '';
+  $('#qm_squareFootage').value = r.square_footage || '';
+  $('#qm_cleaningFrequency').value = r.cleaning_frequency || '';
+  $('#qm_price').value = r.price || '';
+  $('#qm_services').value = r.services || '';
+  $('#qm_notes').value = r.notes || '';
+  populateSelect($('#qm_status'), QUOTE_STATUS_VALUES, r.status || 'Draft');
+  $('#quoteModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString();
+  $('#quoteModal').classList.add('show');
+}
+$('#quoteModalClose').addEventListener('click', () => $('#quoteModal').classList.remove('show'));
+$('#quoteModal').addEventListener('click', (e) => { if (e.target.id === 'quoteModal') $('#quoteModal').classList.remove('show'); });
+
+function readQuoteForm(prefix) {
+  return readForm(prefix, ['clientId', 'propertyAddress', 'squareFootage', 'cleaningFrequency', 'price', 'services', 'notes', 'status']);
+}
+
+$('#quoteModalSave').addEventListener('click', async () => {
+  if (!selectedQuoteId) return;
+  const payload = readQuoteForm('qm');
+  const errBox = $('#quoteModalError');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#quoteModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/quotes?id=' + encodeURIComponent(selectedQuoteId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#quoteModal').classList.remove('show');
+    await quoteTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#quoteModalDelete').addEventListener('click', async () => {
+  if (!selectedQuoteId) return;
+  if (!confirm('Delete this quote permanently? This cannot be undone.')) return;
+  const btn = $('#quoteModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/quotes?id=' + encodeURIComponent(selectedQuoteId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#quoteModal').classList.remove('show');
+    await quoteTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete quote. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addQuoteSubmit').addEventListener('click', async () => {
+  const payload = readQuoteForm('aq');
+  const errBox = $('#addQuoteError');
+  const statusEl = document.querySelector('[data-status="add-quote"]');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addQuoteSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/quotes', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add quote');
+    ['propertyAddress', 'squareFootage', 'price', 'services', 'notes'].forEach((f) => { $('#aq_' + f).value = ''; });
+    $('#aq_cleaningFrequency').value = '';
+    populateSelect($('#aq_status'), QUOTE_STATUS_VALUES, 'Draft');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await quoteTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add quote. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Quote';
+});
+
+// Populate the Add Quote client dropdown whenever that panel is opened.
+document.querySelector('[data-panel="quotes-add"]').addEventListener('click', () => {
+  populateClientDropdown($('#aq_clientId'), null);
+});
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+async function loadDashboardStats() {
+  const grid = $('#statGrid');
+  const pipeline = $('#pipelineRow');
+  try {
+    const r = await fetch('/api/admin/dashboard');
+    if (!r.ok) throw new Error('failed');
+    const d = await r.json();
+
+    grid.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">Total Clients</div>
+        <div class="stat-value">${d.totalClients}</div>
+        <div class="stat-sub">${d.activeClients} active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Leads</div>
+        <div class="stat-value">${d.totalLeads}</div>
+        <div class="stat-sub">${d.newLeadsThisMonth} new this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending Quotes</div>
+        <div class="stat-value">${d.pendingQuotes}</div>
+        <div class="stat-sub">${d.quoteConversionRate === null ? 'No decided quotes yet' : d.quoteConversionRate + '% acceptance rate'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Monthly Recurring Value</div>
+        <div class="stat-value">$${Math.round(d.monthlyRecurringValue).toLocaleString()}</div>
+        <div class="stat-sub">From active client contracts</div>
+      </div>
+    `;
+
+    const statusOrder = LEAD_STATUS_VALUES;
+    pipeline.innerHTML = statusOrder.map((s) => {
+      const n = d.leadsByStatus[s] || 0;
+      const color = LEAD_STATUS_COLORS[s];
+      return `<span class="pipeline-chip" style="background:${color}1a; color:${color};"><span class="n">${n}</span> ${escapeHtml(s)}</span>`;
+    }).join('');
+  } catch {
+    grid.innerHTML = `<p style="color:var(--danger); font-size:13.5px;">Failed to load dashboard stats.</p>`;
+    pipeline.innerHTML = '';
+  }
+}
+
+/* ============================================================
+   CONTENT (site CMS — unchanged from prior version)
+   ============================================================ */
 let currentContent = {};
 
 const SIMPLE_FIELDS = [
@@ -1022,19 +1588,13 @@ async function saveContent(updates, statusKey) {
   const statusEl = document.querySelector(`[data-status="${statusKey}"]`);
   try {
     const r = await fetch('/api/admin/content', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updates),
     });
     if (!r.ok) throw new Error('save failed');
-    statusEl.textContent = 'Saved ✓';
-    statusEl.style.color = 'var(--teal-600)';
-    statusEl.classList.add('show');
+    statusEl.textContent = 'Saved ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
     setTimeout(() => statusEl.classList.remove('show'), 2000);
   } catch {
-    statusEl.textContent = 'Save failed';
-    statusEl.style.color = 'var(--danger)';
-    statusEl.classList.add('show');
+    statusEl.textContent = 'Save failed'; statusEl.style.color = 'var(--danger)'; statusEl.classList.add('show');
   }
 }
 
