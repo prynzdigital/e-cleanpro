@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
     if (!resendRes.ok) {
       const errText = await resendRes.text();
       console.error('Resend error:', errText);
-      res.status(502).json({ error: 'Failed to send email' });
+      res.status(502).json({ error: 'Failed to send email', detail: errText });
       return;
     }
 
