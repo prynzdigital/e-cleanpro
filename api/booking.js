@@ -73,7 +73,9 @@ module.exports = async (req, res) => {
     if (!resendRes.ok) {
       const errText = await resendRes.text();
       console.error('Resend error:', errText);
-      res.status(502).json({ error: 'Failed to send email' });
+      // TEMP: surfacing the raw Resend error to the client for setup debugging.
+      // Revert to a generic message once sending is confirmed working.
+      res.status(502).json({ error: 'Failed to send email', detail: errText });
       return;
     }
 
