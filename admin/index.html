@@ -212,10 +212,19 @@
       E-Clean Admin
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" data-panel="bookings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Bookings
-      </button>
+      <div class="nav-group open" id="bookingsGroup">
+        <button class="nav-group-toggle" id="bookingsGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Bookings
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem active" data-panel="bookings-list">All Bookings</button>
+          <button class="nav-subitem" data-panel="bookings-add">Add Booking</button>
+        </div>
+      </div>
 
       <div class="nav-group open" id="contentGroup">
         <button class="nav-group-toggle" id="contentGroupToggle">
@@ -252,8 +261,8 @@
     </div>
 
     <div class="dash-body">
-      <!-- BOOKINGS PANEL -->
-      <div class="panel active" id="panel-bookings">
+      <!-- BOOKINGS: ALL BOOKINGS -->
+      <div class="panel active" id="panel-bookings-list">
         <div class="panel-head">
           <div>
             <h2>Bookings</h2>
@@ -265,12 +274,45 @@
           <table>
             <thead>
               <tr>
-                <th>Received</th><th>Name</th><th>Company</th><th>Phone</th><th>Email</th><th>Address</th><th>Estimate</th>
+                <th>Received</th><th>Name</th><th>Company</th><th>Phone</th><th>Email</th><th>Address</th><th>Estimate</th><th>Status</th>
               </tr>
             </thead>
             <tbody id="bookingsBody"></tbody>
           </table>
           <div class="empty-state" id="bookingsEmpty" style="display:none;">No bookings yet.</div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS: ADD BOOKING -->
+      <div class="panel" id="panel-bookings-add">
+        <div class="panel-head"><div><h2>Add Booking</h2><p>Log a lead that came in by phone or in person.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addBookingError" style="margin-bottom:16px;"></div>
+          <div class="row2">
+            <div class="cfield"><label>Full Name *</label><input id="ab_name" required></div>
+            <div class="cfield"><label>Company</label><input id="ab_company"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Phone *</label><input id="ab_phone" required></div>
+            <div class="cfield"><label>Email</label><input id="ab_email" type="email"></div>
+          </div>
+          <div class="cfield"><label>Facility Address</label><input id="ab_address"></div>
+          <div class="row2">
+            <div class="cfield"><label>Preferred Start Date</label><input id="ab_date" type="date"></div>
+            <div class="cfield"><label>Preferred Contact Time</label><input id="ab_time" placeholder="e.g. Midday (11am–3pm)"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="ab_estimatedValue" type="number" step="1" min="0"></div>
+            <div class="cfield">
+              <label>Status</label>
+              <select id="ab_status"></select>
+            </div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="ab_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addBookingSubmit">Add Booking</button>
+            <span class="save-status" data-status="add-booking">Saved</span>
+          </div>
         </div>
       </div>
 
@@ -363,14 +405,37 @@
   </div>
 </div>
 
-<!-- Booking detail modal -->
+<!-- Booking edit modal -->
 <div class="modal-overlay" id="bookingModal">
   <div class="modal">
-    <h3 id="modalName"></h3>
-    <dl id="modalBody"></dl>
+    <h3>Edit Booking</h3>
+    <div class="error-msg" id="modalError" style="margin-bottom:14px;"></div>
+    <div class="row2">
+      <div class="cfield"><label>Full Name *</label><input id="m_name" required></div>
+      <div class="cfield"><label>Company</label><input id="m_company"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Phone *</label><input id="m_phone" required></div>
+      <div class="cfield"><label>Email</label><input id="m_email" type="email"></div>
+    </div>
+    <div class="cfield"><label>Facility Address</label><input id="m_address"></div>
+    <div class="row2">
+      <div class="cfield"><label>Preferred Start Date</label><input id="m_date" type="date"></div>
+      <div class="cfield"><label>Preferred Contact Time</label><input id="m_time"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Estimated Monthly Value ($)</label><input id="m_estimatedValue" type="number" step="1" min="0"></div>
+      <div class="cfield">
+        <label>Status</label>
+        <select id="m_status"></select>
+      </div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="m_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="modalReceived"></p>
     <div class="modal-actions">
+      <button class="btn btn-sm" id="modalSave">Save Changes</button>
       <button class="btn btn-sm btn-ghost" id="modalClose">Close</button>
-      <button class="btn btn-sm btn-danger" id="modalDelete">Delete Booking</button>
+      <button class="btn btn-sm btn-danger" id="modalDelete">Delete</button>
     </div>
   </div>
 </div>
@@ -460,6 +525,9 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
 $('#contentGroupToggle').addEventListener('click', () => {
   $('#contentGroup').classList.toggle('open');
 });
+$('#bookingsGroupToggle').addEventListener('click', () => {
+  $('#bookingsGroup').classList.toggle('open');
+});
 
 /* Mobile sidebar toggle */
 function openMobileSidebar(){ $('#sidebar').classList.add('open'); $('#sidebarOverlay').classList.add('show'); }
@@ -470,6 +538,17 @@ $('#sidebarOverlay').addEventListener('click', closeMobileSidebar);
 /* ---------- Bookings ---------- */
 let allBookings = [];
 let selectedBookingId = null;
+const STATUS_VALUES = ['New', 'Contacted', 'Quoted', 'Scheduled', 'Won', 'Lost'];
+const STATUS_COLORS = {
+  New: '#0e7d70', Contacted: '#2563eb', Quoted: '#a16207',
+  Scheduled: '#7c3aed', Won: '#15803d', Lost: '#b91c1c',
+};
+
+function populateStatusSelect(select, selected) {
+  select.innerHTML = STATUS_VALUES.map((s) => `<option value="${s}" ${s === selected ? 'selected' : ''}>${s}</option>`).join('');
+}
+populateStatusSelect($('#ab_status'), 'New');
+populateStatusSelect($('#m_status'), 'New');
 
 async function loadBookings() {
   try {
@@ -481,6 +560,12 @@ async function loadBookings() {
   } catch {
     $('#bookingsCount').textContent = 'Failed to load bookings.';
   }
+}
+
+function statusBadge(status) {
+  const s = status || 'New';
+  const color = STATUS_COLORS[s] || '#0e7d70';
+  return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(s)}</span>`;
 }
 
 function renderBookings(list) {
@@ -497,7 +582,7 @@ function renderBookings(list) {
 
   body.innerHTML = list.map((b, i) => {
     const est = b.estimate;
-    const estLine = est ? `${est.facility || ''} · $${Math.round(est.monthlyTotal || 0).toLocaleString()}/mo` : '—';
+    const estLine = est ? `${est.facility ? est.facility + ' · ' : ''}$${Math.round(est.monthlyTotal || 0).toLocaleString()}/mo` : '—';
     const date = new Date(b.created_at);
     return `
       <tr data-idx="${i}">
@@ -505,9 +590,10 @@ function renderBookings(list) {
         <td>${escapeHtml(b.name)}</td>
         <td>${escapeHtml(b.company || '—')}</td>
         <td>${escapeHtml(b.phone)}</td>
-        <td>${escapeHtml(b.email)}</td>
-        <td>${escapeHtml(b.address)}</td>
-        <td><span class="badge">${escapeHtml(estLine)}</span></td>
+        <td>${escapeHtml(b.email || '—')}</td>
+        <td>${escapeHtml(b.address || '—')}</td>
+        <td>${escapeHtml(estLine)}</td>
+        <td>${statusBadge(b.status)}</td>
       </tr>
     `;
   }).join('');
@@ -528,26 +614,70 @@ $('#bookingSearch').addEventListener('input', (e) => {
 
 function openBookingModal(b) {
   selectedBookingId = b.id;
-  $('#modalName').textContent = b.name;
-  const est = b.estimate;
-  const estLine = est
-    ? `${est.facility || ''} · ${(est.sqft || 0).toLocaleString()} sq ft · ${est.floors || 1} floor(s) · ${est.frequency || ''} · approx. $${Math.round(est.monthlyTotal || 0).toLocaleString()}/mo`
-    : '—';
-  $('#modalBody').innerHTML = `
-    <dt>Company</dt><dd>${escapeHtml(b.company || '—')}</dd>
-    <dt>Phone</dt><dd>${escapeHtml(b.phone)}</dd>
-    <dt>Email</dt><dd>${escapeHtml(b.email)}</dd>
-    <dt>Address</dt><dd>${escapeHtml(b.address)}</dd>
-    <dt>Preferred Date</dt><dd>${escapeHtml(b.preferred_date || '—')}</dd>
-    <dt>Preferred Time</dt><dd>${escapeHtml(b.preferred_time || '—')}</dd>
-    <dt>Notes</dt><dd>${escapeHtml(b.notes || '—')}</dd>
-    <dt>Estimate</dt><dd>${escapeHtml(estLine)}</dd>
-    <dt>Received</dt><dd>${new Date(b.created_at).toLocaleString()}</dd>
-  `;
+  $('#modalError').classList.remove('show');
+  $('#m_name').value = b.name || '';
+  $('#m_company').value = b.company || '';
+  $('#m_phone').value = b.phone || '';
+  $('#m_email').value = b.email || '';
+  $('#m_address').value = b.address || '';
+  $('#m_date').value = b.preferred_date || '';
+  $('#m_time').value = b.preferred_time || '';
+  $('#m_notes').value = b.notes || '';
+  $('#m_estimatedValue').value = b.estimate && b.estimate.monthlyTotal ? Math.round(b.estimate.monthlyTotal) : '';
+  populateStatusSelect($('#m_status'), b.status || 'New');
+  $('#modalReceived').textContent = 'Received ' + new Date(b.created_at).toLocaleString();
   $('#bookingModal').classList.add('show');
 }
 $('#modalClose').addEventListener('click', () => $('#bookingModal').classList.remove('show'));
 $('#bookingModal').addEventListener('click', (e) => { if (e.target.id === 'bookingModal') $('#bookingModal').classList.remove('show'); });
+
+function readBookingForm(prefix) {
+  return {
+    name: $('#' + prefix + '_name').value.trim(),
+    company: $('#' + prefix + '_company').value.trim(),
+    phone: $('#' + prefix + '_phone').value.trim(),
+    email: $('#' + prefix + '_email').value.trim(),
+    address: $('#' + prefix + '_address').value.trim(),
+    date: $('#' + prefix + '_date').value,
+    time: $('#' + prefix + '_time').value.trim(),
+    notes: $('#' + prefix + '_notes').value.trim(),
+    status: $('#' + prefix + '_status').value,
+    estimatedValue: $('#' + prefix + '_estimatedValue').value,
+  };
+}
+
+$('#modalSave').addEventListener('click', async () => {
+  if (!selectedBookingId) return;
+  const payload = readBookingForm('m');
+  const errBox = $('#modalError');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#modalSave');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/bookings?id=' + encodeURIComponent(selectedBookingId), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!r.ok) {
+      const data = await r.json().catch(() => ({}));
+      throw new Error(data.error || 'Save failed');
+    }
+    $('#bookingModal').classList.remove('show');
+    await loadBookings();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Save Changes';
+});
 
 $('#modalDelete').addEventListener('click', async () => {
   if (!selectedBookingId) return;
@@ -564,7 +694,48 @@ $('#modalDelete').addEventListener('click', async () => {
     alert('Failed to delete booking. Try again.');
   }
   btn.disabled = false;
-  btn.textContent = 'Delete Booking';
+  btn.textContent = 'Delete';
+});
+
+/* ---------- Add Booking ---------- */
+$('#addBookingSubmit').addEventListener('click', async () => {
+  const payload = readBookingForm('ab');
+  const errBox = $('#addBookingError');
+  const statusEl = document.querySelector('[data-status="add-booking"]');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addBookingSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!r.ok) {
+      const data = await r.json().catch(() => ({}));
+      throw new Error(data.error || 'Failed to add booking');
+    }
+    ['name', 'company', 'phone', 'email', 'address', 'date', 'time', 'notes', 'estimatedValue'].forEach((f) => {
+      $('#ab_' + f).value = '';
+    });
+    populateStatusSelect($('#ab_status'), 'New');
+    statusEl.textContent = 'Added ✓';
+    statusEl.style.color = 'var(--teal-600)';
+    statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await loadBookings();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add booking. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Add Booking';
 });
 
 function escapeHtml(str) {
