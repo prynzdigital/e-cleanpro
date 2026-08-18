@@ -79,6 +79,13 @@
     display:flex; align-items:center; gap:7px; font-weight:600; color:var(--mint-300);
   }
   .topbar-badge svg{width:14px;height:14px;}
+  .topbar-social{display:flex; align-items:center; gap:9px;}
+  .topbar-social a{
+    display:flex; align-items:center; justify-content:center; width:25px; height:25px;
+    border-radius:50%; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.85); flex-shrink:0; transition:.2s;
+  }
+  .topbar-social a:hover{background:var(--mint-300); color:var(--teal-900);}
+  .topbar-social svg{width:13px;height:13px;}
 
   /* ===== NAVBAR ===== */
   .navbar{
@@ -491,6 +498,14 @@
   .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px; margin-bottom:44px;}
   .footer-logo{height:40px; width:auto; margin-bottom:16px;}
   .footer-brand p{font-size:13.5px; line-height:1.7; color:rgba(255,255,255,0.55); max-width:280px;}
+  .footer-social{display:flex; gap:10px; margin-top:20px;}
+  .footer-social a{
+    display:flex; align-items:center; justify-content:center; width:38px; height:38px;
+    border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16);
+    color:rgba(255,255,255,0.8); transition:.25s var(--ease);
+  }
+  .footer-social a:hover{background:var(--teal-500); border-color:var(--teal-500); color:#fff; transform:translateY(-3px);}
+  .footer-social svg{width:17px;height:17px;}
   footer h5{font-size:13.5px; color:#fff; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;}
   footer ul li{margin-bottom:11px;}
   footer ul li a{font-size:13.8px; color:rgba(255,255,255,0.6); transition:.2s;}
@@ -597,6 +612,20 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 2v4M8 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
         Serving Businesses Statewide, IL
       </a>
+      <div class="topbar-social">
+        <a href="https://www.instagram.com/eclean.proservices?igsh=cmF5d2YyNDl4NXFy&amp;igsi=cmF5d2YyNDl4NXFy&amp;utm_source=ig_contact_invite" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/e-clean-pro-services/?viewAsMember=true" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/share/1F8uChn7FA/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@ecleanproservices?_r=1&amp;_t=ZS-98xoDXrVfWi" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v6.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-13.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -1040,6 +1069,20 @@
       <div class="footer-brand">
         <img src="eclean-logo-white.png" alt="E-Clean Pro Services LLC" class="footer-logo">
         <p>Clean Today. Protect Tomorrow. Serving commercial, residential, and institutional clients throughout Illinois.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/eclean.proservices?igsh=cmF5d2YyNDl4NXFy&amp;igsi=cmF5d2YyNDl4NXFy&amp;utm_source=ig_contact_invite" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/e-clean-pro-services/?viewAsMember=true" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/share/1F8uChn7FA/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@ecleanproservices?_r=1&amp;_t=ZS-98xoDXrVfWi" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v6.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-13.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/></svg>
+          </a>
+        </div>
       </div>
       <div>
         <h5>Navigate</h5>
