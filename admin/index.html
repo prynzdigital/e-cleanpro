@@ -118,16 +118,48 @@
   .sidebar-overlay{position:fixed; inset:0; background:rgba(5,46,43,0.5); z-index:29; display:none;}
   .sidebar-overlay.show{display:block;}
 
-  /* ===== BOOKINGS TABLE ===== */
-  .card{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); box-shadow:var(--shadow-md); overflow:hidden; overflow-x:auto;}
+  /* ===== DATA TABLE: toolbar, sortable header, pagination ===== */
+  .table-toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+  .filter-select{
+    padding:10px 14px; border-radius:99px; border:1.5px solid rgba(10,92,83,0.16); background:#fff;
+    font-size:13.5px; color:var(--ink); max-width:100%;
+  }
+  .filter-select:focus{outline:none; border-color:var(--teal-500);}
+
+  .card{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); box-shadow:var(--shadow-md); overflow:hidden;}
+  .table-scroll{overflow:auto; max-height:64vh;}
   table{width:100%; border-collapse:collapse; font-size:13.5px;}
-  th{text-align:left; padding:12px 16px; background:var(--aqua-100); color:var(--teal-800); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.03em; white-space:nowrap;}
+  th{
+    text-align:left; padding:0; background:var(--aqua-100); color:var(--teal-800); font-weight:700; font-size:12px;
+    text-transform:uppercase; letter-spacing:0.03em; white-space:nowrap; position:sticky; top:0; z-index:1;
+  }
+  th button.sort-btn{
+    display:flex; align-items:center; gap:5px; width:100%; padding:12px 16px; border:none; background:none;
+    color:inherit; font:inherit; text-transform:inherit; letter-spacing:inherit; cursor:pointer;
+  }
+  th button.sort-btn:hover{color:var(--teal-600);}
+  th .sort-arrow{width:11px; height:11px; opacity:.35; transition:.15s;}
+  th.sorted .sort-arrow{opacity:1; color:var(--teal-600);}
+  th.sorted-desc .sort-arrow{transform:rotate(180deg);}
+  th.unsortable{padding:12px 16px;}
   td{padding:12px 16px; border-top:1px solid rgba(10,92,83,0.08); vertical-align:top; white-space:nowrap;}
   tbody tr{cursor:pointer; transition:.15s;}
   tbody tr:hover{background:var(--aqua-100);}
   .empty-state{padding:60px 20px; text-align:center; color:var(--ink-soft);}
   .badge{display:inline-block; padding:3px 10px; border-radius:99px; font-size:11.5px; font-weight:700; background:var(--aqua-100); color:var(--teal-700);}
   .est-line{font-size:12.5px; color:var(--ink-soft);}
+
+  .pagination-bar{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-top:14px;}
+  .page-size{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft);}
+  .page-size select{padding:6px 10px; border-radius:8px; border:1.5px solid rgba(10,92,83,0.16); background:#fff; font-size:12.5px;}
+  .page-controls{display:flex; align-items:center; gap:6px;}
+  .page-btn{
+    width:32px; height:32px; border-radius:8px; border:1.5px solid rgba(10,92,83,0.16); background:#fff;
+    color:var(--teal-800); font-size:15px; display:flex; align-items:center; justify-content:center; transition:.15s;
+  }
+  .page-btn:hover:not(:disabled){border-color:var(--teal-500); color:var(--teal-600);}
+  .page-btn:disabled{opacity:.35; cursor:not-allowed;}
+  .page-indicator{font-size:12.5px; color:var(--ink-soft); padding:0 6px; white-space:nowrap;}
 
   /* Row detail modal */
   .modal-overlay{position:fixed; inset:0; background:rgba(5,46,43,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
@@ -175,7 +207,11 @@
   @media (max-width:760px){
     .row2, .list-row{grid-template-columns:1fr;}
     table{font-size:12.5px;}
-    th, td{padding:9px 10px;}
+    th button.sort-btn, th.unsortable{padding:9px 10px;}
+    td{padding:9px 10px;}
+    .pagination-bar{justify-content:center; text-align:center;}
+    .table-toolbar .search-input{width:100%;}
+    #exportCsv{margin-left:0; width:100%; justify-content:center;}
   }
 </style>
 </head>
@@ -268,18 +304,49 @@
             <h2>Bookings</h2>
             <p id="bookingsCount">Loading…</p>
           </div>
-          <input type="text" class="search-input" id="bookingSearch" placeholder="Search name, company, email, phone…">
         </div>
+
+        <div class="table-toolbar">
+          <input type="text" class="search-input" id="bookingSearch" placeholder="Search name, company, email, phone…">
+          <select class="filter-select" id="statusFilter">
+            <option value="">All Statuses</option>
+          </select>
+          <button class="btn btn-sm btn-ghost" id="clearFilters" type="button">Clear</button>
+          <button class="btn btn-sm btn-ghost" id="exportCsv" type="button" style="margin-left:auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Export CSV
+          </button>
+        </div>
+
         <div class="card">
-          <table>
-            <thead>
-              <tr>
-                <th>Received</th><th>Name</th><th>Company</th><th>Phone</th><th>Email</th><th>Address</th><th>Estimate</th><th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="bookingsBody"></tbody>
-          </table>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr id="bookingsHeadRow"></tr>
+              </thead>
+              <tbody id="bookingsBody"></tbody>
+            </table>
+          </div>
           <div class="empty-state" id="bookingsEmpty" style="display:none;">No bookings yet.</div>
+        </div>
+
+        <div class="pagination-bar" id="paginationBar">
+          <div class="page-size">
+            <label for="pageSizeSelect">Rows per page</label>
+            <select id="pageSizeSelect">
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+          <div class="page-controls">
+            <button class="page-btn" id="firstPageBtn" title="First page">&laquo;</button>
+            <button class="page-btn" id="prevPageBtn" title="Previous page">&lsaquo;</button>
+            <span class="page-indicator" id="pageIndicator">Page 1 of 1</span>
+            <button class="page-btn" id="nextPageBtn" title="Next page">&rsaquo;</button>
+            <button class="page-btn" id="lastPageBtn" title="Last page">&raquo;</button>
+          </div>
         </div>
       </div>
 
@@ -556,7 +623,8 @@ async function loadBookings() {
     if (!r.ok) throw new Error('failed');
     const data = await r.json();
     allBookings = data.bookings || [];
-    renderBookings(allBookings);
+    currentPage = 1;
+    renderTable();
   } catch {
     $('#bookingsCount').textContent = 'Failed to load bookings.';
   }
@@ -568,24 +636,114 @@ function statusBadge(status) {
   return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(s)}</span>`;
 }
 
-function renderBookings(list) {
+/* ---- Data table: columns, sort, filter, paginate ---- */
+const COLUMNS = [
+  { key: 'created_at', label: 'Received', sortable: true, get: (b) => new Date(b.created_at).getTime() },
+  { key: 'name', label: 'Name', sortable: true, get: (b) => (b.name || '').toLowerCase() },
+  { key: 'company', label: 'Company', sortable: true, get: (b) => (b.company || '').toLowerCase() },
+  { key: 'phone', label: 'Phone', sortable: false },
+  { key: 'email', label: 'Email', sortable: false },
+  { key: 'address', label: 'Address', sortable: false },
+  { key: 'estimate', label: 'Estimate', sortable: true, get: (b) => (b.estimate && b.estimate.monthlyTotal) || -1 },
+  { key: 'status', label: 'Status', sortable: true, get: (b) => b.status || 'New' },
+];
+
+let sortKey = 'created_at';
+let sortDir = 'desc';
+let currentPage = 1;
+let pageSize = 25;
+let searchQuery = '';
+let statusFilterValue = '';
+
+function renderTableHead() {
+  const headRow = $('#bookingsHeadRow');
+  headRow.innerHTML = COLUMNS.map((col) => {
+    if (!col.sortable) return `<th class="unsortable">${escapeHtml(col.label)}</th>`;
+    const isSorted = sortKey === col.key;
+    const cls = isSorted ? `sorted${sortDir === 'desc' ? ' sorted-desc' : ''}` : '';
+    return `
+      <th class="${cls}" data-key="${col.key}">
+        <button type="button" class="sort-btn">
+          ${escapeHtml(col.label)}
+          <svg class="sort-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </th>
+    `;
+  }).join('');
+
+  $$('#bookingsHeadRow th[data-key]').forEach((th) => {
+    th.querySelector('.sort-btn').addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (sortKey === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortKey = key;
+        sortDir = key === 'created_at' ? 'desc' : 'asc';
+      }
+      currentPage = 1;
+      renderTable();
+    });
+  });
+}
+
+function getFilteredSorted() {
+  let list = allBookings;
+
+  if (searchQuery) {
+    list = list.filter((b) =>
+      [b.name, b.company, b.email, b.phone, b.address].some((f) => (f || '').toLowerCase().includes(searchQuery))
+    );
+  }
+  if (statusFilterValue) {
+    list = list.filter((b) => (b.status || 'New') === statusFilterValue);
+  }
+
+  const col = COLUMNS.find((c) => c.key === sortKey);
+  if (col && col.get) {
+    list = [...list].sort((a, b) => {
+      const va = col.get(a), vb = col.get(b);
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+  return list;
+}
+
+function renderTable() {
+  renderTableHead();
+
+  const filtered = getFilteredSorted();
   const body = $('#bookingsBody');
   const empty = $('#bookingsEmpty');
-  $('#bookingsCount').textContent = `${list.length} booking${list.length === 1 ? '' : 's'}`;
 
-  if (list.length === 0) {
+  const totalCount = allBookings.length;
+  const matchCount = filtered.length;
+  $('#bookingsCount').textContent = (searchQuery || statusFilterValue)
+    ? `${matchCount} of ${totalCount} booking${totalCount === 1 ? '' : 's'} match`
+    : `${totalCount} booking${totalCount === 1 ? '' : 's'}`;
+
+  if (matchCount === 0) {
     body.innerHTML = '';
+    empty.textContent = totalCount === 0 ? 'No bookings yet.' : 'No bookings match your search/filter.';
     empty.style.display = 'block';
+    $('#paginationBar').style.display = 'none';
     return;
   }
   empty.style.display = 'none';
+  $('#paginationBar').style.display = 'flex';
 
-  body.innerHTML = list.map((b, i) => {
+  const totalPages = Math.max(1, Math.ceil(matchCount / pageSize));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * pageSize;
+  const pageItems = filtered.slice(start, start + pageSize);
+
+  body.innerHTML = pageItems.map((b) => {
     const est = b.estimate;
     const estLine = est ? `${est.facility ? est.facility + ' · ' : ''}$${Math.round(est.monthlyTotal || 0).toLocaleString()}/mo` : '—';
     const date = new Date(b.created_at);
     return `
-      <tr data-idx="${i}">
+      <tr data-id="${b.id}">
         <td>${date.toLocaleDateString()} <span class="est-line">${date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></td>
         <td>${escapeHtml(b.name)}</td>
         <td>${escapeHtml(b.company || '—')}</td>
@@ -599,17 +757,81 @@ function renderBookings(list) {
   }).join('');
 
   $$('#bookingsBody tr').forEach((row) => {
-    row.addEventListener('click', () => openBookingModal(list[Number(row.dataset.idx)]));
+    row.addEventListener('click', () => {
+      const b = allBookings.find((x) => String(x.id) === row.dataset.id);
+      if (b) openBookingModal(b);
+    });
   });
+
+  $('#pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+  $('#firstPageBtn').disabled = currentPage === 1;
+  $('#prevPageBtn').disabled = currentPage === 1;
+  $('#nextPageBtn').disabled = currentPage === totalPages;
+  $('#lastPageBtn').disabled = currentPage === totalPages;
 }
 
 $('#bookingSearch').addEventListener('input', (e) => {
-  const q = e.target.value.toLowerCase().trim();
-  if (!q) { renderBookings(allBookings); return; }
-  const filtered = allBookings.filter((b) =>
-    [b.name, b.company, b.email, b.phone, b.address].some((f) => (f || '').toLowerCase().includes(q))
-  );
-  renderBookings(filtered);
+  searchQuery = e.target.value.toLowerCase().trim();
+  currentPage = 1;
+  renderTable();
+});
+
+$('#statusFilter').insertAdjacentHTML(
+  'beforeend',
+  STATUS_VALUES.map((s) => `<option value="${s}">${s}</option>`).join('')
+);
+$('#statusFilter').addEventListener('change', (e) => {
+  statusFilterValue = e.target.value;
+  currentPage = 1;
+  renderTable();
+});
+
+$('#clearFilters').addEventListener('click', () => {
+  searchQuery = '';
+  statusFilterValue = '';
+  $('#bookingSearch').value = '';
+  $('#statusFilter').value = '';
+  currentPage = 1;
+  renderTable();
+});
+
+$('#pageSizeSelect').addEventListener('change', (e) => {
+  pageSize = Number(e.target.value);
+  currentPage = 1;
+  renderTable();
+});
+$('#firstPageBtn').addEventListener('click', () => { currentPage = 1; renderTable(); });
+$('#prevPageBtn').addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); renderTable(); });
+$('#nextPageBtn').addEventListener('click', () => { currentPage += 1; renderTable(); });
+$('#lastPageBtn').addEventListener('click', () => {
+  currentPage = Math.max(1, Math.ceil(getFilteredSorted().length / pageSize));
+  renderTable();
+});
+
+$('#exportCsv').addEventListener('click', () => {
+  const rows = getFilteredSorted();
+  if (rows.length === 0) { alert('No bookings to export.'); return; }
+  const headers = ['Received', 'Name', 'Company', 'Phone', 'Email', 'Address', 'Preferred Date', 'Preferred Time', 'Status', 'Estimated Monthly ($)', 'Notes'];
+  const csvEscape = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [headers.map(csvEscape).join(',')];
+  rows.forEach((b) => {
+    lines.push([
+      new Date(b.created_at).toLocaleString(),
+      b.name, b.company, b.phone, b.email, b.address,
+      b.preferred_date, b.preferred_time, b.status || 'New',
+      b.estimate && b.estimate.monthlyTotal ? Math.round(b.estimate.monthlyTotal) : '',
+      b.notes,
+    ].map(csvEscape).join(','));
+  });
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `eclean-bookings-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 });
 
 function openBookingModal(b) {
