@@ -21,6 +21,10 @@ module.exports = async (req, res) => {
       pendingQuotes,
       quoteStats,
       recurringValue,
+      activeContracts,
+      todaysJobs,
+      upcomingJobs,
+      jobsByStatus,
     ] = await Promise.all([
       sql`SELECT COUNT(*)::int AS n FROM clients`,
       sql`SELECT COUNT(*)::int AS n FROM clients WHERE status = 'Active'`,
@@ -30,6 +34,10 @@ module.exports = async (req, res) => {
       sql`SELECT COUNT(*)::int AS n FROM quotes WHERE status = 'Sent'`,
       sql`SELECT status, COUNT(*)::int AS n FROM quotes GROUP BY status`,
       sql`SELECT COALESCE(SUM(contract_amount), 0)::float AS total FROM clients WHERE status = 'Active'`,
+      sql`SELECT COUNT(*)::int AS n FROM contracts WHERE status = 'Active'`,
+      sql`SELECT COUNT(*)::int AS n FROM jobs WHERE scheduled_date = CURRENT_DATE AND status IN ('Scheduled', 'In Progress')`,
+      sql`SELECT COUNT(*)::int AS n FROM jobs WHERE scheduled_date > CURRENT_DATE AND scheduled_date <= CURRENT_DATE + INTERVAL '7 days' AND status = 'Scheduled'`,
+      sql`SELECT status, COUNT(*)::int AS n FROM jobs GROUP BY status`,
     ]);
 
     const quoteStatusMap = {};
@@ -47,6 +55,10 @@ module.exports = async (req, res) => {
       quotesByStatus: quoteStatusMap,
       quoteConversionRate: conversionRate,
       monthlyRecurringValue: recurringValue[0].total,
+      activeContracts: activeContracts[0].n,
+      todaysJobs: todaysJobs[0].n,
+      upcomingJobs: upcomingJobs[0].n,
+      jobsByStatus: jobsByStatus.reduce((acc, r) => ({ ...acc, [r.status]: r.n }), {}),
     });
   } catch (err) {
     console.error('Failed to load dashboard stats:', err);

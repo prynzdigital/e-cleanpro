@@ -215,6 +215,35 @@
   .save-status{font-size:12.5px; color:var(--teal-600); opacity:0; transition:opacity .3s;}
   .save-status.show{opacity:1;}
 
+  /* ===== FILE UPLOAD & CHECKLIST WIDGETS ===== */
+  .upload-zone{
+    border:1.5px dashed rgba(10,92,83,0.25); border-radius:var(--radius-sm); padding:16px; text-align:center;
+    background:var(--paper); cursor:pointer; transition:.15s;
+  }
+  .upload-zone:hover{border-color:var(--teal-500); background:var(--aqua-100);}
+  .upload-zone input[type="file"]{display:none;}
+  .upload-zone .upload-label{font-size:12.5px; font-weight:700; color:var(--teal-600);}
+  .upload-zone .upload-hint{font-size:11.5px; color:var(--ink-soft); margin-top:3px;}
+  .upload-progress{font-size:12px; color:var(--teal-600); margin-top:8px;}
+  .photo-grid{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;}
+  .photo-thumb{position:relative; width:74px; height:74px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid rgba(10,92,83,0.15);}
+  .photo-thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo-thumb .photo-remove{
+    position:absolute; top:2px; right:2px; width:20px; height:20px; border-radius:50%; border:none;
+    background:rgba(5,46,43,0.75); color:#fff; font-size:13px; line-height:1; display:flex; align-items:center; justify-content:center;
+  }
+  .file-link-row{display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:12.5px;}
+  .file-link-row a{color:var(--teal-600); font-weight:700;}
+  .file-link-row .photo-remove{
+    width:22px; height:22px; border-radius:50%; border:1px solid rgba(229,72,77,0.3); background:rgba(229,72,77,0.08);
+    color:var(--danger); font-size:13px; line-height:1; display:flex; align-items:center; justify-content:center;
+  }
+  .checklist-editor .checklist-row{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .checklist-editor .checklist-row input[type="checkbox"]{width:17px; height:17px; accent-color:var(--teal-600); flex-shrink:0;}
+  .checklist-editor .checklist-row input[type="text"]{
+    flex:1; padding:9px 12px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.16); font-size:13px;
+  }
+
   @media (max-width:900px){
     .sidebar{position:fixed; left:0; top:0; z-index:30; transform:translateX(-100%); transition:transform .3s var(--ease); box-shadow:20px 0 50px rgba(0,0,0,0.3);}
     .sidebar.open{transform:translateX(0);}
@@ -312,6 +341,48 @@
         </div>
       </div>
 
+      <div class="nav-group" id="contractsGroup">
+        <button class="nav-group-toggle" id="contractsGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>
+            Contracts
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="contracts-list">All Contracts</button>
+          <button class="nav-subitem" data-panel="contracts-add">Add Contract</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="jobsGroup">
+        <button class="nav-group-toggle" id="jobsGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Jobs &amp; Schedule
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="jobs-list">All Jobs</button>
+          <button class="nav-subitem" data-panel="jobs-add">Add Job</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="employeesGroup">
+        <button class="nav-group-toggle" id="employeesGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 20c0-2.5 2-4 5-4s5 1.5 5 4"/></svg>
+            Employees
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="employees-list">All Employees</button>
+          <button class="nav-subitem" data-panel="employees-add">Add Employee</button>
+        </div>
+      </div>
+
       <div class="nav-group" id="contentGroup">
         <button class="nav-group-toggle" id="contentGroupToggle">
           <span class="toggle-left">
@@ -355,7 +426,11 @@
           <h3>Leads by Stage</h3>
           <div class="pipeline-row" id="pipelineRow"><p style="color:var(--ink-soft); font-size:13px;">Loading…</p></div>
         </div>
-        <div class="dash-note">Showing Leads, Clients, and Quotes metrics (Phase 1). Today's Jobs, Unpaid Invoices, Expenses, and Estimated Profit will appear here as those modules are added in later phases.</div>
+        <div class="dash-section">
+          <h3>Jobs by Status</h3>
+          <div class="pipeline-row" id="jobsPipelineRow"><p style="color:var(--ink-soft); font-size:13px;">Loading…</p></div>
+        </div>
+        <div class="dash-note">Showing Leads, Clients, Quotes, Contracts, and Jobs metrics. Invoices &amp; Payments, Expenses, Supplies, and Reports will appear here as those modules are added in later phases.</div>
       </div>
 
       <!-- ================= LEADS: ALL LEADS ================= -->
@@ -474,6 +549,104 @@
           <div class="save-row">
             <button class="btn btn-sm" id="addQuoteSubmit">Add Quote</button>
             <span class="save-status" data-status="add-quote">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CONTRACTS: ALL CONTRACTS ================= -->
+      <div class="panel" id="panel-contracts-list">
+        <div class="panel-head"><div><h2>Contracts</h2><p id="contract-count">Loading…</p></div></div>
+        <div id="contract-shell"></div>
+      </div>
+
+      <!-- ================= CONTRACTS: ADD CONTRACT ================= -->
+      <div class="panel" id="panel-contracts-add">
+        <div class="panel-head"><div><h2>Add Contract</h2><p>Create a service contract for an existing client.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addContractError"></div>
+          <div class="cfield"><label>Client *</label><select id="acn_clientId"></select></div>
+          <div class="cfield"><label>Property Address</label><input id="acn_propertyAddress"></div>
+          <div class="row2">
+            <div class="cfield"><label>Start Date</label><input id="acn_startDate" type="date"></div>
+            <div class="cfield"><label>End Date</label><input id="acn_endDate" type="date"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Monthly Price ($)</label><input id="acn_monthlyPrice" type="number" step="1" min="0"></div>
+            <div class="cfield"><label>Status</label><select id="acn_status"></select></div>
+          </div>
+          <div class="cfield"><label>Services Included</label><textarea id="acn_services"></textarea></div>
+          <div class="cfield">
+            <label>Signed Contract (PDF)</label>
+            <div id="acn_signedContractUrl_widget"></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="acn_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addContractSubmit">Add Contract</button>
+            <span class="save-status" data-status="add-contract">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= JOBS: ALL JOBS ================= -->
+      <div class="panel" id="panel-jobs-list">
+        <div class="panel-head"><div><h2>Jobs &amp; Schedule</h2><p id="job-count">Loading…</p></div></div>
+        <div id="job-shell"></div>
+      </div>
+
+      <!-- ================= JOBS: ADD JOB ================= -->
+      <div class="panel" id="panel-jobs-add">
+        <div class="panel-head"><div><h2>Add Job</h2><p>Schedule a cleaning visit for a client.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addJobError"></div>
+          <div class="row2">
+            <div class="cfield"><label>Client *</label><select id="ajb_clientId"></select></div>
+            <div class="cfield"><label>Assigned Cleaner</label><select id="ajb_employeeId"></select></div>
+          </div>
+          <div class="cfield"><label>Location</label><input id="ajb_location" placeholder="Defaults to client address if left blank"></div>
+          <div class="row2">
+            <div class="cfield"><label>Date</label><input id="ajb_scheduledDate" type="date"></div>
+            <div class="cfield"><label>Time</label><input id="ajb_scheduledTime" placeholder="e.g. 9:00 AM"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Type of Cleaning</label><input id="ajb_cleaningType" placeholder="e.g. Deep Clean"></div>
+            <div class="cfield"><label>Status</label><select id="ajb_status"></select></div>
+          </div>
+          <div class="cfield"><label>Checklist</label><div class="checklist-editor" id="ajb_checklist_widget"></div></div>
+          <div class="cfield"><label>Notes</label><textarea id="ajb_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addJobSubmit">Add Job</button>
+            <span class="save-status" data-status="add-job">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= EMPLOYEES: ALL EMPLOYEES ================= -->
+      <div class="panel" id="panel-employees-list">
+        <div class="panel-head"><div><h2>Employees</h2><p id="employee-count">Loading…</p></div></div>
+        <div id="employee-shell"></div>
+      </div>
+
+      <!-- ================= EMPLOYEES: ADD EMPLOYEE ================= -->
+      <div class="panel" id="panel-employees-add">
+        <div class="panel-head"><div><h2>Add Employee</h2><p>Add a cleaner or team member.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addEmployeeError"></div>
+          <div class="row2">
+            <div class="cfield"><label>Name *</label><input id="ae_name" required></div>
+            <div class="cfield"><label>Phone *</label><input id="ae_phone" required></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Position</label><input id="ae_position" placeholder="e.g. Cleaner, Team Lead"></div>
+            <div class="cfield"><label>Pay Rate ($/hr)</label><input id="ae_payRate" type="number" step="0.5" min="0"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Availability</label><input id="ae_availability" placeholder="e.g. Mon–Fri 8am–4pm"></div>
+            <div class="cfield"><label>Status</label><select id="ae_status"></select></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="ae_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addEmployeeSubmit">Add Employee</button>
+            <span class="save-status" data-status="add-employee">Added</span>
           </div>
         </div>
       </div>
@@ -665,8 +838,100 @@
     <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="quoteModalCreated"></p>
     <div class="modal-actions">
       <button class="btn btn-sm" id="quoteModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-accent" id="quoteModalConvert" style="display:none;">Convert to Contract</button>
       <button class="btn btn-sm btn-ghost" id="quoteModalClose">Close</button>
       <button class="btn btn-sm btn-danger" id="quoteModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CONTRACT EDIT MODAL ================= -->
+<div class="modal-overlay" id="contractModal">
+  <div class="modal">
+    <h3>Edit Contract</h3>
+    <div class="error-msg" id="contractModalError"></div>
+    <div class="cfield"><label>Client *</label><select id="ctm_clientId"></select></div>
+    <div class="cfield"><label>Property Address</label><input id="ctm_propertyAddress"></div>
+    <div class="row2">
+      <div class="cfield"><label>Start Date</label><input id="ctm_startDate" type="date"></div>
+      <div class="cfield"><label>End Date</label><input id="ctm_endDate" type="date"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Monthly Price ($)</label><input id="ctm_monthlyPrice" type="number" step="1" min="0"></div>
+      <div class="cfield"><label>Status</label><select id="ctm_status"></select></div>
+    </div>
+    <div class="cfield"><label>Services Included</label><textarea id="ctm_services"></textarea></div>
+    <div class="cfield">
+      <label>Signed Contract (PDF)</label>
+      <div id="ctm_signedContractUrl_widget"></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="ctm_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="contractModalCreated"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="contractModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="contractModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="contractModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= JOB EDIT MODAL ================= -->
+<div class="modal-overlay" id="jobModal">
+  <div class="modal">
+    <h3>Edit Job</h3>
+    <div class="error-msg" id="jobModalError"></div>
+    <div class="row2">
+      <div class="cfield"><label>Client *</label><select id="jm_clientId"></select></div>
+      <div class="cfield"><label>Assigned Cleaner</label><select id="jm_employeeId"></select></div>
+    </div>
+    <div class="cfield"><label>Location</label><input id="jm_location"></div>
+    <div class="row2">
+      <div class="cfield"><label>Date</label><input id="jm_scheduledDate" type="date"></div>
+      <div class="cfield"><label>Time</label><input id="jm_scheduledTime"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Type of Cleaning</label><input id="jm_cleaningType"></div>
+      <div class="cfield"><label>Hours</label><input id="jm_hours" type="number" step="0.25" min="0"></div>
+    </div>
+    <div class="cfield"><label>Status</label><select id="jm_status"></select></div>
+    <div class="cfield"><label>Checklist</label><div class="checklist-editor" id="jm_checklist_widget"></div></div>
+    <div class="cfield">
+      <label>Photos</label>
+      <div id="jm_photos_widget"></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="jm_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="jobModalCreated"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="jobModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="jobModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="jobModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EMPLOYEE EDIT MODAL ================= -->
+<div class="modal-overlay" id="employeeModal">
+  <div class="modal">
+    <h3>Edit Employee</h3>
+    <div class="error-msg" id="employeeModalError"></div>
+    <div class="row2">
+      <div class="cfield"><label>Name *</label><input id="em_name" required></div>
+      <div class="cfield"><label>Phone *</label><input id="em_phone" required></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Position</label><input id="em_position"></div>
+      <div class="cfield"><label>Pay Rate ($/hr)</label><input id="em_payRate" type="number" step="0.5" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Availability</label><input id="em_availability"></div>
+      <div class="cfield"><label>Status</label><select id="em_status"></select></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="em_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="employeeModalStats"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="employeeModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="employeeModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="employeeModalDelete">Delete</button>
     </div>
   </div>
 </div>
@@ -711,6 +976,8 @@ function showDashboard(username) {
   leadTable.load();
   clientTable.load();
   quoteTable.load();
+  contractTable.load();
+  employeeTable.load().then(() => jobTable.load());
   loadContent();
   loadDashboardStats();
 }
@@ -765,7 +1032,7 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
   btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
 });
 
-['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contentGroupToggle'].forEach((id) => {
+['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'contentGroupToggle'].forEach((id) => {
   const groupId = id.replace('Toggle', '');
   $('#' + id).addEventListener('click', () => $('#' + groupId).classList.toggle('open'));
 });
@@ -1395,6 +1662,7 @@ function openQuoteModal(r) {
   $('#qm_notes').value = r.notes || '';
   populateSelect($('#qm_status'), QUOTE_STATUS_VALUES, r.status || 'Draft');
   $('#quoteModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString();
+  $('#quoteModalConvert').style.display = r.status === 'Accepted' ? '' : 'none';
   $('#quoteModal').classList.add('show');
 }
 $('#quoteModalClose').addEventListener('click', () => $('#quoteModal').classList.remove('show'));
@@ -1429,6 +1697,39 @@ $('#quoteModalSave').addEventListener('click', async () => {
     errBox.classList.add('show');
   }
   btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#quoteModalConvert').addEventListener('click', async () => {
+  if (!selectedQuoteId) return;
+  if (!confirm('Convert this quote into a contract?')) return;
+  const btn = $('#quoteModalConvert');
+  btn.disabled = true; btn.textContent = 'Converting…';
+  const errBox = $('#quoteModalError');
+  errBox.classList.remove('show');
+  try {
+    const payload = {
+      clientId: $('#qm_clientId').value,
+      propertyAddress: $('#qm_propertyAddress').value.trim(),
+      monthlyPrice: $('#qm_price').value,
+      services: $('#qm_services').value.trim(),
+      status: 'Active',
+      quoteId: selectedQuoteId,
+    };
+    const r = await fetch('/api/admin/contracts', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Conversion failed');
+    const { contract } = await r.json();
+    $('#quoteModal').classList.remove('show');
+    await contractTable.load();
+    await loadDashboardStats();
+    setActivePanel('contracts-list');
+    openContractModal(contract);
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to convert. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Convert to Contract';
 });
 
 $('#quoteModalDelete').addEventListener('click', async () => {
@@ -1485,6 +1786,643 @@ document.querySelector('[data-panel="quotes-add"]').addEventListener('click', ()
 });
 
 /* ============================================================
+   FILE UPLOAD & CHECKLIST WIDGETS (shared by Contracts, Jobs)
+   ============================================================ */
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function compressImageFile(file, maxDim, quality) {
+  const dataUrl = await readFileAsDataURL(file);
+  const img = new Image();
+  await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
+  let { width, height } = img;
+  if (width > maxDim || height > maxDim) {
+    if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+    else { width = Math.round(width * maxDim / height); height = maxDim; }
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function uploadFile(file, folder) {
+  let blob = file;
+  let contentType = file.type;
+  if (file.type.startsWith('image/')) {
+    blob = await compressImageFile(file, 1600, 0.8);
+    contentType = 'image/jpeg';
+  }
+  if (blob.size > 4 * 1024 * 1024) throw new Error('File is too large (max 4MB).');
+  const dataBase64 = await blobToBase64(blob);
+  const r = await fetch('/api/admin/upload', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: file.name, contentType, dataBase64, folder }),
+  });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Upload failed');
+  const data = await r.json();
+  return data.url;
+}
+
+function renderSignedContractWidget(containerId, url, folder, onChange) {
+  const container = $('#' + containerId);
+  if (url) {
+    container.innerHTML = `
+      <div class="file-link-row">
+        <a href="${url}" target="_blank" rel="noopener">View signed contract</a>
+        <button type="button" class="photo-remove" title="Remove">&times;</button>
+      </div>
+    `;
+    container.querySelector('.photo-remove').addEventListener('click', () => onChange(null));
+  } else {
+    container.innerHTML = `
+      <label class="upload-zone">
+        <input type="file" accept="application/pdf">
+        <div class="upload-label">Click to upload signed contract</div>
+        <div class="upload-hint">PDF, up to 4MB</div>
+      </label>
+    `;
+    container.querySelector('input[type="file"]').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      container.innerHTML = '<div class="upload-progress">Uploading…</div>';
+      try {
+        const uploadedUrl = await uploadFile(file, folder);
+        onChange(uploadedUrl);
+      } catch (err) {
+        alert(err.message || 'Upload failed');
+        renderSignedContractWidget(containerId, null, folder, onChange);
+      }
+    });
+  }
+}
+
+function renderPhotoGridWidget(containerId, urls, folder, onChange) {
+  const container = $('#' + containerId);
+  const thumbs = urls.map((u, i) => `
+    <div class="photo-thumb">
+      <img src="${u}" alt="">
+      <button type="button" class="photo-remove" data-idx="${i}" title="Remove">&times;</button>
+    </div>
+  `).join('');
+  container.innerHTML = `
+    <div class="photo-grid">${thumbs}</div>
+    <label class="upload-zone">
+      <input type="file" accept="image/*">
+      <div class="upload-label">Click to add a photo</div>
+      <div class="upload-hint">JPG/PNG, auto-compressed</div>
+    </label>
+  `;
+  container.querySelectorAll('.photo-remove').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.idx);
+      onChange(urls.slice(0, idx).concat(urls.slice(idx + 1)));
+    });
+  });
+  container.querySelector('input[type="file"]').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const progress = document.createElement('div');
+    progress.className = 'upload-progress';
+    progress.textContent = 'Uploading…';
+    container.appendChild(progress);
+    try {
+      const uploadedUrl = await uploadFile(file, folder);
+      onChange(urls.concat([uploadedUrl]));
+    } catch (err) {
+      alert(err.message || 'Upload failed');
+      progress.remove();
+    }
+  });
+}
+
+function renderChecklistEditor(containerId, items, onChange) {
+  const container = $('#' + containerId);
+  container.innerHTML = items.map((item, i) => `
+    <div class="checklist-row" data-idx="${i}">
+      <input type="checkbox" ${item.done ? 'checked' : ''}>
+      <input type="text" value="${escapeHtml(item.text || '')}" placeholder="Checklist item">
+      <button type="button" class="remove-row">&times;</button>
+    </div>
+  `).join('') + `<button type="button" class="add-row-btn" data-add-checklist>+ Add Item</button>`;
+
+  container.querySelectorAll('.checklist-row').forEach((row) => {
+    const idx = Number(row.dataset.idx);
+    row.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+      onChange(items.map((it, i) => i === idx ? { ...it, done: e.target.checked } : it));
+    });
+    row.querySelector('input[type="text"]').addEventListener('input', (e) => {
+      items[idx].text = e.target.value;
+    });
+    row.querySelector('.remove-row').addEventListener('click', () => {
+      onChange(items.slice(0, idx).concat(items.slice(idx + 1)));
+    });
+  });
+  container.querySelector('[data-add-checklist]').addEventListener('click', () => {
+    onChange(items.concat([{ text: '', done: false }]));
+  });
+}
+
+/* ============================================================
+   CONTRACTS
+   ============================================================ */
+const CONTRACT_STATUS_VALUES = ['Draft', 'Active', 'Expired', 'Cancelled'];
+const CONTRACT_STATUS_COLORS = { Draft:'#6b7280', Active:'#15803d', Expired:'#a16207', Cancelled:'#b91c1c' };
+let selectedContractId = null;
+let addContractSignedUrl = null;
+let ctmSignedUrl = null;
+
+populateSelect($('#acn_status'), CONTRACT_STATUS_VALUES, 'Active');
+populateSelect($('#ctm_status'), CONTRACT_STATUS_VALUES, 'Active');
+
+function renderAddContractFileWidget() {
+  renderSignedContractWidget('acn_signedContractUrl_widget', addContractSignedUrl, 'contracts', (url) => {
+    addContractSignedUrl = url; renderAddContractFileWidget();
+  });
+}
+renderAddContractFileWidget();
+
+function renderCtmFileWidget() {
+  renderSignedContractWidget('ctm_signedContractUrl_widget', ctmSignedUrl, 'contracts', (url) => {
+    ctmSignedUrl = url; renderCtmFileWidget();
+  });
+}
+
+const contractTable = createDataTable({
+  prefix: 'contract',
+  fetchUrl: '/api/admin/contracts',
+  dataKey: 'contracts',
+  searchPlaceholder: 'Search client, property…',
+  columns: [
+    { key:'created_at', label:'Created', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'client_name', label:'Client', sortable:true, get:(r)=>(r.client_name||'').toLowerCase() },
+    { key:'property_address', label:'Property', sortable:false },
+    { key:'start_date', label:'Start', sortable:true, get:(r)=>r.start_date ? new Date(r.start_date).getTime() : 0 },
+    { key:'end_date', label:'End', sortable:true, get:(r)=>r.end_date ? new Date(r.end_date).getTime() : 0 },
+    { key:'monthly_price', label:'Monthly', sortable:true, get:(r)=>Number(r.monthly_price)||0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Draft' },
+  ],
+  searchFields: (r) => [r.client_name, r.client_company, r.property_address, r.services],
+  statusField: (r) => r.status || 'Draft',
+  statusValues: CONTRACT_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const monthly = r.monthly_price ? `$${Math.round(r.monthly_price).toLocaleString()}/mo` : '—';
+    return `
+      <td>${new Date(r.created_at).toLocaleDateString()}</td>
+      <td>${escapeHtml(r.client_name)}${r.client_company ? '<br><span class="est-line">' + escapeHtml(r.client_company) + '</span>' : ''}</td>
+      <td>${escapeHtml(r.property_address || '—')}</td>
+      <td>${r.start_date ? new Date(r.start_date).toLocaleDateString() : '—'}</td>
+      <td>${r.end_date ? new Date(r.end_date).toLocaleDateString() : '—'}</td>
+      <td>${escapeHtml(monthly)}</td>
+      <td>${statusBadge(r.status, CONTRACT_STATUS_COLORS, 'Draft')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openContractModal,
+  csvHeaders: ['Created','Client','Company','Property','Start','End','Monthly Price','Status','Services','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.client_name, r.client_company, r.property_address, r.start_date, r.end_date, r.monthly_price, r.status, r.services, r.notes],
+  csvFilenamePrefix: 'contracts',
+  nounSingular: 'contract', nounPlural: 'contracts',
+  emptyMessage: 'No contracts yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openContractModal(r) {
+  selectedContractId = r.id;
+  $('#contractModalError').classList.remove('show');
+  populateClientDropdown($('#ctm_clientId'), r.client_id);
+  $('#ctm_propertyAddress').value = r.property_address || '';
+  $('#ctm_startDate').value = r.start_date ? r.start_date.slice(0, 10) : '';
+  $('#ctm_endDate').value = r.end_date ? r.end_date.slice(0, 10) : '';
+  $('#ctm_monthlyPrice').value = r.monthly_price || '';
+  $('#ctm_services').value = r.services || '';
+  $('#ctm_notes').value = r.notes || '';
+  populateSelect($('#ctm_status'), CONTRACT_STATUS_VALUES, r.status || 'Draft');
+  ctmSignedUrl = r.signed_contract_url || null;
+  renderCtmFileWidget();
+  $('#contractModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString();
+  $('#contractModal').classList.add('show');
+}
+$('#contractModalClose').addEventListener('click', () => $('#contractModal').classList.remove('show'));
+$('#contractModal').addEventListener('click', (e) => { if (e.target.id === 'contractModal') $('#contractModal').classList.remove('show'); });
+
+function readContractForm(prefix) {
+  return readForm(prefix, ['clientId', 'propertyAddress', 'startDate', 'endDate', 'monthlyPrice', 'services', 'notes', 'status']);
+}
+
+$('#contractModalSave').addEventListener('click', async () => {
+  if (!selectedContractId) return;
+  const payload = { ...readContractForm('ctm'), signedContractUrl: ctmSignedUrl };
+  const errBox = $('#contractModalError');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#contractModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/contracts?id=' + encodeURIComponent(selectedContractId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#contractModal').classList.remove('show');
+    await contractTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#contractModalDelete').addEventListener('click', async () => {
+  if (!selectedContractId) return;
+  if (!confirm('Delete this contract permanently? This cannot be undone.')) return;
+  const btn = $('#contractModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/contracts?id=' + encodeURIComponent(selectedContractId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#contractModal').classList.remove('show');
+    await contractTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete contract. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addContractSubmit').addEventListener('click', async () => {
+  const payload = { ...readContractForm('acn'), signedContractUrl: addContractSignedUrl };
+  const errBox = $('#addContractError');
+  const statusEl = document.querySelector('[data-status="add-contract"]');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addContractSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/contracts', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add contract');
+    ['propertyAddress', 'startDate', 'endDate', 'monthlyPrice', 'services', 'notes'].forEach((f) => { $('#acn_' + f).value = ''; });
+    populateSelect($('#acn_status'), CONTRACT_STATUS_VALUES, 'Active');
+    addContractSignedUrl = null;
+    renderAddContractFileWidget();
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await contractTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add contract. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Contract';
+});
+
+document.querySelector('[data-panel="contracts-add"]').addEventListener('click', () => {
+  populateClientDropdown($('#acn_clientId'), null);
+});
+
+/* ============================================================
+   EMPLOYEES
+   ============================================================ */
+const EMPLOYEE_STATUS_VALUES = ['Active', 'Inactive'];
+const EMPLOYEE_STATUS_COLORS = { Active:'#15803d', Inactive:'#6b7280' };
+let selectedEmployeeId = null;
+
+populateSelect($('#ae_status'), EMPLOYEE_STATUS_VALUES, 'Active');
+populateSelect($('#em_status'), EMPLOYEE_STATUS_VALUES, 'Active');
+
+const employeeTable = createDataTable({
+  prefix: 'employee',
+  fetchUrl: '/api/admin/employees',
+  dataKey: 'employees',
+  searchPlaceholder: 'Search name, position, phone…',
+  columns: [
+    { key:'created_at', label:'Added', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'name', label:'Name', sortable:true, get:(r)=>(r.name||'').toLowerCase() },
+    { key:'position', label:'Position', sortable:false },
+    { key:'phone', label:'Phone', sortable:false },
+    { key:'pay_rate', label:'Pay Rate', sortable:true, get:(r)=>Number(r.pay_rate)||0 },
+    { key:'assigned_jobs', label:'Assigned Jobs', sortable:true, get:(r)=>Number(r.assigned_jobs)||0 },
+    { key:'hours_worked', label:'Hours Worked', sortable:true, get:(r)=>Number(r.hours_worked)||0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Active' },
+  ],
+  searchFields: (r) => [r.name, r.position, r.phone, r.availability],
+  statusField: (r) => r.status || 'Active',
+  statusValues: EMPLOYEE_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const rate = r.pay_rate ? `$${Number(r.pay_rate).toFixed(2)}/hr` : '—';
+    return `
+      <td>${new Date(r.created_at).toLocaleDateString()}</td>
+      <td>${escapeHtml(r.name)}</td>
+      <td>${escapeHtml(r.position || '—')}</td>
+      <td>${escapeHtml(r.phone)}</td>
+      <td>${escapeHtml(rate)}</td>
+      <td>${r.assigned_jobs || 0}</td>
+      <td>${Number(r.hours_worked || 0).toFixed(1)}</td>
+      <td>${statusBadge(r.status, EMPLOYEE_STATUS_COLORS, 'Active')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openEmployeeModal,
+  csvHeaders: ['Added','Name','Position','Phone','Pay Rate','Availability','Assigned Jobs','Hours Worked','Status','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.position, r.phone, r.pay_rate, r.availability, r.assigned_jobs, r.hours_worked, r.status, r.notes],
+  csvFilenamePrefix: 'employees',
+  nounSingular: 'employee', nounPlural: 'employees',
+  emptyMessage: 'No employees yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openEmployeeModal(r) {
+  selectedEmployeeId = r.id;
+  $('#employeeModalError').classList.remove('show');
+  $('#em_name').value = r.name || '';
+  $('#em_phone').value = r.phone || '';
+  $('#em_position').value = r.position || '';
+  $('#em_payRate').value = r.pay_rate || '';
+  $('#em_availability').value = r.availability || '';
+  $('#em_notes').value = r.notes || '';
+  populateSelect($('#em_status'), EMPLOYEE_STATUS_VALUES, r.status || 'Active');
+  $('#employeeModalStats').textContent = `${r.assigned_jobs || 0} assigned job(s) · ${Number(r.hours_worked || 0).toFixed(1)} hours worked · Added ${new Date(r.created_at).toLocaleString()}`;
+  $('#employeeModal').classList.add('show');
+}
+$('#employeeModalClose').addEventListener('click', () => $('#employeeModal').classList.remove('show'));
+$('#employeeModal').addEventListener('click', (e) => { if (e.target.id === 'employeeModal') $('#employeeModal').classList.remove('show'); });
+
+function readEmployeeForm(prefix) {
+  return readForm(prefix, ['name', 'phone', 'position', 'payRate', 'availability', 'notes', 'status']);
+}
+
+$('#employeeModalSave').addEventListener('click', async () => {
+  if (!selectedEmployeeId) return;
+  const payload = readEmployeeForm('em');
+  const errBox = $('#employeeModalError');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#employeeModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/employees?id=' + encodeURIComponent(selectedEmployeeId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#employeeModal').classList.remove('show');
+    await employeeTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#employeeModalDelete').addEventListener('click', async () => {
+  if (!selectedEmployeeId) return;
+  if (!confirm('Delete this employee permanently? Jobs assigned to them will become unassigned. This cannot be undone.')) return;
+  const btn = $('#employeeModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/employees?id=' + encodeURIComponent(selectedEmployeeId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#employeeModal').classList.remove('show');
+    await employeeTable.load();
+    await jobTable.load();
+  } catch {
+    alert('Failed to delete employee. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addEmployeeSubmit').addEventListener('click', async () => {
+  const payload = readEmployeeForm('ae');
+  const errBox = $('#addEmployeeError');
+  const statusEl = document.querySelector('[data-status="add-employee"]');
+  errBox.classList.remove('show');
+  if (!payload.name || !payload.phone) {
+    errBox.textContent = 'Name and phone are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addEmployeeSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/employees', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add employee');
+    ['name', 'phone', 'position', 'payRate', 'availability', 'notes'].forEach((f) => { $('#ae_' + f).value = ''; });
+    populateSelect($('#ae_status'), EMPLOYEE_STATUS_VALUES, 'Active');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await employeeTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add employee. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Employee';
+});
+
+/* ============================================================
+   JOBS
+   ============================================================ */
+const JOB_STATUS_VALUES = ['Scheduled', 'In Progress', 'Completed', 'Cancelled'];
+const JOB_STATUS_COLORS = { Scheduled:'#2563eb', 'In Progress':'#a16207', Completed:'#15803d', Cancelled:'#b91c1c' };
+let selectedJobId = null;
+let addJobChecklist = [];
+let jmChecklist = [];
+let jmPhotos = [];
+
+populateSelect($('#ajb_status'), JOB_STATUS_VALUES, 'Scheduled');
+populateSelect($('#jm_status'), JOB_STATUS_VALUES, 'Scheduled');
+
+function populateEmployeeDropdown(select, selectedId) {
+  const employees = employeeTable.getData();
+  const options = ['<option value="">Unassigned</option>'].concat(
+    employees.map((e) => `<option value="${e.id}" ${String(e.id) === String(selectedId) ? 'selected' : ''}>${escapeHtml(e.name)}${e.position ? ' — ' + escapeHtml(e.position) : ''}</option>`)
+  );
+  select.innerHTML = options.join('');
+}
+
+function renderAddJobChecklist() {
+  renderChecklistEditor('ajb_checklist_widget', addJobChecklist, (next) => { addJobChecklist = next; renderAddJobChecklist(); });
+}
+renderAddJobChecklist();
+
+function renderJmChecklist() {
+  renderChecklistEditor('jm_checklist_widget', jmChecklist, (next) => { jmChecklist = next; renderJmChecklist(); });
+}
+function renderJmPhotos() {
+  renderPhotoGridWidget('jm_photos_widget', jmPhotos, 'jobs', (next) => { jmPhotos = next; renderJmPhotos(); });
+}
+
+const jobTable = createDataTable({
+  prefix: 'job',
+  fetchUrl: '/api/admin/jobs',
+  dataKey: 'jobs',
+  searchPlaceholder: 'Search client, location, cleaner…',
+  columns: [
+    { key:'scheduled_date', label:'Date', sortable:true, get:(r)=>r.scheduled_date ? new Date(r.scheduled_date).getTime() : 0 },
+    { key:'scheduled_time', label:'Time', sortable:false },
+    { key:'client_name', label:'Client', sortable:true, get:(r)=>(r.client_name||'').toLowerCase() },
+    { key:'employee_name', label:'Cleaner', sortable:true, get:(r)=>(r.employee_name||'').toLowerCase() },
+    { key:'cleaning_type', label:'Type', sortable:false },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Scheduled' },
+  ],
+  searchFields: (r) => [r.client_name, r.client_company, r.location, r.employee_name, r.cleaning_type],
+  statusField: (r) => r.status || 'Scheduled',
+  statusValues: JOB_STATUS_VALUES,
+  renderRowCells: (r) => `
+      <td>${r.scheduled_date ? new Date(r.scheduled_date).toLocaleDateString() : '—'}</td>
+      <td>${escapeHtml(r.scheduled_time || '—')}</td>
+      <td>${escapeHtml(r.client_name)}${r.client_company ? '<br><span class="est-line">' + escapeHtml(r.client_company) + '</span>' : ''}</td>
+      <td>${escapeHtml(r.employee_name || '—')}</td>
+      <td>${escapeHtml(r.cleaning_type || '—')}</td>
+      <td>${statusBadge(r.status, JOB_STATUS_COLORS, 'Scheduled')}</td>
+    `,
+  rowKey: (r) => r.id,
+  onRowClick: openJobModal,
+  csvHeaders: ['Date','Time','Client','Company','Location','Cleaner','Type','Status','Hours','Completed At','Notes'],
+  csvRow: (r) => [r.scheduled_date, r.scheduled_time, r.client_name, r.client_company, r.location, r.employee_name, r.cleaning_type, r.status, r.hours, r.completed_at ? new Date(r.completed_at).toLocaleString() : '', r.notes],
+  csvFilenamePrefix: 'jobs',
+  nounSingular: 'job', nounPlural: 'jobs',
+  emptyMessage: 'No jobs scheduled yet.',
+  defaultSortKey: 'scheduled_date', defaultSortDir: 'asc',
+});
+
+function openJobModal(r) {
+  selectedJobId = r.id;
+  $('#jobModalError').classList.remove('show');
+  populateClientDropdown($('#jm_clientId'), r.client_id);
+  populateEmployeeDropdown($('#jm_employeeId'), r.employee_id);
+  $('#jm_location').value = r.location || '';
+  $('#jm_scheduledDate').value = r.scheduled_date ? r.scheduled_date.slice(0, 10) : '';
+  $('#jm_scheduledTime').value = r.scheduled_time || '';
+  $('#jm_cleaningType').value = r.cleaning_type || '';
+  $('#jm_hours').value = r.hours || '';
+  $('#jm_notes').value = r.notes || '';
+  populateSelect($('#jm_status'), JOB_STATUS_VALUES, r.status || 'Scheduled');
+  jmChecklist = Array.isArray(r.checklist) ? r.checklist.map((i) => ({ ...i })) : [];
+  renderJmChecklist();
+  jmPhotos = Array.isArray(r.photos) ? [...r.photos] : [];
+  renderJmPhotos();
+  $('#jobModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString() + (r.completed_at ? ' · Completed ' + new Date(r.completed_at).toLocaleString() : '');
+  $('#jobModal').classList.add('show');
+}
+$('#jobModalClose').addEventListener('click', () => $('#jobModal').classList.remove('show'));
+$('#jobModal').addEventListener('click', (e) => { if (e.target.id === 'jobModal') $('#jobModal').classList.remove('show'); });
+
+function readJobForm(prefix) {
+  return readForm(prefix, ['clientId', 'employeeId', 'location', 'scheduledDate', 'scheduledTime', 'cleaningType', 'notes', 'status', 'hours']);
+}
+
+$('#jobModalSave').addEventListener('click', async () => {
+  if (!selectedJobId) return;
+  const payload = { ...readJobForm('jm'), checklist: jmChecklist, photos: jmPhotos };
+  const errBox = $('#jobModalError');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#jobModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/jobs?id=' + encodeURIComponent(selectedJobId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#jobModal').classList.remove('show');
+    await jobTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#jobModalDelete').addEventListener('click', async () => {
+  if (!selectedJobId) return;
+  if (!confirm('Delete this job permanently? This cannot be undone.')) return;
+  const btn = $('#jobModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/jobs?id=' + encodeURIComponent(selectedJobId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#jobModal').classList.remove('show');
+    await jobTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete job. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addJobSubmit').addEventListener('click', async () => {
+  const payload = { ...readJobForm('ajb'), checklist: addJobChecklist, photos: [] };
+  const errBox = $('#addJobError');
+  const statusEl = document.querySelector('[data-status="add-job"]');
+  errBox.classList.remove('show');
+  if (!payload.clientId) {
+    errBox.textContent = 'A client must be selected.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addJobSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/jobs', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add job');
+    ['location', 'scheduledDate', 'scheduledTime', 'cleaningType', 'notes'].forEach((f) => { $('#ajb_' + f).value = ''; });
+    populateSelect($('#ajb_status'), JOB_STATUS_VALUES, 'Scheduled');
+    addJobChecklist = [];
+    renderAddJobChecklist();
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await jobTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add job. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Job';
+});
+
+document.querySelector('[data-panel="jobs-add"]').addEventListener('click', () => {
+  populateClientDropdown($('#ajb_clientId'), null);
+  populateEmployeeDropdown($('#ajb_employeeId'), null);
+});
+
+/* ============================================================
    DASHBOARD
    ============================================================ */
 async function loadDashboardStats() {
@@ -1512,9 +2450,14 @@ async function loadDashboardStats() {
         <div class="stat-sub">${d.quoteConversionRate === null ? 'No decided quotes yet' : d.quoteConversionRate + '% acceptance rate'}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Monthly Recurring Value</div>
-        <div class="stat-value">$${Math.round(d.monthlyRecurringValue).toLocaleString()}</div>
-        <div class="stat-sub">From active client contracts</div>
+        <div class="stat-label">Active Contracts</div>
+        <div class="stat-value">${d.activeContracts}</div>
+        <div class="stat-sub">$${Math.round(d.monthlyRecurringValue).toLocaleString()}/mo recurring</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Today's Jobs</div>
+        <div class="stat-value">${d.todaysJobs}</div>
+        <div class="stat-sub">${d.upcomingJobs} scheduled in next 7 days</div>
       </div>
     `;
 
@@ -1522,6 +2465,13 @@ async function loadDashboardStats() {
     pipeline.innerHTML = statusOrder.map((s) => {
       const n = d.leadsByStatus[s] || 0;
       const color = LEAD_STATUS_COLORS[s];
+      return `<span class="pipeline-chip" style="background:${color}1a; color:${color};"><span class="n">${n}</span> ${escapeHtml(s)}</span>`;
+    }).join('');
+
+    const jobsPipeline = $('#jobsPipelineRow');
+    jobsPipeline.innerHTML = JOB_STATUS_VALUES.map((s) => {
+      const n = (d.jobsByStatus && d.jobsByStatus[s]) || 0;
+      const color = JOB_STATUS_COLORS[s];
       return `<span class="pipeline-chip" style="background:${color}1a; color:${color};"><span class="n">${n}</span> ${escapeHtml(s)}</span>`;
     }).join('');
   } catch {
