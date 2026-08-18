@@ -50,6 +50,6 @@ module.exports = async (req, res) => {
     });
   } catch (err) {
     console.error('Failed to load dashboard stats:', err);
-    res.status(500).json({ error: 'Failed to load dashboard stats', detail: err.message, stack: err.stack });
+    res.status(500).json({ error: 'Failed to load dashboard stats' });
   }
 };
