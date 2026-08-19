@@ -644,7 +644,7 @@
           <div class="error-msg" id="addQuoteError"></div>
           <div class="cfield">
             <label>Client *</label>
-            <select id="aq_clientId"></select>
+            <select id="aq_clientId" required></select>
           </div>
           <div class="row2">
             <div class="cfield"><label>Property Address</label><input id="aq_propertyAddress"></div>
@@ -683,7 +683,7 @@
         <div class="panel-head"><div><h2>Add Contract</h2><p>Create a service contract for an existing client.</p></div></div>
         <div class="content-section">
           <div class="error-msg" id="addContractError"></div>
-          <div class="cfield"><label>Client *</label><select id="acn_clientId"></select></div>
+          <div class="cfield"><label>Client *</label><select id="acn_clientId" required></select></div>
           <div class="cfield"><label>Property Address</label><input id="acn_propertyAddress"></div>
           <div class="row2">
             <div class="cfield"><label>Start Date</label><input id="acn_startDate" type="date"></div>
@@ -718,7 +718,7 @@
         <div class="content-section">
           <div class="error-msg" id="addJobError"></div>
           <div class="row2">
-            <div class="cfield"><label>Client *</label><select id="ajb_clientId"></select></div>
+            <div class="cfield"><label>Client *</label><select id="ajb_clientId" required></select></div>
             <div class="cfield"><label>Assigned Cleaner</label><select id="ajb_employeeId"></select></div>
           </div>
           <div class="cfield"><label>Location</label><input id="ajb_location" placeholder="Defaults to client address if left blank"></div>
@@ -781,9 +781,9 @@
         <div class="panel-head"><div><h2>Add Invoice</h2><p>Record an invoice for a client. This tracks status only — no payments are processed.</p></div></div>
         <div class="content-section">
           <div class="error-msg" id="addInvoiceError"></div>
-          <div class="cfield"><label>Client *</label><select id="ai_clientId"></select></div>
+          <div class="cfield"><label>Client *</label><select id="ai_clientId" required></select></div>
           <div class="row2">
-            <div class="cfield"><label>Amount ($) *</label><input id="ai_amount" type="number" step="0.01" min="0"></div>
+            <div class="cfield"><label>Amount ($) *</label><input id="ai_amount" type="number" step="0.01" min="0" required></div>
             <div class="cfield"><label>Due Date</label><input id="ai_dueDate" type="date"></div>
           </div>
           <div class="row2">
@@ -811,7 +811,7 @@
           <div class="error-msg" id="addExpenseError"></div>
           <div class="row2">
             <div class="cfield"><label>Category</label><select id="ax_category"></select></div>
-            <div class="cfield"><label>Amount ($) *</label><input id="ax_amount" type="number" step="0.01" min="0"></div>
+            <div class="cfield"><label>Amount ($) *</label><input id="ax_amount" type="number" step="0.01" min="0" required></div>
           </div>
           <div class="row2">
             <div class="cfield"><label>Date</label><input id="ax_expenseDate" type="date"></div>
@@ -933,8 +933,8 @@
           <div class="error-msg" id="teamError"></div>
           <div id="teamList"></div>
           <div class="row3" style="margin-top:18px; align-items:end;">
-            <div class="cfield"><label>Username</label><input id="tm_username"></div>
-            <div class="cfield"><label>Password</label><input id="tm_password" type="password" placeholder="Min. 8 characters"></div>
+            <div class="cfield"><label>Username *</label><input id="tm_username" required></div>
+            <div class="cfield"><label>Password *</label><input id="tm_password" type="password" placeholder="Min. 8 characters" required minlength="8"></div>
             <div class="cfield">
               <label>Role</label>
               <select id="tm_role"><option value="Admin">Admin</option><option value="Owner">Owner</option></select>
@@ -1113,7 +1113,7 @@
   <div class="modal">
     <h3>Edit Quote</h3>
     <div class="error-msg" id="quoteModalError"></div>
-    <div class="cfield"><label>Client *</label><select id="qm_clientId"></select></div>
+    <div class="cfield"><label>Client *</label><select id="qm_clientId" required></select></div>
     <div class="row2">
       <div class="cfield"><label>Property Address</label><input id="qm_propertyAddress"></div>
       <div class="cfield"><label>Square Footage</label><input id="qm_squareFootage" type="number" step="1" min="0"></div>
@@ -1146,7 +1146,7 @@
   <div class="modal">
     <h3>Edit Contract</h3>
     <div class="error-msg" id="contractModalError"></div>
-    <div class="cfield"><label>Client *</label><select id="ctm_clientId"></select></div>
+    <div class="cfield"><label>Client *</label><select id="ctm_clientId" required></select></div>
     <div class="cfield"><label>Property Address</label><input id="ctm_propertyAddress"></div>
     <div class="row2">
       <div class="cfield"><label>Start Date</label><input id="ctm_startDate" type="date"></div>
@@ -1177,7 +1177,7 @@
     <h3>Edit Job</h3>
     <div class="error-msg" id="jobModalError"></div>
     <div class="row2">
-      <div class="cfield"><label>Client *</label><select id="jm_clientId"></select></div>
+      <div class="cfield"><label>Client *</label><select id="jm_clientId" required></select></div>
       <div class="cfield"><label>Assigned Cleaner</label><select id="jm_employeeId"></select></div>
     </div>
     <div class="cfield"><label>Location</label><input id="jm_location"></div>
@@ -1237,9 +1237,9 @@
   <div class="modal">
     <h3>Edit Invoice</h3>
     <div class="error-msg" id="invoiceModalError"></div>
-    <div class="cfield"><label>Client *</label><select id="im_clientId"></select></div>
+    <div class="cfield"><label>Client *</label><select id="im_clientId" required></select></div>
     <div class="row2">
-      <div class="cfield"><label>Amount ($) *</label><input id="im_amount" type="number" step="0.01" min="0"></div>
+      <div class="cfield"><label>Amount ($) *</label><input id="im_amount" type="number" step="0.01" min="0" required></div>
       <div class="cfield"><label>Due Date</label><input id="im_dueDate" type="date"></div>
     </div>
     <div class="row2">
@@ -1264,7 +1264,7 @@
     <div class="error-msg" id="expenseModalError"></div>
     <div class="row2">
       <div class="cfield"><label>Category</label><select id="xm_category"></select></div>
-      <div class="cfield"><label>Amount ($) *</label><input id="xm_amount" type="number" step="0.01" min="0"></div>
+      <div class="cfield"><label>Amount ($) *</label><input id="xm_amount" type="number" step="0.01" min="0" required></div>
     </div>
     <div class="row2">
       <div class="cfield"><label>Date</label><input id="xm_expenseDate" type="date"></div>
