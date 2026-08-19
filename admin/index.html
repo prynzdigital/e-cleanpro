@@ -414,6 +414,53 @@
         </div>
       </div>
 
+      <div class="nav-group" id="invoicesGroup">
+        <button class="nav-group-toggle" id="invoicesGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Invoices &amp; Payments
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="invoices-list">All Invoices</button>
+          <button class="nav-subitem" data-panel="invoices-add">Add Invoice</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="expensesGroup">
+        <button class="nav-group-toggle" id="expensesGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 6v0M18 6v0"/></svg>
+            Expenses
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="expenses-list">All Expenses</button>
+          <button class="nav-subitem" data-panel="expenses-add">Add Expense</button>
+        </div>
+      </div>
+
+      <div class="nav-group" id="suppliesGroup">
+        <button class="nav-group-toggle" id="suppliesGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7L12 3 4 7m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            Supplies
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="supplies-list">All Supplies</button>
+          <button class="nav-subitem" data-panel="supplies-add">Add Supply</button>
+        </div>
+      </div>
+
+      <button class="nav-item" data-panel="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 4-7"/></svg>
+        Reports
+      </button>
+
       <div class="nav-group" id="contentGroup">
         <button class="nav-group-toggle" id="contentGroupToggle">
           <span class="toggle-left">
@@ -704,6 +751,113 @@
         </div>
       </div>
 
+      <!-- ================= INVOICES: ALL INVOICES ================= -->
+      <div class="panel" id="panel-invoices-list">
+        <div class="panel-head"><div><h2>Invoices &amp; Payments</h2><p id="invoice-count">Loading…</p></div></div>
+        <div id="invoice-shell"></div>
+      </div>
+
+      <!-- ================= INVOICES: ADD INVOICE ================= -->
+      <div class="panel" id="panel-invoices-add">
+        <div class="panel-head"><div><h2>Add Invoice</h2><p>Record an invoice for a client. This tracks status only — no payments are processed.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addInvoiceError"></div>
+          <div class="cfield"><label>Client *</label><select id="ai_clientId"></select></div>
+          <div class="row2">
+            <div class="cfield"><label>Amount ($) *</label><input id="ai_amount" type="number" step="0.01" min="0"></div>
+            <div class="cfield"><label>Due Date</label><input id="ai_dueDate" type="date"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Status</label><select id="ai_status"></select></div>
+            <div class="cfield"><label>Payment Method</label><input id="ai_paymentMethod" placeholder="e.g. Check, Cash, Zelle"></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="ai_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addInvoiceSubmit">Add Invoice</button>
+            <span class="save-status" data-status="add-invoice">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= EXPENSES: ALL EXPENSES ================= -->
+      <div class="panel" id="panel-expenses-list">
+        <div class="panel-head"><div><h2>Expenses</h2><p id="expense-count">Loading…</p></div></div>
+        <div id="expense-shell"></div>
+      </div>
+
+      <!-- ================= EXPENSES: ADD EXPENSE ================= -->
+      <div class="panel" id="panel-expenses-add">
+        <div class="panel-head"><div><h2>Add Expense</h2><p>Log a business expense.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addExpenseError"></div>
+          <div class="row2">
+            <div class="cfield"><label>Category</label><select id="ax_category"></select></div>
+            <div class="cfield"><label>Amount ($) *</label><input id="ax_amount" type="number" step="0.01" min="0"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Date</label><input id="ax_expenseDate" type="date"></div>
+            <div class="cfield"><label>Vendor</label><input id="ax_vendor"></div>
+          </div>
+          <div class="cfield"><label>Description</label><input id="ax_description"></div>
+          <div class="cfield">
+            <label>Receipt</label>
+            <div id="ax_receiptUrl_widget"></div>
+          </div>
+          <div class="cfield"><label>Notes</label><textarea id="ax_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addExpenseSubmit">Add Expense</button>
+            <span class="save-status" data-status="add-expense">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SUPPLIES: ALL SUPPLIES ================= -->
+      <div class="panel" id="panel-supplies-list">
+        <div class="panel-head"><div><h2>Supplies</h2><p id="supply-count">Loading…</p></div></div>
+        <div id="supply-shell"></div>
+      </div>
+
+      <!-- ================= SUPPLIES: ADD SUPPLY ================= -->
+      <div class="panel" id="panel-supplies-add">
+        <div class="panel-head"><div><h2>Add Supply</h2><p>Track an inventory item.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addSupplyError"></div>
+          <div class="cfield"><label>Item Name *</label><input id="as_itemName" required></div>
+          <div class="row2">
+            <div class="cfield"><label>Quantity on Hand</label><input id="as_quantity" type="number" step="1" min="0"></div>
+            <div class="cfield"><label>Reorder Threshold</label><input id="as_reorderThreshold" type="number" step="1" min="0"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Unit Cost ($)</label><input id="as_unitCost" type="number" step="0.01" min="0"></div>
+            <div class="cfield"><label>Supplier</label><input id="as_supplier"></div>
+          </div>
+          <div class="cfield"><label>Last Ordered</label><input id="as_lastOrderedDate" type="date"></div>
+          <div class="cfield"><label>Notes</label><textarea id="as_notes"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addSupplySubmit">Add Supply</button>
+            <span class="save-status" data-status="add-supply">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= REPORTS ================= -->
+      <div class="panel" id="panel-reports">
+        <div class="panel-head"><div><h2>Reports</h2><p>Revenue, expenses, and performance at a glance.</p></div></div>
+        <div class="stat-grid" id="reportsStatGrid"><p style="color:var(--ink-soft); font-size:13.5px;">Loading…</p></div>
+        <div class="dash-charts-row" style="grid-template-columns:1.3fr 1fr;">
+          <div class="dash-section">
+            <h3>Revenue vs Expenses (Last 6 Months)</h3>
+            <div class="chart-wrap"><canvas id="revenueExpenseChart"></canvas></div>
+          </div>
+          <div class="dash-section">
+            <h3>Expenses by Category</h3>
+            <div class="chart-wrap"><canvas id="expenseCategoryChart"></canvas></div>
+            <div class="donut-legend" id="expenseCategoryLegend"></div>
+          </div>
+        </div>
+        <div class="dash-note">Reports are computed live from Invoices, Expenses, Jobs, and Leads data.</div>
+      </div>
+
       <!-- ================= CONTENT: CONTACT INFO ================= -->
       <div class="panel" id="panel-content-contact">
         <div class="panel-head"><div><h2>Contact Info</h2><p>Shown in the topbar, booking panel, and footer.</p></div></div>
@@ -989,6 +1143,82 @@
   </div>
 </div>
 
+<!-- ================= INVOICE EDIT MODAL ================= -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal">
+    <h3>Edit Invoice</h3>
+    <div class="error-msg" id="invoiceModalError"></div>
+    <div class="cfield"><label>Client *</label><select id="im_clientId"></select></div>
+    <div class="row2">
+      <div class="cfield"><label>Amount ($) *</label><input id="im_amount" type="number" step="0.01" min="0"></div>
+      <div class="cfield"><label>Due Date</label><input id="im_dueDate" type="date"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Status</label><select id="im_status"></select></div>
+      <div class="cfield"><label>Payment Method</label><input id="im_paymentMethod"></div>
+    </div>
+    <div class="cfield"><label>Paid Date</label><input id="im_paidDate" type="date"></div>
+    <div class="cfield"><label>Notes</label><textarea id="im_notes"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="invoiceModalCreated"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="invoiceModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="invoiceModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="invoiceModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EXPENSE EDIT MODAL ================= -->
+<div class="modal-overlay" id="expenseModal">
+  <div class="modal">
+    <h3>Edit Expense</h3>
+    <div class="error-msg" id="expenseModalError"></div>
+    <div class="row2">
+      <div class="cfield"><label>Category</label><select id="xm_category"></select></div>
+      <div class="cfield"><label>Amount ($) *</label><input id="xm_amount" type="number" step="0.01" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Date</label><input id="xm_expenseDate" type="date"></div>
+      <div class="cfield"><label>Vendor</label><input id="xm_vendor"></div>
+    </div>
+    <div class="cfield"><label>Description</label><input id="xm_description"></div>
+    <div class="cfield">
+      <label>Receipt</label>
+      <div id="xm_receiptUrl_widget"></div>
+    </div>
+    <div class="cfield"><label>Notes</label><textarea id="xm_notes"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="expenseModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="expenseModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="expenseModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SUPPLY EDIT MODAL ================= -->
+<div class="modal-overlay" id="supplyModal">
+  <div class="modal">
+    <h3>Edit Supply</h3>
+    <div class="error-msg" id="supplyModalError"></div>
+    <div class="cfield"><label>Item Name *</label><input id="sm_itemName" required></div>
+    <div class="row2">
+      <div class="cfield"><label>Quantity on Hand</label><input id="sm_quantity" type="number" step="1" min="0"></div>
+      <div class="cfield"><label>Reorder Threshold</label><input id="sm_reorderThreshold" type="number" step="1" min="0"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Unit Cost ($)</label><input id="sm_unitCost" type="number" step="0.01" min="0"></div>
+      <div class="cfield"><label>Supplier</label><input id="sm_supplier"></div>
+    </div>
+    <div class="cfield"><label>Last Ordered</label><input id="sm_lastOrderedDate" type="date"></div>
+    <div class="cfield"><label>Notes</label><textarea id="sm_notes"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="supplyModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="supplyModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="supplyModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -1034,6 +1264,9 @@ function showDashboard(username) {
   quoteTable.load();
   contractTable.load();
   employeeTable.load().then(() => jobTable.load());
+  invoiceTable.load();
+  expenseTable.load();
+  supplyTable.load();
   loadContent();
   loadDashboardStats();
 }
@@ -1088,7 +1321,7 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
   btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
 });
 
-['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'contentGroupToggle'].forEach((id) => {
+['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'invoicesGroupToggle', 'expensesGroupToggle', 'suppliesGroupToggle', 'contentGroupToggle'].forEach((id) => {
   const groupId = id.replace('Toggle', '');
   $('#' + id).addEventListener('click', () => $('#' + groupId).classList.toggle('open'));
 });
@@ -1895,12 +2128,13 @@ async function uploadFile(file, folder) {
   return data.url;
 }
 
-function renderSignedContractWidget(containerId, url, folder, onChange) {
+function renderSingleFileWidget(containerId, url, folder, onChange, opts) {
+  const { linkLabel = 'View file', uploadLabel = 'Click to upload file', hint = 'Up to 4MB', accept = 'application/pdf' } = opts || {};
   const container = $('#' + containerId);
   if (url) {
     container.innerHTML = `
       <div class="file-link-row">
-        <a href="${url}" target="_blank" rel="noopener">View signed contract</a>
+        <a href="${url}" target="_blank" rel="noopener">${escapeHtml(linkLabel)}</a>
         <button type="button" class="photo-remove" title="Remove">&times;</button>
       </div>
     `;
@@ -1908,9 +2142,9 @@ function renderSignedContractWidget(containerId, url, folder, onChange) {
   } else {
     container.innerHTML = `
       <label class="upload-zone">
-        <input type="file" accept="application/pdf">
-        <div class="upload-label">Click to upload signed contract</div>
-        <div class="upload-hint">PDF, up to 4MB</div>
+        <input type="file" accept="${accept}">
+        <div class="upload-label">${escapeHtml(uploadLabel)}</div>
+        <div class="upload-hint">${escapeHtml(hint)}</div>
       </label>
     `;
     container.querySelector('input[type="file"]').addEventListener('change', async (e) => {
@@ -1922,10 +2156,20 @@ function renderSignedContractWidget(containerId, url, folder, onChange) {
         onChange(uploadedUrl);
       } catch (err) {
         alert(err.message || 'Upload failed');
-        renderSignedContractWidget(containerId, null, folder, onChange);
+        renderSingleFileWidget(containerId, null, folder, onChange, opts);
       }
     });
   }
+}
+function renderSignedContractWidget(containerId, url, folder, onChange) {
+  renderSingleFileWidget(containerId, url, folder, onChange, {
+    linkLabel: 'View signed contract', uploadLabel: 'Click to upload signed contract', hint: 'PDF, up to 4MB', accept: 'application/pdf',
+  });
+}
+function renderReceiptWidget(containerId, url, folder, onChange) {
+  renderSingleFileWidget(containerId, url, folder, onChange, {
+    linkLabel: 'View receipt', uploadLabel: 'Click to upload receipt', hint: 'Image or PDF, up to 4MB', accept: 'image/*,application/pdf',
+  });
 }
 
 function renderPhotoGridWidget(containerId, urls, folder, onChange) {
@@ -2479,6 +2723,500 @@ document.querySelector('[data-panel="jobs-add"]').addEventListener('click', () =
 });
 
 /* ============================================================
+   INVOICES & PAYMENTS
+   ============================================================ */
+const INVOICE_STATUS_VALUES = ['Unpaid', 'Paid', 'Overdue', 'Cancelled'];
+const INVOICE_STATUS_COLORS = { Unpaid:'#a16207', Paid:'#15803d', Overdue:'#b91c1c', Cancelled:'#6b7280' };
+let selectedInvoiceId = null;
+
+populateSelect($('#ai_status'), INVOICE_STATUS_VALUES, 'Unpaid');
+populateSelect($('#im_status'), INVOICE_STATUS_VALUES, 'Unpaid');
+
+const invoiceTable = createDataTable({
+  prefix: 'invoice',
+  fetchUrl: '/api/admin/invoices',
+  dataKey: 'invoices',
+  searchPlaceholder: 'Search client…',
+  columns: [
+    { key:'created_at', label:'Created', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'client_name', label:'Client', sortable:true, get:(r)=>(r.client_name||'').toLowerCase() },
+    { key:'amount', label:'Amount', sortable:true, get:(r)=>Number(r.amount)||0 },
+    { key:'due_date', label:'Due', sortable:true, get:(r)=>r.due_date ? new Date(r.due_date).getTime() : 0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Unpaid' },
+  ],
+  searchFields: (r) => [r.client_name, r.client_company, r.payment_method],
+  statusField: (r) => r.status || 'Unpaid',
+  statusValues: INVOICE_STATUS_VALUES,
+  renderRowCells: (r) => `
+      <td>${new Date(r.created_at).toLocaleDateString()}</td>
+      <td>${escapeHtml(r.client_name)}${r.client_company ? '<br><span class="est-line">' + escapeHtml(r.client_company) + '</span>' : ''}</td>
+      <td>$${Number(r.amount).toLocaleString()}</td>
+      <td>${r.due_date ? new Date(r.due_date).toLocaleDateString() : '—'}</td>
+      <td>${statusBadge(r.status, INVOICE_STATUS_COLORS, 'Unpaid')}</td>
+    `,
+  rowKey: (r) => r.id,
+  onRowClick: openInvoiceModal,
+  csvHeaders: ['Created','Client','Company','Amount','Due Date','Status','Payment Method','Paid Date','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.client_name, r.client_company, r.amount, r.due_date, r.status, r.payment_method, r.paid_date, r.notes],
+  csvFilenamePrefix: 'invoices',
+  nounSingular: 'invoice', nounPlural: 'invoices',
+  emptyMessage: 'No invoices yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openInvoiceModal(r) {
+  selectedInvoiceId = r.id;
+  $('#invoiceModalError').classList.remove('show');
+  populateClientDropdown($('#im_clientId'), r.client_id);
+  $('#im_amount').value = r.amount || '';
+  $('#im_dueDate').value = r.due_date ? r.due_date.slice(0, 10) : '';
+  $('#im_paymentMethod').value = r.payment_method || '';
+  $('#im_paidDate').value = r.paid_date ? r.paid_date.slice(0, 10) : '';
+  $('#im_notes').value = r.notes || '';
+  populateSelect($('#im_status'), INVOICE_STATUS_VALUES, r.status || 'Unpaid');
+  $('#invoiceModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString();
+  $('#invoiceModal').classList.add('show');
+}
+$('#invoiceModalClose').addEventListener('click', () => $('#invoiceModal').classList.remove('show'));
+$('#invoiceModal').addEventListener('click', (e) => { if (e.target.id === 'invoiceModal') $('#invoiceModal').classList.remove('show'); });
+
+function readInvoiceForm(prefix) {
+  return readForm(prefix, ['clientId', 'amount', 'dueDate', 'status', 'paymentMethod', 'paidDate', 'notes']);
+}
+
+$('#invoiceModalSave').addEventListener('click', async () => {
+  if (!selectedInvoiceId) return;
+  const payload = readInvoiceForm('im');
+  const errBox = $('#invoiceModalError');
+  errBox.classList.remove('show');
+  if (!payload.clientId || !payload.amount) {
+    errBox.textContent = 'A client and amount are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#invoiceModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/invoices?id=' + encodeURIComponent(selectedInvoiceId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#invoiceModal').classList.remove('show');
+    await invoiceTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#invoiceModalDelete').addEventListener('click', async () => {
+  if (!selectedInvoiceId) return;
+  if (!confirm('Delete this invoice permanently? This cannot be undone.')) return;
+  const btn = $('#invoiceModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/invoices?id=' + encodeURIComponent(selectedInvoiceId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#invoiceModal').classList.remove('show');
+    await invoiceTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete invoice. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addInvoiceSubmit').addEventListener('click', async () => {
+  const payload = readInvoiceForm('ai');
+  const errBox = $('#addInvoiceError');
+  const statusEl = document.querySelector('[data-status="add-invoice"]');
+  errBox.classList.remove('show');
+  if (!payload.clientId || !payload.amount) {
+    errBox.textContent = 'A client and amount are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addInvoiceSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/invoices', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add invoice');
+    ['amount', 'dueDate', 'paymentMethod', 'notes'].forEach((f) => { $('#ai_' + f).value = ''; });
+    populateSelect($('#ai_status'), INVOICE_STATUS_VALUES, 'Unpaid');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await invoiceTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add invoice. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Invoice';
+});
+
+document.querySelector('[data-panel="invoices-add"]').addEventListener('click', () => {
+  populateClientDropdown($('#ai_clientId'), null);
+});
+
+/* ============================================================
+   EXPENSES
+   ============================================================ */
+const EXPENSE_CATEGORY_VALUES = ['Supplies', 'Fuel', 'Payroll', 'Equipment', 'Insurance', 'Marketing', 'Other'];
+let selectedExpenseId = null;
+let addExpenseReceiptUrl = null;
+let xmReceiptUrl = null;
+
+populateSelect($('#ax_category'), EXPENSE_CATEGORY_VALUES, 'Supplies');
+populateSelect($('#xm_category'), EXPENSE_CATEGORY_VALUES, 'Supplies');
+
+function renderAddExpenseReceiptWidget() {
+  renderReceiptWidget('ax_receiptUrl_widget', addExpenseReceiptUrl, 'receipts', (url) => {
+    addExpenseReceiptUrl = url; renderAddExpenseReceiptWidget();
+  });
+}
+renderAddExpenseReceiptWidget();
+
+function renderXmReceiptWidget() {
+  renderReceiptWidget('xm_receiptUrl_widget', xmReceiptUrl, 'receipts', (url) => {
+    xmReceiptUrl = url; renderXmReceiptWidget();
+  });
+}
+
+const expenseTable = createDataTable({
+  prefix: 'expense',
+  fetchUrl: '/api/admin/expenses',
+  dataKey: 'expenses',
+  searchPlaceholder: 'Search vendor, description…',
+  columns: [
+    { key:'expense_date', label:'Date', sortable:true, get:(r)=>r.expense_date ? new Date(r.expense_date).getTime() : 0 },
+    { key:'category', label:'Category', sortable:true, get:(r)=>r.category||'' },
+    { key:'vendor', label:'Vendor', sortable:false },
+    { key:'amount', label:'Amount', sortable:true, get:(r)=>Number(r.amount)||0 },
+  ],
+  searchFields: (r) => [r.vendor, r.description, r.category],
+  statusField: null,
+  statusValues: null,
+  renderRowCells: (r) => `
+      <td>${r.expense_date ? new Date(r.expense_date).toLocaleDateString() : '—'}</td>
+      <td><span class="badge">${escapeHtml(r.category)}</span></td>
+      <td>${escapeHtml(r.vendor || '—')}${r.description ? '<br><span class="est-line">' + escapeHtml(r.description) + '</span>' : ''}</td>
+      <td>$${Number(r.amount).toLocaleString()}</td>
+    `,
+  rowKey: (r) => r.id,
+  onRowClick: openExpenseModal,
+  csvHeaders: ['Date','Category','Vendor','Description','Amount','Notes'],
+  csvRow: (r) => [r.expense_date, r.category, r.vendor, r.description, r.amount, r.notes],
+  csvFilenamePrefix: 'expenses',
+  nounSingular: 'expense', nounPlural: 'expenses',
+  emptyMessage: 'No expenses logged yet.',
+  defaultSortKey: 'expense_date', defaultSortDir: 'desc',
+});
+
+function openExpenseModal(r) {
+  selectedExpenseId = r.id;
+  $('#expenseModalError').classList.remove('show');
+  populateSelect($('#xm_category'), EXPENSE_CATEGORY_VALUES, r.category || 'Supplies');
+  $('#xm_amount').value = r.amount || '';
+  $('#xm_expenseDate').value = r.expense_date ? r.expense_date.slice(0, 10) : '';
+  $('#xm_vendor').value = r.vendor || '';
+  $('#xm_description').value = r.description || '';
+  $('#xm_notes').value = r.notes || '';
+  xmReceiptUrl = r.receipt_url || null;
+  renderXmReceiptWidget();
+  $('#expenseModal').classList.add('show');
+}
+$('#expenseModalClose').addEventListener('click', () => $('#expenseModal').classList.remove('show'));
+$('#expenseModal').addEventListener('click', (e) => { if (e.target.id === 'expenseModal') $('#expenseModal').classList.remove('show'); });
+
+function readExpenseForm(prefix) {
+  return readForm(prefix, ['category', 'amount', 'expenseDate', 'vendor', 'description', 'notes']);
+}
+
+$('#expenseModalSave').addEventListener('click', async () => {
+  if (!selectedExpenseId) return;
+  const payload = { ...readExpenseForm('xm'), receiptUrl: xmReceiptUrl };
+  const errBox = $('#expenseModalError');
+  errBox.classList.remove('show');
+  if (!payload.amount) {
+    errBox.textContent = 'A valid amount is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#expenseModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/expenses?id=' + encodeURIComponent(selectedExpenseId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#expenseModal').classList.remove('show');
+    await expenseTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#expenseModalDelete').addEventListener('click', async () => {
+  if (!selectedExpenseId) return;
+  if (!confirm('Delete this expense permanently? This cannot be undone.')) return;
+  const btn = $('#expenseModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/expenses?id=' + encodeURIComponent(selectedExpenseId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#expenseModal').classList.remove('show');
+    await expenseTable.load();
+    await loadDashboardStats();
+  } catch {
+    alert('Failed to delete expense. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addExpenseSubmit').addEventListener('click', async () => {
+  const payload = { ...readExpenseForm('ax'), receiptUrl: addExpenseReceiptUrl };
+  const errBox = $('#addExpenseError');
+  const statusEl = document.querySelector('[data-status="add-expense"]');
+  errBox.classList.remove('show');
+  if (!payload.amount) {
+    errBox.textContent = 'A valid amount is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addExpenseSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/expenses', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add expense');
+    ['amount', 'expenseDate', 'vendor', 'description', 'notes'].forEach((f) => { $('#ax_' + f).value = ''; });
+    populateSelect($('#ax_category'), EXPENSE_CATEGORY_VALUES, 'Supplies');
+    addExpenseReceiptUrl = null;
+    renderAddExpenseReceiptWidget();
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await expenseTable.load();
+    await loadDashboardStats();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add expense. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Expense';
+});
+
+/* ============================================================
+   SUPPLIES
+   ============================================================ */
+let selectedSupplyId = null;
+
+const supplyTable = createDataTable({
+  prefix: 'supply',
+  fetchUrl: '/api/admin/supplies',
+  dataKey: 'supplies',
+  searchPlaceholder: 'Search item, supplier…',
+  columns: [
+    { key:'item_name', label:'Item', sortable:true, get:(r)=>(r.item_name||'').toLowerCase() },
+    { key:'quantity', label:'Qty', sortable:true, get:(r)=>Number(r.quantity)||0 },
+    { key:'unit_cost', label:'Unit Cost', sortable:true, get:(r)=>Number(r.unit_cost)||0 },
+    { key:'supplier', label:'Supplier', sortable:false },
+  ],
+  searchFields: (r) => [r.item_name, r.supplier],
+  statusField: null,
+  statusValues: null,
+  renderRowCells: (r) => {
+    const low = r.reorder_threshold !== null && r.reorder_threshold !== undefined && Number(r.quantity) <= Number(r.reorder_threshold);
+    return `
+      <td>${escapeHtml(r.item_name)}</td>
+      <td>${Number(r.quantity)}${low ? ' <span class="badge" style="background:#e5484d1a; color:var(--danger);">Low</span>' : ''}</td>
+      <td>${r.unit_cost ? '$' + Number(r.unit_cost).toFixed(2) : '—'}</td>
+      <td>${escapeHtml(r.supplier || '—')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openSupplyModal,
+  csvHeaders: ['Item','Quantity','Reorder Threshold','Unit Cost','Supplier','Last Ordered','Notes'],
+  csvRow: (r) => [r.item_name, r.quantity, r.reorder_threshold, r.unit_cost, r.supplier, r.last_ordered_date, r.notes],
+  csvFilenamePrefix: 'supplies',
+  nounSingular: 'supply', nounPlural: 'supplies',
+  emptyMessage: 'No supplies tracked yet.',
+  defaultSortKey: 'item_name', defaultSortDir: 'asc',
+});
+
+function openSupplyModal(r) {
+  selectedSupplyId = r.id;
+  $('#supplyModalError').classList.remove('show');
+  $('#sm_itemName').value = r.item_name || '';
+  $('#sm_quantity').value = r.quantity ?? '';
+  $('#sm_reorderThreshold').value = r.reorder_threshold ?? '';
+  $('#sm_unitCost').value = r.unit_cost ?? '';
+  $('#sm_supplier').value = r.supplier || '';
+  $('#sm_lastOrderedDate').value = r.last_ordered_date ? r.last_ordered_date.slice(0, 10) : '';
+  $('#sm_notes').value = r.notes || '';
+  $('#supplyModal').classList.add('show');
+}
+$('#supplyModalClose').addEventListener('click', () => $('#supplyModal').classList.remove('show'));
+$('#supplyModal').addEventListener('click', (e) => { if (e.target.id === 'supplyModal') $('#supplyModal').classList.remove('show'); });
+
+function readSupplyForm(prefix) {
+  return readForm(prefix, ['itemName', 'quantity', 'reorderThreshold', 'unitCost', 'supplier', 'lastOrderedDate', 'notes']);
+}
+
+$('#supplyModalSave').addEventListener('click', async () => {
+  if (!selectedSupplyId) return;
+  const payload = readSupplyForm('sm');
+  const errBox = $('#supplyModalError');
+  errBox.classList.remove('show');
+  if (!payload.itemName) {
+    errBox.textContent = 'Item name is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#supplyModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/supplies?id=' + encodeURIComponent(selectedSupplyId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#supplyModal').classList.remove('show');
+    await supplyTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#supplyModalDelete').addEventListener('click', async () => {
+  if (!selectedSupplyId) return;
+  if (!confirm('Delete this supply item permanently? This cannot be undone.')) return;
+  const btn = $('#supplyModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/supplies?id=' + encodeURIComponent(selectedSupplyId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#supplyModal').classList.remove('show');
+    await supplyTable.load();
+  } catch {
+    alert('Failed to delete supply. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addSupplySubmit').addEventListener('click', async () => {
+  const payload = readSupplyForm('as');
+  const errBox = $('#addSupplyError');
+  const statusEl = document.querySelector('[data-status="add-supply"]');
+  errBox.classList.remove('show');
+  if (!payload.itemName) {
+    errBox.textContent = 'Item name is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addSupplySubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/supplies', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add supply');
+    ['itemName', 'quantity', 'reorderThreshold', 'unitCost', 'supplier', 'lastOrderedDate', 'notes'].forEach((f) => { $('#as_' + f).value = ''; });
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await supplyTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add supply. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Supply';
+});
+
+/* ============================================================
+   REPORTS
+   ============================================================ */
+let revenueExpenseChartInstance = null;
+let expenseCategoryChartInstance = null;
+let reportsLoaded = false;
+
+function monthLabel(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: 'short' });
+}
+
+async function loadReports() {
+  const grid = $('#reportsStatGrid');
+  try {
+    const r = await fetch('/api/admin/reports');
+    if (!r.ok) throw new Error('failed');
+    const d = await r.json();
+
+    grid.innerHTML = [
+      statCardHtml({ icon: STAT_ICONS.revenue, color: STAT_COLORS.green, label: 'Total Paid Revenue', value: '$' + Math.round(d.totalPaidRevenue).toLocaleString(), sub: 'All-time' }),
+      statCardHtml({ icon: STAT_ICONS.contracts, color: STAT_COLORS.amber, label: 'Total Expenses', value: '$' + Math.round(d.totalExpenses).toLocaleString(), sub: 'All-time' }),
+      statCardHtml({ icon: STAT_ICONS.revenue, color: d.netProfit >= 0 ? STAT_COLORS.teal : STAT_COLORS.blue, label: 'Net Profit', value: '$' + Math.round(d.netProfit).toLocaleString(), sub: 'Paid revenue minus expenses' }),
+      statCardHtml({ icon: STAT_ICONS.jobs, color: STAT_COLORS.purple, label: 'Job Completion Rate', value: d.jobCompletionRate === null ? '—' : d.jobCompletionRate + '%', sub: 'Of all jobs' }),
+      statCardHtml({ icon: STAT_ICONS.quotes, color: STAT_COLORS.blue, label: 'Lead Conversion Rate', value: d.leadConversionRate === null ? '—' : d.leadConversionRate + '%', sub: 'Leads won' }),
+    ].join('');
+
+    const months = [...new Set([...d.revenueByMonth.map((r) => r.month), ...d.expensesByMonth.map((r) => r.month)])].sort();
+    const revenueMap = Object.fromEntries(d.revenueByMonth.map((r) => [r.month, r.total]));
+    const expenseMap = Object.fromEntries(d.expensesByMonth.map((r) => [r.month, r.total]));
+
+    const ctx1 = $('#revenueExpenseChart');
+    if (ctx1 && typeof Chart !== 'undefined') {
+      if (revenueExpenseChartInstance) revenueExpenseChartInstance.destroy();
+      revenueExpenseChartInstance = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: months.map(monthLabel),
+          datasets: [
+            { label: 'Revenue', data: months.map((m) => revenueMap[m] || 0), backgroundColor: '#15803d', borderRadius: 6, maxBarThickness: 28 },
+            { label: 'Expenses', data: months.map((m) => expenseMap[m] || 0), backgroundColor: '#b91c1c', borderRadius: 6, maxBarThickness: 28 },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true, grid: { color: 'rgba(10,92,83,0.06)' } }, x: { grid: { display: false } } },
+        },
+      });
+    }
+
+    const catLabels = d.expensesByCategory.map((r) => r.category);
+    const catData = d.expensesByCategory.map((r) => r.total);
+    const catColors = ['#2563eb', '#15803d', '#7c3aed', '#a16207', '#0e7d70', '#b91c1c', '#6b7280'];
+    const ctx2 = $('#expenseCategoryChart');
+    if (ctx2 && typeof Chart !== 'undefined') {
+      if (expenseCategoryChartInstance) expenseCategoryChartInstance.destroy();
+      expenseCategoryChartInstance = new Chart(ctx2, {
+        type: 'doughnut',
+        data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: catColors, borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } },
+      });
+    }
+    $('#expenseCategoryLegend').innerHTML = catLabels.length === 0
+      ? '<p style="color:var(--ink-soft); font-size:12.5px;">No expenses logged yet.</p>'
+      : catLabels.map((c, i) => `
+          <div class="legend-row"><span class="dot" style="background:${catColors[i % catColors.length]};"></span><span class="legend-name">${escapeHtml(c)}</span><span class="legend-n">$${Math.round(catData[i]).toLocaleString()}</span></div>
+        `).join('');
+  } catch {
+    grid.innerHTML = `<p style="color:var(--danger); font-size:13.5px;">Failed to load reports.</p>`;
+  }
+}
+
+document.querySelector('[data-panel="reports"]').addEventListener('click', () => {
+  loadReports();
+});
+
+/* ============================================================
    DASHBOARD
    ============================================================ */
 const STAT_ICONS = {
@@ -2487,8 +3225,9 @@ const STAT_ICONS = {
   jobs: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   quotes: '<circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9.5 9a2.5 2.5 0 0 1 2.5-2h.5a2.25 2.25 0 1 1 0 4.5h-1a2.25 2.25 0 1 0 0 4.5h.5a2.5 2.5 0 0 0 2.5-2"/>',
   revenue: '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  invoice: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/>',
 };
-const STAT_COLORS = { blue:'#2563eb', green:'#15803d', purple:'#7c3aed', amber:'#a16207', teal:'#0e7d70' };
+const STAT_COLORS = { blue:'#2563eb', green:'#15803d', purple:'#7c3aed', amber:'#a16207', teal:'#0e7d70', red:'#b91c1c' };
 
 function trendHtml(trend) {
   if (trend === null || trend === undefined) return '';
@@ -2643,6 +3382,7 @@ async function loadDashboardStats() {
       statCardHtml({ icon: STAT_ICONS.contracts, color: STAT_COLORS.green, label: 'Active Contracts', value: d.activeContracts, sub: trendHtml(d.contractsTrend) || `$${Math.round(d.monthlyRecurringValue).toLocaleString()}/mo recurring` }),
       statCardHtml({ icon: STAT_ICONS.jobs, color: STAT_COLORS.purple, label: "Today's Jobs", value: d.todaysJobs, sub: `${d.upcomingJobs} scheduled in next 7 days` }),
       statCardHtml({ icon: STAT_ICONS.quotes, color: STAT_COLORS.amber, label: 'Pending Quotes', value: d.pendingQuotes, sub: d.quoteConversionRate === null ? 'No decided quotes yet' : d.quoteConversionRate + '% acceptance rate' }),
+      statCardHtml({ icon: STAT_ICONS.invoice, color: STAT_COLORS.red, label: 'Unpaid Invoices', value: d.unpaidInvoicesCount, sub: '$' + Math.round(d.unpaidInvoicesTotal).toLocaleString() + ' outstanding' }),
       statCardHtml({ icon: STAT_ICONS.revenue, color: STAT_COLORS.teal, label: 'Monthly Recurring Value', value: '$' + Math.round(d.monthlyRecurringValue).toLocaleString(), sub: trendHtml(d.leadsTrend) ? trendHtml(d.leadsTrend) : `${d.totalLeads} total leads` }),
     ].join('');
 
