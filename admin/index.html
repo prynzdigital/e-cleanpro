@@ -456,9 +456,28 @@
         </div>
       </div>
 
+      <div class="nav-group" id="reviewsGroup">
+        <button class="nav-group-toggle" id="reviewsGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.9-5 4.9 1.2 6.9-6-3.3-6 3.3 1.2-6.9-5-4.9 6.9-.9z"/></svg>
+            Reviews &amp; Complaints
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="reviews-list">All Reviews</button>
+          <button class="nav-subitem" data-panel="reviews-add">Add Review/Complaint</button>
+        </div>
+      </div>
+
       <button class="nav-item" data-panel="reports">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 4-7"/></svg>
         Reports
+      </button>
+
+      <button class="nav-item" data-panel="content-settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
       </button>
 
       <div class="nav-group" id="contentGroup">
@@ -840,6 +859,37 @@
         </div>
       </div>
 
+      <!-- ================= REVIEWS: ALL REVIEWS ================= -->
+      <div class="panel" id="panel-reviews-list">
+        <div class="panel-head"><div><h2>Reviews &amp; Complaints</h2><p id="review-count">Loading…</p></div></div>
+        <div id="review-shell"></div>
+      </div>
+
+      <!-- ================= REVIEWS: ADD REVIEW/COMPLAINT ================= -->
+      <div class="panel" id="panel-reviews-add">
+        <div class="panel-head"><div><h2>Add Review / Complaint</h2><p>Log customer feedback.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addReviewError"></div>
+          <div class="row2">
+            <div class="cfield"><label>Type</label><select id="ar_type"></select></div>
+            <div class="cfield"><label>Client</label><select id="ar_clientId"><option value="">— None —</option></select></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Rating (1–5, Reviews only)</label><input id="ar_rating" type="number" step="1" min="1" max="5"></div>
+            <div class="cfield"><label>Source</label><input id="ar_source" placeholder="e.g. Google, Yelp, Direct, Phone"></div>
+          </div>
+          <div class="cfield"><label>Comment *</label><textarea id="ar_comment" required></textarea></div>
+          <div class="row2">
+            <div class="cfield"><label>Status</label><select id="ar_status"></select></div>
+          </div>
+          <div class="cfield"><label>Resolution Notes</label><textarea id="ar_resolution"></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addReviewSubmit">Add</button>
+            <span class="save-status" data-status="add-review">Added</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ================= REPORTS ================= -->
       <div class="panel" id="panel-reports">
         <div class="panel-head"><div><h2>Reports</h2><p>Revenue, expenses, and performance at a glance.</p></div></div>
@@ -856,6 +906,27 @@
           </div>
         </div>
         <div class="dash-note">Reports are computed live from Invoices, Expenses, Jobs, and Leads data.</div>
+      </div>
+
+      <!-- ================= SETTINGS: COMPANY PROFILE ================= -->
+      <div class="panel" id="panel-content-settings">
+        <div class="panel-head"><div><h2>Settings</h2><p>Company profile shown on future invoices and reports.</p></div></div>
+        <div class="content-section">
+          <div class="row2">
+            <div class="cfield"><label>Company Name</label><input id="c_company_name"></div>
+            <div class="cfield"><label>Tax ID / EIN</label><input id="c_company_tax_id"></div>
+          </div>
+          <div class="cfield">
+            <label>Company Logo</label>
+            <div id="c_company_logo_url_widget"></div>
+          </div>
+          <div class="cfield"><label>Invoice Footer Note</label><textarea id="c_invoice_footer_note" placeholder="e.g. Thank you for your business! Payment due within 15 days."></textarea></div>
+          <div class="save-row">
+            <button class="btn btn-sm" data-save="settings">Save Settings</button>
+            <span class="save-status" data-status="settings">Saved</span>
+          </div>
+        </div>
+        <div class="dash-note">Multi-user accounts and role-based permissions aren't built yet — this admin still uses a single shared login.</div>
       </div>
 
       <!-- ================= CONTENT: CONTACT INFO ================= -->
@@ -1219,6 +1290,31 @@
   </div>
 </div>
 
+<!-- ================= REVIEW/COMPLAINT EDIT MODAL ================= -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal">
+    <h3>Edit Review / Complaint</h3>
+    <div class="error-msg" id="reviewModalError"></div>
+    <div class="row2">
+      <div class="cfield"><label>Type</label><select id="rm_type"></select></div>
+      <div class="cfield"><label>Client</label><select id="rm_clientId"><option value="">— None —</option></select></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Rating (1–5, Reviews only)</label><input id="rm_rating" type="number" step="1" min="1" max="5"></div>
+      <div class="cfield"><label>Source</label><input id="rm_source"></div>
+    </div>
+    <div class="cfield"><label>Comment *</label><textarea id="rm_comment" required></textarea></div>
+    <div class="cfield"><label>Status</label><select id="rm_status"></select></div>
+    <div class="cfield"><label>Resolution Notes</label><textarea id="rm_resolution"></textarea></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="reviewModalCreated"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="reviewModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="reviewModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="reviewModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -1267,6 +1363,7 @@ function showDashboard(username) {
   invoiceTable.load();
   expenseTable.load();
   supplyTable.load();
+  reviewTable.load();
   loadContent();
   loadDashboardStats();
 }
@@ -1321,7 +1418,7 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
   btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
 });
 
-['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'invoicesGroupToggle', 'expensesGroupToggle', 'suppliesGroupToggle', 'contentGroupToggle'].forEach((id) => {
+['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'invoicesGroupToggle', 'expensesGroupToggle', 'suppliesGroupToggle', 'reviewsGroupToggle', 'contentGroupToggle'].forEach((id) => {
   const groupId = id.replace('Toggle', '');
   $('#' + id).addEventListener('click', () => $('#' + groupId).classList.toggle('open'));
 });
@@ -1890,15 +1987,17 @@ let selectedQuoteId = null;
 populateSelect($('#aq_status'), QUOTE_STATUS_VALUES, 'Draft');
 populateSelect($('#qm_status'), QUOTE_STATUS_VALUES, 'Draft');
 
-function populateClientDropdown(select, selectedId) {
+function populateClientDropdown(select, selectedId, allowEmpty) {
   const clients = clientTable.getData();
-  if (clients.length === 0) {
+  if (clients.length === 0 && !allowEmpty) {
     select.innerHTML = '<option value="">No clients yet — add one first</option>';
     return;
   }
-  select.innerHTML = clients.map((c) =>
+  const options = allowEmpty ? ['<option value="">— None —</option>'] : [];
+  options.push(...clients.map((c) =>
     `<option value="${c.id}" ${String(c.id) === String(selectedId) ? 'selected' : ''}>${escapeHtml(c.name)}${c.company ? ' — ' + escapeHtml(c.company) : ''}</option>`
-  ).join('');
+  ));
+  select.innerHTML = options.join('');
 }
 
 const quoteTable = createDataTable({
@@ -3140,6 +3239,152 @@ $('#addSupplySubmit').addEventListener('click', async () => {
 });
 
 /* ============================================================
+   REVIEWS & COMPLAINTS
+   ============================================================ */
+const REVIEW_TYPE_VALUES = ['Review', 'Complaint'];
+const REVIEW_STATUS_VALUES = ['New', 'In Progress', 'Resolved'];
+const REVIEW_STATUS_COLORS = { New:'#2563eb', 'In Progress':'#a16207', Resolved:'#15803d' };
+let selectedReviewId = null;
+
+populateSelect($('#ar_type'), REVIEW_TYPE_VALUES, 'Review');
+populateSelect($('#rm_type'), REVIEW_TYPE_VALUES, 'Review');
+populateSelect($('#ar_status'), REVIEW_STATUS_VALUES, 'New');
+populateSelect($('#rm_status'), REVIEW_STATUS_VALUES, 'New');
+
+const reviewTable = createDataTable({
+  prefix: 'review',
+  fetchUrl: '/api/admin/reviews',
+  dataKey: 'reviews',
+  searchPlaceholder: 'Search client, comment, source…',
+  columns: [
+    { key:'created_at', label:'Date', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'type', label:'Type', sortable:true, get:(r)=>r.type||'Review' },
+    { key:'client_name', label:'Client', sortable:true, get:(r)=>(r.client_name||'').toLowerCase() },
+    { key:'rating', label:'Rating', sortable:true, get:(r)=>Number(r.rating)||0 },
+    { key:'source', label:'Source', sortable:false },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'New' },
+  ],
+  searchFields: (r) => [r.client_name, r.client_company, r.comment, r.source],
+  statusField: (r) => r.status || 'New',
+  statusValues: REVIEW_STATUS_VALUES,
+  renderRowCells: (r) => {
+    const typeColor = r.type === 'Complaint' ? '#b91c1c' : '#15803d';
+    return `
+      <td>${new Date(r.created_at).toLocaleDateString()}</td>
+      <td><span class="badge" style="background:${typeColor}1a; color:${typeColor};">${escapeHtml(r.type)}</span></td>
+      <td>${r.client_name ? escapeHtml(r.client_name) : '—'}</td>
+      <td>${r.rating ? '★'.repeat(r.rating) : '—'}</td>
+      <td>${escapeHtml(r.source || '—')}</td>
+      <td>${statusBadge(r.status, REVIEW_STATUS_COLORS, 'New')}</td>
+    `;
+  },
+  rowKey: (r) => r.id,
+  onRowClick: openReviewModal,
+  csvHeaders: ['Date','Type','Client','Rating','Source','Comment','Status','Resolution'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.type, r.client_name, r.rating, r.source, r.comment, r.status, r.resolution],
+  csvFilenamePrefix: 'reviews',
+  nounSingular: 'review', nounPlural: 'reviews',
+  emptyMessage: 'No reviews or complaints logged yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openReviewModal(r) {
+  selectedReviewId = r.id;
+  $('#reviewModalError').classList.remove('show');
+  populateSelect($('#rm_type'), REVIEW_TYPE_VALUES, r.type || 'Review');
+  populateClientDropdown($('#rm_clientId'), r.client_id, true);
+  $('#rm_rating').value = r.rating || '';
+  $('#rm_source').value = r.source || '';
+  $('#rm_comment').value = r.comment || '';
+  populateSelect($('#rm_status'), REVIEW_STATUS_VALUES, r.status || 'New');
+  $('#rm_resolution').value = r.resolution || '';
+  $('#reviewModalCreated').textContent = 'Logged ' + new Date(r.created_at).toLocaleString();
+  $('#reviewModal').classList.add('show');
+}
+$('#reviewModalClose').addEventListener('click', () => $('#reviewModal').classList.remove('show'));
+$('#reviewModal').addEventListener('click', (e) => { if (e.target.id === 'reviewModal') $('#reviewModal').classList.remove('show'); });
+
+function readReviewForm(prefix) {
+  return readForm(prefix, ['type', 'clientId', 'rating', 'source', 'comment', 'status', 'resolution']);
+}
+
+$('#reviewModalSave').addEventListener('click', async () => {
+  if (!selectedReviewId) return;
+  const payload = readReviewForm('rm');
+  const errBox = $('#reviewModalError');
+  errBox.classList.remove('show');
+  if (!payload.comment) {
+    errBox.textContent = 'A comment is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#reviewModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/reviews?id=' + encodeURIComponent(selectedReviewId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#reviewModal').classList.remove('show');
+    await reviewTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#reviewModalDelete').addEventListener('click', async () => {
+  if (!selectedReviewId) return;
+  if (!confirm('Delete this review/complaint permanently? This cannot be undone.')) return;
+  const btn = $('#reviewModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/reviews?id=' + encodeURIComponent(selectedReviewId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#reviewModal').classList.remove('show');
+    await reviewTable.load();
+  } catch {
+    alert('Failed to delete review. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addReviewSubmit').addEventListener('click', async () => {
+  const payload = readReviewForm('ar');
+  const errBox = $('#addReviewError');
+  const statusEl = document.querySelector('[data-status="add-review"]');
+  errBox.classList.remove('show');
+  if (!payload.comment) {
+    errBox.textContent = 'A comment is required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addReviewSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/reviews', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add');
+    ['rating', 'source', 'comment', 'resolution'].forEach((f) => { $('#ar_' + f).value = ''; });
+    populateSelect($('#ar_type'), REVIEW_TYPE_VALUES, 'Review');
+    populateSelect($('#ar_status'), REVIEW_STATUS_VALUES, 'New');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await reviewTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add';
+});
+
+document.querySelector('[data-panel="reviews-add"]').addEventListener('click', () => {
+  populateClientDropdown($('#ar_clientId'), null, true);
+});
+
+/* ============================================================
    REPORTS
    ============================================================ */
 let revenueExpenseChartInstance = null;
@@ -3405,7 +3650,16 @@ const SIMPLE_FIELDS = [
   'hero_eyebrow', 'hero_headline', 'hero_slogan', 'hero_lead',
   'about_heading', 'about_text_1', 'about_text_2', 'services_description',
   'pricing_floor_factor', 'pricing_minimum_per_visit',
+  'company_name', 'company_tax_id', 'invoice_footer_note',
 ];
+
+function renderCompanyLogoWidget() {
+  renderSingleFileWidget('c_company_logo_url_widget', currentContent.company_logo_url || null, 'branding', (url) => {
+    currentContent.company_logo_url = url || '';
+    renderCompanyLogoWidget();
+    saveContent({ company_logo_url: currentContent.company_logo_url }, 'settings');
+  }, { linkLabel: 'View logo', uploadLabel: 'Click to upload company logo', hint: 'PNG/JPG, up to 4MB', accept: 'image/*' });
+}
 
 async function loadContent() {
   try {
@@ -3418,6 +3672,7 @@ async function loadContent() {
     });
     renderListEditor('facilityTypesList', JSON.parse(currentContent.pricing_facility_types || '[]'), 'rate');
     renderListEditor('addonsList', JSON.parse(currentContent.pricing_addons || '[]'), 'price');
+    renderCompanyLogoWidget();
   } catch (err) {
     console.error('Failed to load content', err);
   }
@@ -3495,6 +3750,12 @@ $$('[data-save]').forEach((btn) => {
         pricing_floor_factor: $('#c_pricing_floor_factor').value,
         pricing_minimum_per_visit: $('#c_pricing_minimum_per_visit').value,
       }, 'floor-settings');
+    } else if (which === 'settings') {
+      saveContent({
+        company_name: $('#c_company_name').value,
+        company_tax_id: $('#c_company_tax_id').value,
+        invoice_footer_note: $('#c_invoice_footer_note').value,
+      }, 'settings');
     }
   });
 });

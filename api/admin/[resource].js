@@ -13,6 +13,7 @@ const RESOURCE_HANDLERS = {
   invoices: require('../../lib/handlers/invoices'),
   expenses: require('../../lib/handlers/expenses'),
   supplies: require('../../lib/handlers/supplies'),
+  reviews: require('../../lib/handlers/reviews'),
   reports: require('../../lib/handlers/reports'),
   content: require('../../lib/handlers/content'),
   upload: require('../../lib/handlers/upload'),
