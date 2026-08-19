@@ -17,6 +17,7 @@ const RESOURCE_HANDLERS = {
   reports: require('../../lib/handlers/reports'),
   content: require('../../lib/handlers/content'),
   upload: require('../../lib/handlers/upload'),
+  users: require('../../lib/handlers/users'),
   login: require('../../lib/handlers/login'),
   logout: require('../../lib/handlers/logout'),
   session: require('../../lib/handlers/session'),

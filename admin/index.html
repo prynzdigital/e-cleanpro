@@ -926,7 +926,25 @@
             <span class="save-status" data-status="settings">Saved</span>
           </div>
         </div>
-        <div class="dash-note">Multi-user accounts and role-based permissions aren't built yet — this admin still uses a single shared login.</div>
+
+        <div class="content-section" id="teamSection" style="display:none; margin-top:20px;">
+          <h3>Team Members</h3>
+          <p class="hint">Owners can add, deactivate, or remove admin accounts. Every account has full access to the dashboard; only Owners can manage the team itself.</p>
+          <div class="error-msg" id="teamError"></div>
+          <div id="teamList"></div>
+          <div class="row3" style="margin-top:18px; align-items:end;">
+            <div class="cfield"><label>Username</label><input id="tm_username"></div>
+            <div class="cfield"><label>Password</label><input id="tm_password" type="password" placeholder="Min. 8 characters"></div>
+            <div class="cfield">
+              <label>Role</label>
+              <select id="tm_role"><option value="Admin">Admin</option><option value="Owner">Owner</option></select>
+            </div>
+          </div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addUserSubmit">Add Team Member</button>
+            <span class="save-status" data-status="add-user">Added</span>
+          </div>
+        </div>
       </div>
 
       <!-- ================= CONTENT: CONTACT INFO ================= -->
@@ -1336,7 +1354,7 @@ async function checkSession() {
   try {
     const r = await fetch('/api/admin/session');
     const data = await r.json();
-    if (data.authenticated) showDashboard(data.username);
+    if (data.authenticated) showDashboard(data.username, data.role, data.userId);
     else showLogin();
   } catch {
     showLogin();
@@ -1348,13 +1366,20 @@ function showLogin() {
   $('#dash').classList.remove('show');
 }
 
-function showDashboard(username) {
+let currentUserRole = null;
+let currentUserId = null;
+
+function showDashboard(username, role, userId) {
   $('#loginScreen').style.display = 'none';
   $('#dash').classList.add('show');
+  currentUserRole = role || null;
+  currentUserId = userId || null;
   if (username) {
-    $('#sessionUser').textContent = username;
+    $('#sessionUser').textContent = username + (role ? ' · ' + role : '');
     $('#dashWelcome').textContent = `Welcome back, ${username}! 👋`;
   }
+  $('#teamSection').style.display = currentUserRole === 'Owner' ? 'block' : 'none';
+  if (currentUserRole === 'Owner') loadTeam();
   leadTable.load();
   clientTable.load();
   quoteTable.load();
@@ -1382,7 +1407,8 @@ $('#loginForm').addEventListener('submit', async (e) => {
       body: JSON.stringify({ username: $('#username').value, password: $('#password').value }),
     });
     if (r.ok) {
-      showDashboard($('#username').value);
+      const data = await r.json().catch(() => ({}));
+      showDashboard($('#username').value, data.role, data.userId);
     } else {
       const data = await r.json().catch(() => ({}));
       errBox.textContent = data.error || 'Login failed';
@@ -3758,6 +3784,131 @@ $$('[data-save]').forEach((btn) => {
       }, 'settings');
     }
   });
+});
+
+/* ============================================================
+   TEAM MANAGEMENT (Owners only)
+   ============================================================ */
+function roleBadge(role) {
+  const color = role === 'Owner' ? '#7c3aed' : '#2563eb';
+  return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(role)}</span>`;
+}
+function userStatusBadge(status) {
+  const color = status === 'Active' ? '#15803d' : '#6b7280';
+  return `<span class="badge" style="background:${color}1a; color:${color};">${escapeHtml(status)}</span>`;
+}
+
+function renderTeamList(users) {
+  const container = $('#teamList');
+  if (users.length === 0) {
+    container.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">No team members yet.</p>';
+    return;
+  }
+  container.innerHTML = users.map((u) => `
+    <div style="display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid rgba(10,92,83,0.08); flex-wrap:wrap;">
+      <div style="flex:1; min-width:140px;">
+        <strong>${escapeHtml(u.username)}</strong>${u.id === currentUserId ? ' <span class="est-line">(you)</span>' : ''}
+        <div class="est-line">Added ${new Date(u.created_at).toLocaleDateString()}</div>
+      </div>
+      ${roleBadge(u.role)}
+      ${userStatusBadge(u.status)}
+      <button type="button" class="btn btn-sm btn-ghost" data-action="toggle-role" data-id="${u.id}" data-role="${u.role}">${u.role === 'Owner' ? 'Make Admin' : 'Make Owner'}</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-action="toggle-status" data-id="${u.id}" data-status="${u.status}">${u.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-action="reset-password" data-id="${u.id}">Reset Password</button>
+      ${u.id === currentUserId ? '' : `<button type="button" class="btn btn-sm btn-danger" data-action="delete-user" data-id="${u.id}">Delete</button>`}
+    </div>
+  `).join('');
+
+  container.querySelectorAll('[data-action]').forEach((btn) => {
+    btn.addEventListener('click', () => handleTeamAction(btn));
+  });
+}
+
+async function loadTeam() {
+  const errBox = $('#teamError');
+  errBox.classList.remove('show');
+  try {
+    const r = await fetch('/api/admin/users');
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to load team');
+    const data = await r.json();
+    renderTeamList(data.users || []);
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to load team members.';
+    errBox.classList.add('show');
+  }
+}
+
+async function handleTeamAction(btn) {
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  const errBox = $('#teamError');
+  errBox.classList.remove('show');
+
+  let payload = null;
+  let method = 'PUT';
+  let confirmMsg = null;
+
+  if (action === 'toggle-role') {
+    payload = { role: btn.dataset.role === 'Owner' ? 'Admin' : 'Owner' };
+  } else if (action === 'toggle-status') {
+    payload = { status: btn.dataset.status === 'Active' ? 'Inactive' : 'Active' };
+    if (payload.status === 'Inactive') confirmMsg = 'Deactivate this account? They will be signed out immediately.';
+  } else if (action === 'reset-password') {
+    const newPassword = prompt('Enter a new password (min. 8 characters):');
+    if (!newPassword) return;
+    if (newPassword.length < 8) { alert('Password must be at least 8 characters.'); return; }
+    payload = { password: newPassword };
+  } else if (action === 'delete-user') {
+    confirmMsg = 'Remove this team member permanently? This cannot be undone.';
+    method = 'DELETE';
+  }
+
+  if (confirmMsg && !confirm(confirmMsg)) return;
+
+  btn.disabled = true;
+  try {
+    const r = await fetch('/api/admin/users?id=' + encodeURIComponent(id), {
+      method,
+      headers: method === 'PUT' ? { 'Content-Type': 'application/json' } : undefined,
+      body: method === 'PUT' ? JSON.stringify(payload) : undefined,
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Action failed');
+    await loadTeam();
+  } catch (err) {
+    errBox.textContent = err.message || 'Action failed. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false;
+}
+
+$('#addUserSubmit').addEventListener('click', async () => {
+  const username = $('#tm_username').value.trim();
+  const password = $('#tm_password').value;
+  const role = $('#tm_role').value;
+  const errBox = $('#teamError');
+  const statusEl = document.querySelector('[data-status="add-user"]');
+  errBox.classList.remove('show');
+  if (!username || password.length < 8) {
+    errBox.textContent = 'A username and a password of at least 8 characters are required.';
+    errBox.classList.add('show');
+    return;
+  }
+  const btn = $('#addUserSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/users', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add team member');
+    $('#tm_username').value = ''; $('#tm_password').value = ''; $('#tm_role').value = 'Admin';
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await loadTeam();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add team member. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Team Member';
 });
 
 checkSession();
