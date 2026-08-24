@@ -128,31 +128,33 @@ async function handleApply(req, res) {
   }
 
   const firstName = name.trim().split(' ')[0];
-  sendEmail({
-    to: email.trim(),
-    subject: 'Application Under Review — E-Clean Pro Services',
-    html: wrapEmail(`
-      <p>Hi ${escapeHtml(firstName)},</p>
-      <p>Thank you for applying${jobTitle ? ` for <strong>${escapeHtml(jobTitle)}</strong>` : ' to E-Clean Pro Services'}. We've received your application and it is currently <strong>under review</strong>.</p>
-      <p>Our team will reach out if your qualifications are a match for the next steps. We appreciate your interest in joining our team!</p>
-    `),
-  }).catch((err) => console.error('Failed to send applicant email:', err));
+  await Promise.all([
+    sendEmail({
+      to: email.trim(),
+      subject: 'Application Under Review — E-Clean Pro Services',
+      html: wrapEmail(`
+        <p>Hi ${escapeHtml(firstName)},</p>
+        <p>Thank you for applying${jobTitle ? ` for <strong>${escapeHtml(jobTitle)}</strong>` : ' to E-Clean Pro Services'}. We've received your application and it is currently <strong>under review</strong>.</p>
+        <p>Our team will reach out if your qualifications are a match for the next steps. We appreciate your interest in joining our team!</p>
+      `),
+    }).catch((err) => console.error('Failed to send applicant email:', err)),
 
-  sendEmail({
-    to: BUSINESS_EMAIL,
-    subject: `New Application: ${name.trim()}${jobTitle ? ` — ${jobTitle}` : ''}`,
-    html: wrapEmail(`
-      <p>A new job application has been submitted.</p>
-      <table cellpadding="6" style="border-collapse:collapse;">
-        <tr><td><strong>Name</strong></td><td>${escapeHtml(name)}</td></tr>
-        <tr><td><strong>Email</strong></td><td>${escapeHtml(email)}</td></tr>
-        <tr><td><strong>Phone</strong></td><td>${escapeHtml(phone)}</td></tr>
-        <tr><td><strong>Position</strong></td><td>${escapeHtml(jobTitle || 'General Application')}</td></tr>
-        <tr><td><strong>Expertise</strong></td><td>${escapeHtml(expertiseList.join(', ') || '—')}</td></tr>
-      </table>
-      <p>Review it in the admin dashboard under Careers &rarr; Applications.</p>
-    `),
-  }).catch((err) => console.error('Failed to send admin notification email:', err));
+    sendEmail({
+      to: BUSINESS_EMAIL,
+      subject: `New Application: ${name.trim()}${jobTitle ? ` — ${jobTitle}` : ''}`,
+      html: wrapEmail(`
+        <p>A new job application has been submitted.</p>
+        <table cellpadding="6" style="border-collapse:collapse;">
+          <tr><td><strong>Name</strong></td><td>${escapeHtml(name)}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${escapeHtml(email)}</td></tr>
+          <tr><td><strong>Phone</strong></td><td>${escapeHtml(phone)}</td></tr>
+          <tr><td><strong>Position</strong></td><td>${escapeHtml(jobTitle || 'General Application')}</td></tr>
+          <tr><td><strong>Expertise</strong></td><td>${escapeHtml(expertiseList.join(', ') || '—')}</td></tr>
+        </table>
+        <p>Review it in the admin dashboard under Careers &rarr; Applications.</p>
+      `),
+    }).catch((err) => console.error('Failed to send admin notification email:', err)),
+  ]);
 
   res.status(200).json({ ok: true, applicationId });
 }
@@ -227,24 +229,26 @@ async function handleUploadDocuments(req, res) {
     `;
 
     const firstName = application.name.split(' ')[0];
-    sendEmail({
-      to: application.email,
-      subject: 'Documents Received — Application Under Review (Background Check)',
-      html: wrapEmail(`
-        <p>Hi ${escapeHtml(firstName)},</p>
-        <p>Thank you — we've received your documents. Your application is now <strong>under review (background check)</strong>.</p>
-        <p>We'll be in touch once this step is complete. Thank you for your patience!</p>
-      `),
-    }).catch((err) => console.error('Failed to send doc-received email:', err));
+    await Promise.all([
+      sendEmail({
+        to: application.email,
+        subject: 'Documents Received — Application Under Review (Background Check)',
+        html: wrapEmail(`
+          <p>Hi ${escapeHtml(firstName)},</p>
+          <p>Thank you — we've received your documents. Your application is now <strong>under review (background check)</strong>.</p>
+          <p>We'll be in touch once this step is complete. Thank you for your patience!</p>
+        `),
+      }).catch((err) => console.error('Failed to send doc-received email:', err)),
 
-    sendEmail({
-      to: BUSINESS_EMAIL,
-      subject: `Background Check Documents Submitted: ${application.name}`,
-      html: wrapEmail(`
-        <p><strong>${escapeHtml(application.name)}</strong> has uploaded their background check documents.</p>
-        <p>Review them in the admin dashboard under Careers &rarr; Applications.</p>
-      `),
-    }).catch((err) => console.error('Failed to send admin doc-notification email:', err));
+      sendEmail({
+        to: BUSINESS_EMAIL,
+        subject: `Background Check Documents Submitted: ${application.name}`,
+        html: wrapEmail(`
+          <p><strong>${escapeHtml(application.name)}</strong> has uploaded their background check documents.</p>
+          <p>Review them in the admin dashboard under Careers &rarr; Applications.</p>
+        `),
+      }).catch((err) => console.error('Failed to send admin doc-notification email:', err)),
+    ]);
 
     res.status(200).json({ ok: true });
   } catch (err) {
