@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Upload Documents | E-Clean Pro Services LLC</title>
+<link rel="icon" type="image/png" href="eclean-logo-color.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#052e2b; --teal-800:#07403c; --teal-700:#0a5c53; --teal-600:#0e7d70;
+    --teal-500:#12a394; --teal-400:#2ec4b6; --mint-300:#7fe8d8; --aqua-100:#e6fbf7;
+    --ink:#0b1f1d; --ink-soft:#3c5450; --paper:#f6fbfa; --danger:#e5484d;
+    --shadow-lg:0 30px 60px -20px rgba(4,40,36,0.35); --radius-lg:26px; --radius-md:18px; --radius-sm:12px;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased;
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+    background:linear-gradient(160deg, var(--teal-900) 0%, var(--teal-800) 45%, var(--teal-700) 100%);
+  }
+  h1,h2,h3{font-family:'Sora','Plus Jakarta Sans',sans-serif; letter-spacing:-0.02em;}
+  .card{background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:40px; width:100%; max-width:560px;}
+  .card img{height:34px; margin-bottom:22px;}
+  .card h1{font-size:22px; color:var(--teal-900); margin-bottom:8px;}
+  .card > p{font-size:14.5px; color:var(--ink-soft); line-height:1.6; margin-bottom:28px;}
+  .lock-note{display:flex; gap:10px; background:var(--aqua-100); border:1px solid rgba(18,163,148,0.25); border-radius:var(--radius-sm); padding:14px 16px; font-size:12.8px; color:var(--teal-800); line-height:1.6; margin-bottom:26px;}
+  .lock-note svg{width:18px;height:18px; flex-shrink:0; color:var(--teal-600);}
+  .field{margin-bottom:22px;}
+  .field label{display:block; font-size:13.5px; font-weight:700; color:var(--teal-800); margin-bottom:8px;}
+  .field-hint{font-size:12px; color:var(--ink-soft); margin-bottom:10px;}
+  .upload-zone{border:1.5px dashed rgba(10,92,83,0.25); border-radius:var(--radius-sm); padding:20px; text-align:center; cursor:pointer; background:var(--paper); transition:.2s;}
+  .upload-zone:hover{border-color:var(--teal-500); background:var(--aqua-100);}
+  .upload-zone input[type=file]{display:none;}
+  .upload-zone .upload-label{font-weight:700; color:var(--teal-600); font-size:13.5px;}
+  .upload-zone .upload-hint{font-size:12px; color:var(--ink-soft); margin-top:4px;}
+  .field-error{font-size:12.5px; font-weight:600; color:var(--danger); margin-top:8px; display:none;}
+  .field-error.show{display:block;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 22px; border-radius:99px; border:none; font-weight:700; font-size:15px; color:#fff; background:linear-gradient(135deg, var(--teal-400), var(--teal-600) 55%, var(--teal-700)); box-shadow:0 14px 28px -10px rgba(14,125,112,0.6); cursor:pointer; transition:.25s var(--ease);}
+  .btn:hover{transform:translateY(-2px);}
+  .btn:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+  .state-msg{text-align:center; padding:20px 0;}
+  .state-msg .ring{width:56px;height:56px;border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
+  .state-msg.success .ring{background:linear-gradient(145deg, var(--mint-300), var(--teal-500));}
+  .state-msg.error .ring{background:rgba(229,72,77,0.12);}
+  .state-msg svg{width:26px;height:26px;}
+  .state-msg.success svg{color:#fff;}
+  .state-msg.error svg{color:var(--danger);}
+  .state-msg h2{font-size:19px; color:var(--teal-900); margin-bottom:8px;}
+  .state-msg p{font-size:14px; color:var(--ink-soft); line-height:1.6;}
+  #uploadView, #stateView{display:none;}
+  #uploadView.show, #stateView.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <img src="eclean-logo-color.png" alt="E-Clean Pro Services LLC">
+
+  <div id="stateView" class="show">
+    <div class="state-msg" id="stateMsg">
+      <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+      <h2>Checking your link…</h2>
+      <p>One moment please.</p>
+    </div>
+  </div>
+
+  <div id="uploadView">
+    <h1 id="uploadHeading">Upload Your Documents</h1>
+    <p>To continue your background check, please upload the two documents below. Both files are securely stored and only accessible to authorized E-Clean Pro Services staff.</p>
+
+    <div class="lock-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>This page uses a secure, one-time link unique to your application. Your documents are encrypted in transit and never made publicly accessible.</span>
+    </div>
+
+    <form id="docsForm">
+      <div class="field">
+        <label>Government-Issued ID *</label>
+        <div class="field-hint">Driver's license or state ID (front side)</div>
+        <div id="govIdWidget"></div>
+        <span class="field-error" id="err-govId">Please attach your government-issued ID.</span>
+      </div>
+      <div class="field">
+        <label>Social Security Card *</label>
+        <div class="field-hint">A clear photo or scan of your Social Security card</div>
+        <div id="ssnDocWidget"></div>
+        <span class="field-error" id="err-ssnDoc">Please attach your Social Security document.</span>
+      </div>
+      <div class="field-error" id="submitError" style="text-align:center; margin-bottom:16px;"></div>
+      <button type="submit" class="btn" id="submitBtn">Submit Documents</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token');
+
+let govIdFile = null;
+let ssnDocFile = null;
+
+function showState(type, heading, message) {
+  $('#stateView').classList.add('show');
+  $('#uploadView').classList.remove('show');
+  const msg = $('#stateMsg');
+  msg.className = 'state-msg' + (type ? ' ' + type : '');
+  const icon = type === 'success'
+    ? '<path d="M20 6 9 17l-5-5"/>'
+    : type === 'error'
+    ? '<circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/>'
+    : '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>';
+  msg.innerHTML = `
+    <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icon}</svg></div>
+    <h2>${heading}</h2>
+    <p>${message}</p>
+  `;
+}
+
+function renderFileWidget(containerId, file, onChange, label) {
+  const el = document.getElementById(containerId);
+  if (file) {
+    el.innerHTML = `
+      <div class="upload-zone" style="cursor:default;">
+        <div class="upload-label">${file.name.replace(/[<>&]/g, '')}</div>
+        <div class="upload-hint">Ready to upload &middot; <a href="#" class="remove-file" style="color:var(--danger); font-weight:700;">Remove</a></div>
+      </div>
+    `;
+    el.querySelector('.remove-file').addEventListener('click', (e) => { e.preventDefault(); onChange(null); });
+  } else {
+    el.innerHTML = `
+      <label class="upload-zone">
+        <input type="file" accept="image/*,.pdf">
+        <div class="upload-label">${label}</div>
+        <div class="upload-hint">JPG, PNG, or PDF &middot; up to 4MB</div>
+      </label>
+    `;
+    el.querySelector('input[type="file"]').addEventListener('change', (e) => {
+      const f = e.target.files[0];
+      if (f) onChange(f);
+    });
+  }
+}
+
+function renderGovIdWidget() { renderFileWidget('govIdWidget', govIdFile, (f) => { govIdFile = f; renderGovIdWidget(); }, 'Click to upload your ID'); }
+function renderSsnDocWidget() { renderFileWidget('ssnDocWidget', ssnDocFile, (f) => { ssnDocFile = f; renderSsnDocWidget(); }, 'Click to upload your SSN document'); }
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function compressImageFile(file, maxDim, quality) {
+  const dataUrl = await readFileAsDataURL(file);
+  const img = new Image();
+  await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
+  let { width, height } = img;
+  if (width > maxDim || height > maxDim) {
+    if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+    else { width = Math.round(width * maxDim / height); height = maxDim; }
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function fileToUploadPayload(file) {
+  let blob = file;
+  let contentType = file.type;
+  if (file.type.startsWith('image/')) {
+    blob = await compressImageFile(file, 1800, 0.85);
+    contentType = 'image/jpeg';
+  }
+  if (blob.size > 4 * 1024 * 1024) throw new Error('File is too large (max 4MB).');
+  const base64 = await blobToBase64(blob);
+  return { filename: file.name, contentType, base64 };
+}
+
+async function checkToken() {
+  if (!token) {
+    showState('error', 'Invalid Link', 'This upload link is missing required information. Please use the link exactly as sent in your email, or contact us for help.');
+    return;
+  }
+  try {
+    const r = await fetch('/api/careers?action=check-token&token=' + encodeURIComponent(token));
+    const data = await r.json();
+    if (!data.valid) {
+      showState('error', 'Link Expired or Already Used', 'This upload link is no longer valid. If you believe this is an error, please contact us at info@ecleanproservices.com.');
+      return;
+    }
+    $('#uploadHeading').textContent = `Hi ${data.firstName}, Upload Your Documents`;
+    $('#stateView').classList.remove('show');
+    $('#uploadView').classList.add('show');
+    renderGovIdWidget();
+    renderSsnDocWidget();
+  } catch (err) {
+    showState('error', 'Something Went Wrong', 'We could not verify your link right now. Please try again in a moment, or contact us at info@ecleanproservices.com.');
+  }
+}
+
+$('#docsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  let valid = true;
+  $('#err-govId').classList.toggle('show', !govIdFile);
+  $('#err-ssnDoc').classList.toggle('show', !ssnDocFile);
+  if (!govIdFile || !ssnDocFile) valid = false;
+  if (!valid) return;
+
+  const btn = $('#submitBtn');
+  const errBox = $('#submitError');
+  errBox.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Uploading…';
+
+  try {
+    const govId = await fileToUploadPayload(govIdFile);
+    const ssnDoc = await fileToUploadPayload(ssnDocFile);
+
+    const resp = await fetch('/api/careers?action=upload-documents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token,
+        govIdFilename: govId.filename, govIdContentType: govId.contentType, govIdBase64: govId.base64,
+        ssnDocFilename: ssnDoc.filename, ssnDocContentType: ssnDoc.contentType, ssnDocBase64: ssnDoc.base64,
+      }),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+
+    showState('success', 'Documents Received!', 'Thank you — your background check documents have been submitted. We\'ll follow up by email once this step is complete.');
+  } catch (err) {
+    errBox.textContent = err.message || 'Network error — please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Submit Documents';
+  }
+});
+
+checkToken();
+</script>
+</body>
+</html>

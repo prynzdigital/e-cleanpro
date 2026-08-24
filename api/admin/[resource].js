@@ -15,6 +15,8 @@ const RESOURCE_HANDLERS = {
   supplies: require('../../lib/handlers/supplies'),
   reviews: require('../../lib/handlers/reviews'),
   reports: require('../../lib/handlers/reports'),
+  'job-postings': require('../../lib/handlers/job-postings'),
+  applications: require('../../lib/handlers/applications'),
   content: require('../../lib/handlers/content'),
   upload: require('../../lib/handlers/upload'),
   users: require('../../lib/handlers/users'),

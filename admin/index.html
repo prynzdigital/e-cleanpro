@@ -414,6 +414,21 @@
         </div>
       </div>
 
+      <div class="nav-group" id="careersGroup">
+        <button class="nav-group-toggle" id="careersGroupToggle">
+          <span class="toggle-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Careers
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="nav-submenu">
+          <button class="nav-subitem" data-panel="applications-list">Applications</button>
+          <button class="nav-subitem" data-panel="job-postings-list">Job Postings</button>
+          <button class="nav-subitem" data-panel="job-postings-add">Add Job Posting</button>
+        </div>
+      </div>
+
       <div class="nav-group" id="invoicesGroup">
         <button class="nav-group-toggle" id="invoicesGroupToggle">
           <span class="toggle-left">
@@ -766,6 +781,44 @@
           <div class="save-row">
             <button class="btn btn-sm" id="addEmployeeSubmit">Add Employee</button>
             <span class="save-status" data-status="add-employee">Added</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CAREERS: APPLICATIONS ================= -->
+      <div class="panel" id="panel-applications-list">
+        <div class="panel-head"><div><h2>Applications</h2><p id="application-count">Loading…</p></div></div>
+        <div id="application-shell"></div>
+      </div>
+
+      <!-- ================= CAREERS: ALL JOB POSTINGS ================= -->
+      <div class="panel" id="panel-job-postings-list">
+        <div class="panel-head"><div><h2>Job Postings</h2><p id="job-posting-count">Loading…</p></div></div>
+        <div id="job-posting-shell"></div>
+      </div>
+
+      <!-- ================= CAREERS: ADD JOB POSTING ================= -->
+      <div class="panel" id="panel-job-postings-add">
+        <div class="panel-head"><div><h2>Add Job Posting</h2><p>Post a new open role to the public careers page.</p></div></div>
+        <div class="content-section">
+          <div class="error-msg" id="addJobPostingError"></div>
+          <div class="cfield"><label>Title *</label><input id="ajp_title" required></div>
+          <div class="row2">
+            <div class="cfield"><label>Location</label><input id="ajp_location" placeholder="e.g. Frankfort, IL"></div>
+            <div class="cfield">
+              <label>Employment Type</label>
+              <select id="ajp_employmentType">
+                <option value="">—</option>
+                <option>Full-Time</option><option>Part-Time</option><option>Contract</option><option>Seasonal</option>
+              </select>
+            </div>
+          </div>
+          <div class="cfield"><label>Description</label><textarea id="ajp_description" placeholder="What the role involves..."></textarea></div>
+          <div class="cfield"><label>Requirements</label><textarea id="ajp_requirements" placeholder="What you're looking for in a candidate..."></textarea></div>
+          <div class="cfield"><label>Status</label><select id="ajp_status"></select></div>
+          <div class="save-row">
+            <button class="btn btn-sm" id="addJobPostingSubmit">Add Job Posting</button>
+            <span class="save-status" data-status="add-job-posting">Added</span>
           </div>
         </div>
       </div>
@@ -1333,6 +1386,50 @@
   </div>
 </div>
 
+<!-- ================= JOB POSTING EDIT MODAL ================= -->
+<div class="modal-overlay" id="jobPostingModal">
+  <div class="modal">
+    <h3>Edit Job Posting</h3>
+    <div class="error-msg" id="jobPostingModalError"></div>
+    <div class="cfield"><label>Title *</label><input id="jpm_title" required></div>
+    <div class="row2">
+      <div class="cfield"><label>Location</label><input id="jpm_location"></div>
+      <div class="cfield">
+        <label>Employment Type</label>
+        <select id="jpm_employmentType">
+          <option value="">—</option>
+          <option>Full-Time</option><option>Part-Time</option><option>Contract</option><option>Seasonal</option>
+        </select>
+      </div>
+    </div>
+    <div class="cfield"><label>Description</label><textarea id="jpm_description"></textarea></div>
+    <div class="cfield"><label>Requirements</label><textarea id="jpm_requirements"></textarea></div>
+    <div class="cfield"><label>Status</label><select id="jpm_status"></select></div>
+    <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="jobPostingModalStats"></p>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="jobPostingModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-ghost" id="jobPostingModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="jobPostingModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APPLICATION REVIEW MODAL ================= -->
+<div class="modal-overlay" id="applicationModal">
+  <div class="modal" style="max-width:620px;">
+    <h3>Review Application</h3>
+    <div class="error-msg" id="applicationModalError"></div>
+    <div id="applicationModalBody" style="font-size:13.5px; line-height:1.7; margin-bottom:18px;"></div>
+    <div class="cfield"><label>Admin Notes</label><textarea id="apm_adminNotes"></textarea></div>
+    <div class="modal-actions" id="applicationModalActions" style="margin-bottom:10px;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-sm" id="applicationModalSaveNotes">Save Notes</button>
+      <button class="btn btn-sm btn-ghost" id="applicationModalClose">Close</button>
+      <button class="btn btn-sm btn-danger" id="applicationModalDelete">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -1389,6 +1486,8 @@ function showDashboard(username, role, userId) {
   expenseTable.load();
   supplyTable.load();
   reviewTable.load();
+  jobPostingTable.load();
+  applicationTable.load();
   loadContent();
   loadDashboardStats();
 }
@@ -1444,7 +1543,7 @@ $$('.nav-item[data-panel], .nav-subitem[data-panel]').forEach((btn) => {
   btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
 });
 
-['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'invoicesGroupToggle', 'expensesGroupToggle', 'suppliesGroupToggle', 'reviewsGroupToggle', 'contentGroupToggle'].forEach((id) => {
+['leadsGroupToggle', 'clientsGroupToggle', 'quotesGroupToggle', 'contractsGroupToggle', 'jobsGroupToggle', 'employeesGroupToggle', 'careersGroupToggle', 'invoicesGroupToggle', 'expensesGroupToggle', 'suppliesGroupToggle', 'reviewsGroupToggle', 'contentGroupToggle'].forEach((id) => {
   const groupId = id.replace('Toggle', '');
   $('#' + id).addEventListener('click', () => $('#' + groupId).classList.toggle('open'));
 });
@@ -2533,8 +2632,8 @@ document.querySelector('[data-panel="contracts-add"]').addEventListener('click',
 /* ============================================================
    EMPLOYEES
    ============================================================ */
-const EMPLOYEE_STATUS_VALUES = ['Active', 'Inactive'];
-const EMPLOYEE_STATUS_COLORS = { Active:'#15803d', Inactive:'#6b7280' };
+const EMPLOYEE_STATUS_VALUES = ['Active', 'Inactive', 'Waiting List'];
+const EMPLOYEE_STATUS_COLORS = { Active:'#15803d', Inactive:'#6b7280', 'Waiting List':'#a16207' };
 let selectedEmployeeId = null;
 
 populateSelect($('#ae_status'), EMPLOYEE_STATUS_VALUES, 'Active');
@@ -3485,6 +3584,289 @@ async function loadReports() {
 
 document.querySelector('[data-panel="reports"]').addEventListener('click', () => {
   loadReports();
+});
+
+/* ============================================================
+   CAREERS: JOB POSTINGS
+   ============================================================ */
+const JOB_POSTING_STATUS_VALUES = ['Open', 'Closed'];
+const JOB_POSTING_STATUS_COLORS = { Open:'#15803d', Closed:'#6b7280' };
+let selectedJobPostingId = null;
+
+populateSelect($('#ajp_status'), JOB_POSTING_STATUS_VALUES, 'Open');
+populateSelect($('#jpm_status'), JOB_POSTING_STATUS_VALUES, 'Open');
+
+const jobPostingTable = createDataTable({
+  prefix: 'job-posting',
+  fetchUrl: '/api/admin/job-postings',
+  dataKey: 'jobPostings',
+  searchPlaceholder: 'Search title, location…',
+  columns: [
+    { key:'created_at', label:'Posted', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'title', label:'Title', sortable:true, get:(r)=>(r.title||'').toLowerCase() },
+    { key:'location', label:'Location', sortable:false },
+    { key:'employment_type', label:'Type', sortable:false },
+    { key:'application_count', label:'Applicants', sortable:true, get:(r)=>Number(r.application_count)||0 },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Open' },
+  ],
+  searchFields: (r) => [r.title, r.location, r.employment_type],
+  statusField: (r) => r.status || 'Open',
+  statusValues: JOB_POSTING_STATUS_VALUES,
+  renderRowCells: (r) => `
+    <td>${new Date(r.created_at).toLocaleDateString()}</td>
+    <td>${escapeHtml(r.title)}</td>
+    <td>${escapeHtml(r.location || '—')}</td>
+    <td>${escapeHtml(r.employment_type || '—')}</td>
+    <td>${r.application_count || 0}</td>
+    <td>${statusBadge(r.status, JOB_POSTING_STATUS_COLORS, 'Open')}</td>
+  `,
+  rowKey: (r) => r.id,
+  onRowClick: openJobPostingModal,
+  csvHeaders: ['Posted','Title','Location','Type','Applicants','Status','Description','Requirements'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.title, r.location, r.employment_type, r.application_count, r.status, r.description, r.requirements],
+  csvFilenamePrefix: 'job-postings',
+  nounSingular: 'job posting', nounPlural: 'job postings',
+  emptyMessage: 'No job postings yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+function openJobPostingModal(r) {
+  selectedJobPostingId = r.id;
+  $('#jobPostingModalError').classList.remove('show');
+  $('#jpm_title').value = r.title || '';
+  $('#jpm_location').value = r.location || '';
+  $('#jpm_employmentType').value = r.employment_type || '';
+  $('#jpm_description').value = r.description || '';
+  $('#jpm_requirements').value = r.requirements || '';
+  populateSelect($('#jpm_status'), JOB_POSTING_STATUS_VALUES, r.status || 'Open');
+  $('#jobPostingModalStats').textContent = `${r.application_count || 0} application(s) · Posted ${new Date(r.created_at).toLocaleString()}`;
+  $('#jobPostingModal').classList.add('show');
+}
+$('#jobPostingModalClose').addEventListener('click', () => $('#jobPostingModal').classList.remove('show'));
+$('#jobPostingModal').addEventListener('click', (e) => { if (e.target.id === 'jobPostingModal') $('#jobPostingModal').classList.remove('show'); });
+
+function readJobPostingForm(prefix) {
+  return readForm(prefix, ['title', 'location', 'employmentType', 'description', 'requirements', 'status']);
+}
+
+$('#jobPostingModalSave').addEventListener('click', async () => {
+  if (!selectedJobPostingId) return;
+  const payload = readJobPostingForm('jpm');
+  const errBox = $('#jobPostingModalError');
+  errBox.classList.remove('show');
+  if (!payload.title) { errBox.textContent = 'Title is required.'; errBox.classList.add('show'); return; }
+  const btn = $('#jobPostingModalSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/job-postings?id=' + encodeURIComponent(selectedJobPostingId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    $('#jobPostingModal').classList.remove('show');
+    await jobPostingTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+});
+
+$('#jobPostingModalDelete').addEventListener('click', async () => {
+  if (!selectedJobPostingId) return;
+  if (!confirm('Delete this job posting permanently? This cannot be undone.')) return;
+  const btn = $('#jobPostingModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/job-postings?id=' + encodeURIComponent(selectedJobPostingId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#jobPostingModal').classList.remove('show');
+    await jobPostingTable.load();
+  } catch {
+    alert('Failed to delete job posting. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
+});
+
+$('#addJobPostingSubmit').addEventListener('click', async () => {
+  const payload = readJobPostingForm('ajp');
+  const errBox = $('#addJobPostingError');
+  const statusEl = document.querySelector('[data-status="add-job-posting"]');
+  errBox.classList.remove('show');
+  if (!payload.title) { errBox.textContent = 'Title is required.'; errBox.classList.add('show'); return; }
+  const btn = $('#addJobPostingSubmit');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const r = await fetch('/api/admin/job-postings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add job posting');
+    ['location', 'description', 'requirements'].forEach((f) => { $('#ajp_' + f).value = ''; });
+    $('#ajp_title').value = '';
+    $('#ajp_employmentType').value = '';
+    populateSelect($('#ajp_status'), JOB_POSTING_STATUS_VALUES, 'Open');
+    statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
+    setTimeout(() => statusEl.classList.remove('show'), 2000);
+    await jobPostingTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to add job posting. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Add Job Posting';
+});
+
+/* ============================================================
+   CAREERS: APPLICATIONS
+   ============================================================ */
+const APPLICATION_STATUS_VALUES = ['Under Review', 'Background Check', 'Background Check Review', 'Approved', 'Rejected', 'Hired'];
+const APPLICATION_STATUS_COLORS = { 'Under Review':'#2563eb', 'Background Check':'#a16207', 'Background Check Review':'#7c3aed', Approved:'#15803d', Rejected:'#b91c1c', Hired:'#15803d' };
+let selectedApplicationId = null;
+
+const applicationTable = createDataTable({
+  prefix: 'application',
+  fetchUrl: '/api/admin/applications',
+  dataKey: 'applications',
+  searchPlaceholder: 'Search name, email, position…',
+  columns: [
+    { key:'created_at', label:'Applied', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'name', label:'Name', sortable:true, get:(r)=>(r.name||'').toLowerCase() },
+    { key:'job_title', label:'Position', sortable:false },
+    { key:'phone', label:'Phone', sortable:false },
+    { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'Under Review' },
+  ],
+  searchFields: (r) => [r.name, r.email, r.phone, r.job_title],
+  statusField: (r) => r.status || 'Under Review',
+  statusValues: APPLICATION_STATUS_VALUES,
+  renderRowCells: (r) => `
+    <td>${new Date(r.created_at).toLocaleDateString()}</td>
+    <td>${escapeHtml(r.name)}</td>
+    <td>${escapeHtml(r.job_title || 'General Application')}</td>
+    <td>${escapeHtml(r.phone)}</td>
+    <td>${statusBadge(r.status, APPLICATION_STATUS_COLORS, 'Under Review')}</td>
+  `,
+  rowKey: (r) => r.id,
+  onRowClick: openApplicationModal,
+  csvHeaders: ['Applied','Name','Email','Phone','Position','Status','Work Authorized','Expertise'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.email, r.phone, r.job_title, r.status, r.work_authorized, (r.expertise||[]).join('; ')],
+  csvFilenamePrefix: 'applications',
+  nounSingular: 'application', nounPlural: 'applications',
+  emptyMessage: 'No applications yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
+const APPLICATION_ACTIONS = {
+  'Under Review': [
+    { action: 'accept-background-check', label: 'Move to Background Check', cls: 'btn-accent' },
+    { action: 'reject', label: 'Reject', cls: 'btn-danger' },
+  ],
+  'Background Check': [
+    { action: 'reject', label: 'Reject', cls: 'btn-danger' },
+  ],
+  'Background Check Review': [
+    { action: 'approve', label: 'Mark Passed', cls: 'btn-accent' },
+    { action: 'reject', label: 'Reject', cls: 'btn-danger' },
+  ],
+  Approved: [
+    { action: 'convert-to-employee', label: 'Convert to Employee', cls: 'btn-accent' },
+  ],
+};
+
+function openApplicationModal(r) {
+  selectedApplicationId = r.id;
+  $('#applicationModalError').classList.remove('show');
+
+  const expertise = Array.isArray(r.expertise) ? r.expertise : [];
+  const docsAvailable = !!r.documents_submitted_at;
+
+  $('#applicationModalBody').innerHTML = `
+    <p><strong>${escapeHtml(r.name)}</strong> ${statusBadge(r.status, APPLICATION_STATUS_COLORS, 'Under Review')}</p>
+    <p><strong>Position:</strong> ${escapeHtml(r.job_title || 'General Application')}</p>
+    <p><strong>Email:</strong> ${escapeHtml(r.email)} &nbsp; <strong>Phone:</strong> ${escapeHtml(r.phone)}</p>
+    <p><strong>Work Authorized:</strong> ${r.work_authorized ? 'Yes' : 'No'}</p>
+    <p><strong>Expertise:</strong> ${expertise.length ? escapeHtml(expertise.join(', ')) : '—'}</p>
+    <p><strong>Resume/CV:</strong> ${r.resume_url ? `<a href="${r.resume_url}" target="_blank" rel="noopener">View Resume</a>` : '—'}</p>
+    ${docsAvailable ? `
+      <p><strong>Background Check Documents</strong> (submitted ${new Date(r.documents_submitted_at).toLocaleString()}):<br>
+        <a href="/api/admin/applications?id=${r.id}&amp;document=govId" target="_blank" rel="noopener">View Government ID</a> &nbsp;&middot;&nbsp;
+        <a href="/api/admin/applications?id=${r.id}&amp;document=ssnDoc" target="_blank" rel="noopener">View SSN Document</a>
+      </p>
+    ` : ''}
+    <p style="font-size:11px; color:var(--ink-soft);">Applied ${new Date(r.created_at).toLocaleString()}</p>
+  `;
+  $('#apm_adminNotes').value = r.admin_notes || '';
+
+  const actions = APPLICATION_ACTIONS[r.status] || [];
+  $('#applicationModalActions').innerHTML = actions.map((a) =>
+    `<button class="btn btn-sm ${a.cls}" data-action="${a.action}">${a.label}</button>`
+  ).join('');
+  $$('#applicationModalActions [data-action]').forEach((btn) => {
+    btn.addEventListener('click', () => runApplicationAction(btn.dataset.action));
+  });
+
+  $('#applicationModal').classList.add('show');
+}
+$('#applicationModalClose').addEventListener('click', () => $('#applicationModal').classList.remove('show'));
+$('#applicationModal').addEventListener('click', (e) => { if (e.target.id === 'applicationModal') $('#applicationModal').classList.remove('show'); });
+
+async function runApplicationAction(action) {
+  if (!selectedApplicationId) return;
+  const confirmMsgs = {
+    'accept-background-check': 'Move this application to Background Check? The applicant will be emailed a secure upload link.',
+    reject: 'Reject this application? This cannot be undone.',
+    approve: 'Mark this applicant as passed the background check?',
+    'convert-to-employee': 'Convert this applicant to an employee (Waiting List)? A congratulations email will be sent.',
+  };
+  if (confirmMsgs[action] && !confirm(confirmMsgs[action])) return;
+
+  const errBox = $('#applicationModalError');
+  errBox.classList.remove('show');
+  try {
+    const r = await fetch('/api/admin/applications?id=' + encodeURIComponent(selectedApplicationId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Action failed');
+    const { application } = await r.json();
+    await applicationTable.load();
+    if (action === 'convert-to-employee') await employeeTable.load();
+    openApplicationModal(application);
+  } catch (err) {
+    errBox.textContent = err.message || 'Action failed. Try again.';
+    errBox.classList.add('show');
+  }
+}
+
+$('#applicationModalSaveNotes').addEventListener('click', async () => {
+  if (!selectedApplicationId) return;
+  const btn = $('#applicationModalSaveNotes');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const errBox = $('#applicationModalError');
+  errBox.classList.remove('show');
+  try {
+    const r = await fetch('/api/admin/applications?id=' + encodeURIComponent(selectedApplicationId), {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ adminNotes: $('#apm_adminNotes').value }),
+    });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    await applicationTable.load();
+  } catch (err) {
+    errBox.textContent = err.message || 'Failed to save notes.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Save Notes';
+});
+
+$('#applicationModalDelete').addEventListener('click', async () => {
+  if (!selectedApplicationId) return;
+  if (!confirm('Delete this application permanently? This also deletes any uploaded documents. This cannot be undone.')) return;
+  const btn = $('#applicationModalDelete');
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    const r = await fetch('/api/admin/applications?id=' + encodeURIComponent(selectedApplicationId), { method: 'DELETE' });
+    if (!r.ok) throw new Error('delete failed');
+    $('#applicationModal').classList.remove('show');
+    await applicationTable.load();
+  } catch {
+    alert('Failed to delete application. Try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Delete';
 });
 
 /* ============================================================
