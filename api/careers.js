@@ -18,6 +18,21 @@ const EXPERTISE_OPTIONS = [
   'Comfortable Working at Heights (Ladders)', 'Able to Lift 25+ lbs',
 ];
 
+// Voluntary EEO self-identification options. Never validated as required --
+// federal EEOC guidance requires these to be optional and kept separate
+// from the hiring decision itself.
+const RACE_OPTIONS = [
+  'American Indian or Alaska Native', 'Asian', 'Black or African American',
+  'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White',
+  'Two or More Races', 'Prefer not to answer',
+];
+const VETERAN_STATUS_OPTIONS = [
+  'I am not a protected veteran', 'I identify as a protected veteran', 'Prefer not to answer',
+];
+const MILITARY_STATUS_OPTIONS = [
+  'Not currently serving', 'Active Duty', 'Reserve / National Guard', 'Prefer not to answer',
+];
+
 function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -37,7 +52,13 @@ async function handleList(req, res) {
       WHERE status = 'Open'
       ORDER BY created_at DESC
     `;
-    res.status(200).json({ jobPostings: rows, expertiseOptions: EXPERTISE_OPTIONS });
+    res.status(200).json({
+      jobPostings: rows,
+      expertiseOptions: EXPERTISE_OPTIONS,
+      raceOptions: RACE_OPTIONS,
+      veteranStatusOptions: VETERAN_STATUS_OPTIONS,
+      militaryStatusOptions: MILITARY_STATUS_OPTIONS,
+    });
   } catch (err) {
     console.error('Failed to list job postings:', err);
     res.status(500).json({ error: 'Failed to load job postings' });
@@ -47,7 +68,8 @@ async function handleList(req, res) {
 async function handleApply(req, res) {
   const body = req.body || {};
   const {
-    jobPostingId, name, email, phone, workAuthorized, expertise,
+    jobPostingId, name, email, phone, address, zipCode, workAuthorized, expertise,
+    race, veteranStatus, militaryStatus,
     resumeFilename, resumeContentType, resumeBase64,
   } = body;
 
@@ -61,6 +83,14 @@ async function handleApply(req, res) {
   }
   if (!isValidPhone(phone)) {
     res.status(400).json({ error: 'Please provide a valid phone number.' });
+    return;
+  }
+  if (!address || typeof address !== 'string' || address.trim().length < 3) {
+    res.status(400).json({ error: 'Please provide your address.' });
+    return;
+  }
+  if (!zipCode || typeof zipCode !== 'string' || !/^\d{5}(-\d{4})?$/.test(zipCode.trim())) {
+    res.status(400).json({ error: 'Please provide a valid ZIP code.' });
     return;
   }
   if (workAuthorized !== true) {
@@ -102,6 +132,9 @@ async function handleApply(req, res) {
 
   const expertiseList = Array.isArray(expertise) ? expertise.filter((e) => EXPERTISE_OPTIONS.includes(e)) : [];
   const jobPostingIdNum = Number(jobPostingId);
+  const raceValue = RACE_OPTIONS.includes(race) ? race : null;
+  const veteranStatusValue = VETERAN_STATUS_OPTIONS.includes(veteranStatus) ? veteranStatus : null;
+  const militaryStatusValue = MILITARY_STATUS_OPTIONS.includes(militaryStatus) ? militaryStatus : null;
 
   let applicationId;
   let jobTitle = null;
@@ -112,11 +145,15 @@ async function handleApply(req, res) {
       jobTitle = jp[0] ? jp[0].title : null;
     }
     const rows = await sql`
-      INSERT INTO job_applications (job_posting_id, name, email, phone, work_authorized, expertise, resume_url, status)
+      INSERT INTO job_applications (
+        job_posting_id, name, email, phone, address, zip_code, work_authorized, expertise,
+        race, veteran_status, military_status, resume_url, status
+      )
       VALUES (
         ${Number.isInteger(jobPostingIdNum) && jobPostingIdNum > 0 ? jobPostingIdNum : null},
-        ${name.trim()}, ${email.trim()}, ${phone.trim()}, true,
-        ${JSON.stringify(expertiseList)}, ${resumeUrl}, 'Under Review'
+        ${name.trim()}, ${email.trim()}, ${phone.trim()}, ${address.trim()}, ${zipCode.trim()}, true,
+        ${JSON.stringify(expertiseList)}, ${raceValue}, ${veteranStatusValue}, ${militaryStatusValue},
+        ${resumeUrl}, 'Under Review'
       )
       RETURNING id
     `;

@@ -82,6 +82,8 @@
   .check-row{display:flex; align-items:flex-start; gap:10px; margin-bottom:16px;}
   .check-row input{margin-top:3px; width:18px; height:18px; accent-color:var(--teal-600); flex-shrink:0;}
   .check-row label{font-size:14px; color:var(--ink-soft); line-height:1.5;}
+  .eeo-note{background:var(--aqua-100); border:1px solid rgba(18,163,148,0.25); border-radius:var(--radius-sm); padding:14px 16px; font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin-bottom:18px;}
+  .voluntary-tag{font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:0.04em;}
   .expertise-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
   .expertise-item{display:flex; align-items:center; gap:9px; padding:10px 12px; border-radius:var(--radius-sm); border:1.5px solid rgba(10,92,83,0.14); font-size:13px; color:var(--ink-soft);}
   .expertise-item input{width:17px; height:17px; accent-color:var(--teal-600); flex-shrink:0;}
@@ -190,6 +192,17 @@
           </div>
 
           <div class="field">
+            <label for="jAddress">Address</label>
+            <input type="text" id="jAddress" required placeholder="Street, City, IL">
+            <span class="field-error" id="err-jAddress"></span>
+          </div>
+          <div class="field">
+            <label for="jZipCode">ZIP Code</label>
+            <input type="text" id="jZipCode" required placeholder="60423" inputmode="numeric" maxlength="10">
+            <span class="field-error" id="err-jZipCode"></span>
+          </div>
+
+          <div class="field">
             <label>Relevant Experience &amp; Availability</label>
             <div class="expertise-grid" id="expertiseGrid"></div>
           </div>
@@ -199,6 +212,24 @@
             <label for="jWorkAuthorized">I confirm that I am legally authorized to work in the United States. *</label>
           </div>
           <span class="field-error" id="err-jWorkAuthorized" style="margin-top:-10px; margin-bottom:14px;"></span>
+
+          <div class="eeo-note">
+            <strong>Voluntary Self-Identification (EEO):</strong> The following information is requested for record-keeping and equal employment opportunity compliance purposes only. Providing it is entirely voluntary, will not affect your application in any way, and is kept separate from the hiring decision.
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="jRace">Race / Ethnicity <span class="voluntary-tag">Voluntary</span></label>
+              <select id="jRace"><option value="">Prefer not to answer</option></select>
+            </div>
+            <div class="field">
+              <label for="jVeteranStatus">Veteran Status <span class="voluntary-tag">Voluntary</span></label>
+              <select id="jVeteranStatus"><option value="">Prefer not to answer</option></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="jMilitaryStatus">Current Military Service <span class="voluntary-tag">Voluntary</span></label>
+            <select id="jMilitaryStatus"><option value="">Prefer not to answer</option></select>
+          </div>
 
           <div class="field">
             <label>Resume / CV or Certificate *</label>
@@ -254,6 +285,9 @@ async function loadCareersData() {
     expertiseOptions = data.expertiseOptions || [];
     renderJobs();
     renderExpertise();
+    renderEeoOptions('jRace', data.raceOptions || []);
+    renderEeoOptions('jVeteranStatus', data.veteranStatusOptions || []);
+    renderEeoOptions('jMilitaryStatus', data.militaryStatusOptions || []);
 
     const params = new URLSearchParams(window.location.search);
     const preselect = params.get('job');
@@ -294,6 +328,12 @@ function renderExpertise() {
   $('#expertiseGrid').innerHTML = expertiseOptions.map((label, i) => `
     <label class="expertise-item"><input type="checkbox" value="${escapeHtml(label)}" id="exp-${i}">${escapeHtml(label)}</label>
   `).join('');
+}
+
+function renderEeoOptions(selectId, options) {
+  const select = document.getElementById(selectId);
+  select.innerHTML = '<option value="">Prefer not to answer</option>' +
+    options.filter((o) => o !== 'Prefer not to answer').map((o) => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
 }
 
 /* ---------- Resume upload widget ---------- */
@@ -392,6 +432,8 @@ function validateApplyForm() {
   if (!$('#jName').value.trim() || $('#jName').value.trim().length < 2) { setFieldError('jName', 'Please enter your full name.'); valid = false; } else setFieldError('jName', '');
   if (!isValidPhone($('#jPhone').value)) { setFieldError('jPhone', 'Please enter a valid phone number.'); valid = false; } else setFieldError('jPhone', '');
   if (!isValidEmail($('#jEmail').value)) { setFieldError('jEmail', 'Please enter a valid email address.'); valid = false; } else setFieldError('jEmail', '');
+  if (!$('#jAddress').value.trim() || $('#jAddress').value.trim().length < 3) { setFieldError('jAddress', 'Please enter your address.'); valid = false; } else setFieldError('jAddress', '');
+  if (!/^\d{5}(-\d{4})?$/.test($('#jZipCode').value.trim())) { setFieldError('jZipCode', 'Please enter a valid ZIP code.'); valid = false; } else setFieldError('jZipCode', '');
   const workErr = document.getElementById('err-jWorkAuthorized');
   if (!$('#jWorkAuthorized').checked) { workErr.textContent = 'You must confirm your work eligibility to apply.'; workErr.style.display = 'block'; valid = false; } else { workErr.style.display = 'none'; }
   const resumeErr = document.getElementById('err-resume');
@@ -418,8 +460,13 @@ $('#applyForm').addEventListener('submit', async (e) => {
       name: $('#jName').value.trim(),
       email: $('#jEmail').value.trim(),
       phone: $('#jPhone').value.trim(),
+      address: $('#jAddress').value.trim(),
+      zipCode: $('#jZipCode').value.trim(),
       workAuthorized: $('#jWorkAuthorized').checked,
       expertise,
+      race: $('#jRace').value || undefined,
+      veteranStatus: $('#jVeteranStatus').value || undefined,
+      militaryStatus: $('#jMilitaryStatus').value || undefined,
       resumeFilename: resumeUpload.filename,
       resumeContentType: resumeUpload.contentType,
       resumeBase64: resumeUpload.base64,

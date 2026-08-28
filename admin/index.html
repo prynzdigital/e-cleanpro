@@ -971,6 +971,10 @@
             <div class="cfield"><label>Status</label><select id="ar_status"></select></div>
           </div>
           <div class="cfield"><label>Resolution Notes</label><textarea id="ar_resolution"></textarea></div>
+          <div class="cfield" style="display:flex; align-items:center; gap:9px;">
+            <input type="checkbox" id="ar_featured" style="width:17px; height:17px; accent-color:var(--teal-600);">
+            <label for="ar_featured" style="margin:0;">Show as testimonial on website (Reviews only)</label>
+          </div>
           <div class="save-row">
             <button class="btn btn-sm" id="addReviewSubmit">Add</button>
             <span class="save-status" data-status="add-review">Added</span>
@@ -1448,6 +1452,10 @@
     <div class="cfield"><label>Comment *</label><textarea id="rm_comment" required></textarea></div>
     <div class="cfield"><label>Status</label><select id="rm_status"></select></div>
     <div class="cfield"><label>Resolution Notes</label><textarea id="rm_resolution"></textarea></div>
+    <div class="cfield" style="display:flex; align-items:center; gap:9px;">
+      <input type="checkbox" id="rm_featured" style="width:17px; height:17px; accent-color:var(--teal-600);">
+      <label for="rm_featured" style="margin:0;">Show as testimonial on website (Reviews only)</label>
+    </div>
     <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="reviewModalCreated"></p>
     <div class="modal-actions">
       <button class="btn btn-sm" id="reviewModalSave">Save Changes</button>
@@ -3683,6 +3691,7 @@ const reviewTable = createDataTable({
     { key:'rating', label:'Rating', sortable:true, get:(r)=>Number(r.rating)||0 },
     { key:'source', label:'Source', sortable:false },
     { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'New' },
+    { key:'featured', label:'On Website', sortable:true, get:(r)=>r.featured ? 1 : 0 },
   ],
   searchFields: (r) => [r.client_name, r.client_company, r.comment, r.source],
   statusField: (r) => r.status || 'New',
@@ -3696,12 +3705,13 @@ const reviewTable = createDataTable({
       <td>${r.rating ? '★'.repeat(r.rating) : '—'}</td>
       <td>${escapeHtml(r.source || '—')}</td>
       <td>${statusBadge(r.status, REVIEW_STATUS_COLORS, 'New')}</td>
+      <td>${r.featured ? '<span class="badge" style="background:#15803d1a; color:#15803d;">Yes</span>' : '—'}</td>
     `;
   },
   rowKey: (r) => r.id,
   onRowClick: openReviewModal,
-  csvHeaders: ['Date','Type','Client','Rating','Source','Comment','Status','Resolution'],
-  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.type, r.client_name, r.rating, r.source, r.comment, r.status, r.resolution],
+  csvHeaders: ['Date','Type','Client','Rating','Source','Comment','Status','Resolution','On Website'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.type, r.client_name, r.rating, r.source, r.comment, r.status, r.resolution, r.featured],
   csvFilenamePrefix: 'reviews',
   nounSingular: 'review', nounPlural: 'reviews',
   emptyMessage: 'No reviews or complaints logged yet.',
@@ -3718,6 +3728,7 @@ function openReviewModal(r) {
   $('#rm_comment').value = r.comment || '';
   populateSelect($('#rm_status'), REVIEW_STATUS_VALUES, r.status || 'New');
   $('#rm_resolution').value = r.resolution || '';
+  $('#rm_featured').checked = !!r.featured;
   $('#reviewModalCreated').textContent = 'Logged ' + new Date(r.created_at).toLocaleString();
   $('#reviewModal').classList.add('show');
 }
@@ -3730,7 +3741,7 @@ function readReviewForm(prefix) {
 
 $('#reviewModalSave').addEventListener('click', async () => {
   if (!selectedReviewId) return;
-  const payload = readReviewForm('rm');
+  const payload = { ...readReviewForm('rm'), featured: $('#rm_featured').checked };
   const errBox = $('#reviewModalError');
   errBox.classList.remove('show');
   if (!payload.comment) {
@@ -3771,7 +3782,7 @@ $('#reviewModalDelete').addEventListener('click', async () => {
 });
 
 $('#addReviewSubmit').addEventListener('click', async () => {
-  const payload = readReviewForm('ar');
+  const payload = { ...readReviewForm('ar'), featured: $('#ar_featured').checked };
   const errBox = $('#addReviewError');
   const statusEl = document.querySelector('[data-status="add-review"]');
   errBox.classList.remove('show');
@@ -3788,6 +3799,7 @@ $('#addReviewSubmit').addEventListener('click', async () => {
     });
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add');
     ['rating', 'source', 'comment', 'resolution'].forEach((f) => { $('#ar_' + f).value = ''; });
+    $('#ar_featured').checked = false;
     populateSelect($('#ar_type'), REVIEW_TYPE_VALUES, 'Review');
     populateSelect($('#ar_status'), REVIEW_STATUS_VALUES, 'New');
     statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
@@ -4040,8 +4052,8 @@ const applicationTable = createDataTable({
   `,
   rowKey: (r) => r.id,
   onRowClick: openApplicationModal,
-  csvHeaders: ['Applied','Name','Email','Phone','Position','Status','Work Authorized','Expertise'],
-  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.email, r.phone, r.job_title, r.status, r.work_authorized, (r.expertise||[]).join('; ')],
+  csvHeaders: ['Applied','Name','Email','Phone','Address','ZIP','Position','Status','Work Authorized','Expertise','Race','Veteran Status','Military Status'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.name, r.email, r.phone, r.address, r.zip_code, r.job_title, r.status, r.work_authorized, (r.expertise||[]).join('; '), r.race, r.veteran_status, r.military_status],
   csvFilenamePrefix: 'applications',
   nounSingular: 'application', nounPlural: 'applications',
   emptyMessage: 'No applications yet.',
@@ -4076,8 +4088,10 @@ function openApplicationModal(r) {
     <p><strong>${escapeHtml(r.name)}</strong> ${statusBadge(r.status, APPLICATION_STATUS_COLORS, 'Under Review')}</p>
     <p><strong>Position:</strong> ${escapeHtml(r.job_title || 'General Application')}</p>
     <p><strong>Email:</strong> ${escapeHtml(r.email)} &nbsp; <strong>Phone:</strong> ${escapeHtml(r.phone)}</p>
+    <p><strong>Address:</strong> ${escapeHtml(r.address || '—')}${r.zip_code ? ', ' + escapeHtml(r.zip_code) : ''}</p>
     <p><strong>Work Authorized:</strong> ${r.work_authorized ? 'Yes' : 'No'}</p>
     <p><strong>Expertise:</strong> ${expertise.length ? escapeHtml(expertise.join(', ')) : '—'}</p>
+    <p style="font-size:12px; color:var(--ink-soft);"><strong>EEO (voluntary):</strong> Race: ${escapeHtml(r.race || 'Not answered')} &middot; Veteran: ${escapeHtml(r.veteran_status || 'Not answered')} &middot; Military: ${escapeHtml(r.military_status || 'Not answered')}</p>
     <p><strong>Resume/CV:</strong> ${r.resume_url ? `<a href="${r.resume_url}" target="_blank" rel="noopener">View Resume</a>` : '—'}</p>
     ${docsAvailable ? `
       <p><strong>Background Check Documents</strong> (submitted ${new Date(r.documents_submitted_at).toLocaleString()}):<br>
