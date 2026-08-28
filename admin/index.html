@@ -3136,7 +3136,8 @@ function buildInvoicePrintHtml(inv) {
 <html><head><meta charset="UTF-8"><title>${invoiceNumber(inv)} — ${escapeHtml(inv.client_name || '')}</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Segoe UI',Arial,sans-serif; color:#1E2A34; padding:40px; max-width:800px; margin:0 auto;}
+  html{background:#ffffff;}
+  body{font-family:'Segoe UI',Arial,sans-serif; color:#1E2A34; background:#ffffff; padding:40px; max-width:800px; margin:0 auto;}
   .top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;}
   .top img{height:52px;}
   .invoice-badge{background:#1256A3; color:#fff; font-weight:800; font-size:26px; letter-spacing:0.06em; padding:22px 34px;}
