@@ -1474,10 +1474,19 @@ function applyTextContent(c){
   document.querySelectorAll('[data-cms="about_heading"]').forEach(el => el.textContent = c.about_heading);
   document.querySelectorAll('[data-cms="about_text_1"]').forEach(el => el.textContent = c.about_text_1);
   document.querySelectorAll('[data-cms="about_text_2"]').forEach(el => el.textContent = c.about_text_2);
+  let servicesNeedsRerender = false;
   if (c.services_description){
     servicesDescription = c.services_description;
-    renderServicesGrid();
+    servicesNeedsRerender = true;
   }
+  if (c.services_industries){
+    try {
+      const names = JSON.parse(c.services_industries);
+      industries.forEach((ind, i) => { if (names[i]) ind.name = names[i]; });
+      servicesNeedsRerender = true;
+    } catch (err) { console.error('Invalid services_industries', err); }
+  }
+  if (servicesNeedsRerender) renderServicesGrid();
 }
 
 function rebuildFacilityOptions(list){

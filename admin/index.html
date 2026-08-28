@@ -241,6 +241,23 @@
     font-size:12.5px; font-weight:700; color:var(--teal-600); background:none; border:1.5px dashed rgba(18,163,148,0.35);
     padding:8px 14px; border-radius:var(--radius-sm); width:100%; margin-top:4px;
   }
+  .line-item-head, .line-item-row{
+    display:grid; grid-template-columns:1fr 60px 85px 75px 85px 36px; gap:8px; align-items:center; margin-bottom:8px;
+  }
+  .line-item-head{font-size:10.5px; text-transform:uppercase; letter-spacing:0.03em; color:var(--ink-soft); font-weight:700; margin-bottom:6px;}
+  .line-item-row input{padding:8px 10px; border-radius:8px; border:1.5px solid rgba(10,92,83,0.16); font-size:12.5px; width:100%;}
+  .line-item-row .li-amount{font-size:12.5px; font-weight:700; color:var(--teal-800); text-align:right; padding-right:4px;}
+  .line-item-row .remove-row{
+    width:30px; height:30px; border-radius:8px; border:1px solid rgba(229,72,77,0.3); background:rgba(229,72,77,0.08);
+    color:var(--danger); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center;
+  }
+  .invoice-totals{margin-top:10px; padding-top:12px; border-top:1px dashed rgba(10,92,83,0.16); font-size:13px;}
+  .invoice-totals .it-line{display:flex; justify-content:space-between; padding:4px 0; color:var(--ink-soft);}
+  .invoice-totals .it-line.total{font-weight:800; color:var(--teal-900); font-size:14.5px; border-top:1px solid rgba(10,92,83,0.12); margin-top:4px; padding-top:8px;}
+  @media (max-width:760px){
+    .line-item-head{display:none;}
+    .line-item-row{grid-template-columns:1fr 1fr; grid-auto-rows:auto;}
+  }
   .save-row{display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap;}
   .save-status{font-size:12.5px; color:var(--teal-600); opacity:0; transition:opacity .3s;}
   .save-status.show{opacity:1;}
@@ -506,6 +523,7 @@
         <div class="nav-submenu">
           <button class="nav-subitem" data-panel="content-contact">Contact Info</button>
           <button class="nav-subitem" data-panel="content-text">Hero &amp; About</button>
+          <button class="nav-subitem" data-panel="content-who-we-serve">Who We Serve</button>
           <button class="nav-subitem" data-panel="content-facility-types">Facility Types</button>
           <button class="nav-subitem" data-panel="content-addons">Add-On Services</button>
           <button class="nav-subitem" data-panel="content-floor-settings">Other Settings</button>
@@ -836,14 +854,31 @@
           <div class="error-msg" id="addInvoiceError"></div>
           <div class="cfield"><label>Client *</label><select id="ai_clientId" required></select></div>
           <div class="row2">
+            <div class="cfield"><label>Service Location</label><input id="ai_serviceLocation" placeholder="Defaults to client address if left blank"></div>
+            <div class="cfield"><label>Service Date(s)</label><input id="ai_serviceDates" placeholder="e.g. Aug 1 – Aug 31, 2026"></div>
+          </div>
+          <div class="cfield">
+            <label>Line Items</label>
+            <div class="line-item-head"><span>Description</span><span>Qty</span><span>Rate</span><span>Tax</span><span>Amount</span><span></span></div>
+            <div id="ai_lineItems"></div>
+            <button type="button" class="add-row-btn" id="ai_addLineItem">+ Add Line Item</button>
+            <div class="invoice-totals" id="ai_totals"></div>
+          </div>
+          <div class="row2">
+            <div class="cfield"><label>Discount ($)</label><input id="ai_discount" type="number" step="0.01" min="0" value="0"></div>
             <div class="cfield"><label>Amount ($) *</label><input id="ai_amount" type="number" step="0.01" min="0" required></div>
+          </div>
+          <p class="hint" style="margin-top:-10px; margin-bottom:16px;">Add line items and click "Use Line Item Total" to fill Amount automatically, or enter Amount directly for a simple lump-sum invoice.</p>
+          <button type="button" class="btn btn-sm btn-ghost" id="ai_useTotalBtn" style="margin-bottom:16px;">Use Line Item Total</button>
+          <div class="row2">
             <div class="cfield"><label>Due Date</label><input id="ai_dueDate" type="date"></div>
+            <div class="cfield"><label>Payment Terms</label><input id="ai_paymentTerms" placeholder="e.g. Net 15, Due on Receipt"></div>
           </div>
           <div class="row2">
             <div class="cfield"><label>Status</label><select id="ai_status"></select></div>
             <div class="cfield"><label>Payment Method</label><input id="ai_paymentMethod" placeholder="e.g. Check, Cash, Zelle"></div>
           </div>
-          <div class="cfield"><label>Notes</label><textarea id="ai_notes"></textarea></div>
+          <div class="cfield"><label>Notes / Terms</label><textarea id="ai_notes"></textarea></div>
           <div class="save-row">
             <button class="btn btn-sm" id="addInvoiceSubmit">Add Invoice</button>
             <span class="save-status" data-status="add-invoice">Added</span>
@@ -1034,6 +1069,25 @@
           <div class="save-row">
             <button class="btn btn-sm" data-save="text">Save Text Content</button>
             <span class="save-status" data-status="text">Saved</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CONTENT: WHO WE SERVE ================= -->
+      <div class="panel" id="panel-content-who-we-serve">
+        <div class="panel-head"><div><h2>Who We Serve</h2><p>Titles shown on each photo card in the homepage "Who We Serve" section. The photo and icon per card are fixed — only the title text is editable here.</p></div></div>
+        <div class="content-section">
+          <div class="cfield"><label>Card 1 — Office Photo</label><input id="c_wws_0"></div>
+          <div class="cfield"><label>Card 2 — Medical Photo</label><input id="c_wws_1"></div>
+          <div class="cfield"><label>Card 3 — School Photo</label><input id="c_wws_2"></div>
+          <div class="cfield"><label>Card 4 — Apartment Photo</label><input id="c_wws_3"></div>
+          <div class="cfield"><label>Card 5 — Warehouse Photo</label><input id="c_wws_4"></div>
+          <div class="cfield"><label>Card 6 — Retail Photo</label><input id="c_wws_5"></div>
+          <div class="cfield"><label>Card 7 — Church Photo</label><input id="c_wws_6"></div>
+          <div class="cfield"><label>Card 8 — Government Photo</label><input id="c_wws_7"></div>
+          <div class="save-row">
+            <button class="btn btn-sm" data-save="who-we-serve">Save Titles</button>
+            <span class="save-status" data-status="who-we-serve">Saved</span>
           </div>
         </div>
       </div>
@@ -1287,23 +1341,40 @@
 
 <!-- ================= INVOICE EDIT MODAL ================= -->
 <div class="modal-overlay" id="invoiceModal">
-  <div class="modal">
+  <div class="modal" style="max-width:620px;">
     <h3>Edit Invoice</h3>
     <div class="error-msg" id="invoiceModalError"></div>
     <div class="cfield"><label>Client *</label><select id="im_clientId" required></select></div>
     <div class="row2">
+      <div class="cfield"><label>Service Location</label><input id="im_serviceLocation"></div>
+      <div class="cfield"><label>Service Date(s)</label><input id="im_serviceDates"></div>
+    </div>
+    <div class="cfield">
+      <label>Line Items</label>
+      <div class="line-item-head"><span>Description</span><span>Qty</span><span>Rate</span><span>Tax</span><span>Amount</span><span></span></div>
+      <div id="im_lineItems"></div>
+      <button type="button" class="add-row-btn" id="im_addLineItem">+ Add Line Item</button>
+      <div class="invoice-totals" id="im_totals"></div>
+    </div>
+    <div class="row2">
+      <div class="cfield"><label>Discount ($)</label><input id="im_discount" type="number" step="0.01" min="0" value="0"></div>
       <div class="cfield"><label>Amount ($) *</label><input id="im_amount" type="number" step="0.01" min="0" required></div>
+    </div>
+    <button type="button" class="btn btn-sm btn-ghost" id="im_useTotalBtn" style="margin-bottom:16px;">Use Line Item Total</button>
+    <div class="row2">
       <div class="cfield"><label>Due Date</label><input id="im_dueDate" type="date"></div>
+      <div class="cfield"><label>Payment Terms</label><input id="im_paymentTerms"></div>
     </div>
     <div class="row2">
       <div class="cfield"><label>Status</label><select id="im_status"></select></div>
       <div class="cfield"><label>Payment Method</label><input id="im_paymentMethod"></div>
     </div>
     <div class="cfield"><label>Paid Date</label><input id="im_paidDate" type="date"></div>
-    <div class="cfield"><label>Notes</label><textarea id="im_notes"></textarea></div>
+    <div class="cfield"><label>Notes / Terms</label><textarea id="im_notes"></textarea></div>
     <p style="font-size:12px; color:var(--ink-soft); margin-bottom:16px;" id="invoiceModalCreated"></p>
     <div class="modal-actions">
       <button class="btn btn-sm" id="invoiceModalSave">Save Changes</button>
+      <button class="btn btn-sm btn-accent" id="invoiceModalPrint">Print / PDF</button>
       <button class="btn btn-sm btn-ghost" id="invoiceModalClose">Close</button>
       <button class="btn btn-sm btn-danger" id="invoiceModalDelete">Delete</button>
     </div>
@@ -2952,9 +3023,215 @@ document.querySelector('[data-panel="jobs-add"]').addEventListener('click', () =
 const INVOICE_STATUS_VALUES = ['Unpaid', 'Paid', 'Overdue', 'Cancelled'];
 const INVOICE_STATUS_COLORS = { Unpaid:'#a16207', Paid:'#15803d', Overdue:'#b91c1c', Cancelled:'#6b7280' };
 let selectedInvoiceId = null;
+let aiLineItems = [];
+let imLineItems = [];
 
 populateSelect($('#ai_status'), INVOICE_STATUS_VALUES, 'Unpaid');
 populateSelect($('#im_status'), INVOICE_STATUS_VALUES, 'Unpaid');
+
+/* ---------- Line item editor (shared by Add + Edit invoice forms) ---------- */
+function invoiceLineItems(prefix) { return prefix === 'im' ? imLineItems : aiLineItems; }
+
+function lineItemAmount(item) {
+  return (Number(item.qty) || 0) * (Number(item.rate) || 0) + (Number(item.tax) || 0);
+}
+
+function computeInvoiceTotals(prefix) {
+  const items = invoiceLineItems(prefix);
+  let subtotal = 0, tax = 0;
+  items.forEach((item) => {
+    subtotal += (Number(item.qty) || 0) * (Number(item.rate) || 0);
+    tax += Number(item.tax) || 0;
+  });
+  const discount = Number($('#' + prefix + '_discount').value) || 0;
+  return { subtotal, tax, discount, total: subtotal + tax - discount };
+}
+
+function renderInvoiceTotals(prefix) {
+  const t = computeInvoiceTotals(prefix);
+  $('#' + prefix + '_totals').innerHTML = `
+    <div class="it-line"><span>Subtotal</span><span>$${t.subtotal.toFixed(2)}</span></div>
+    <div class="it-line"><span>Tax</span><span>$${t.tax.toFixed(2)}</span></div>
+    <div class="it-line"><span>Discount</span><span>-$${t.discount.toFixed(2)}</span></div>
+    <div class="it-line total"><span>Line Item Total</span><span>$${t.total.toFixed(2)}</span></div>
+  `;
+}
+
+function renderLineItemsEditor(prefix) {
+  const items = invoiceLineItems(prefix);
+  const container = $('#' + prefix + '_lineItems');
+  container.innerHTML = items.map((item, i) => `
+    <div class="line-item-row" data-idx="${i}">
+      <input type="text" placeholder="Description" value="${escapeHtml(item.description || '')}" class="li-desc">
+      <input type="number" step="1" min="0" placeholder="1" value="${item.qty ?? 1}" class="li-qty">
+      <input type="number" step="0.01" min="0" placeholder="0.00" value="${item.rate ?? ''}" class="li-rate">
+      <input type="number" step="0.01" min="0" placeholder="0.00" value="${item.tax ?? ''}" class="li-tax">
+      <span class="li-amount">$${lineItemAmount(item).toFixed(2)}</span>
+      <button type="button" class="remove-row">&times;</button>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.line-item-row').forEach((row) => {
+    const idx = Number(row.dataset.idx);
+    const onEdit = () => {
+      items[idx].description = row.querySelector('.li-desc').value;
+      items[idx].qty = row.querySelector('.li-qty').value;
+      items[idx].rate = row.querySelector('.li-rate').value;
+      items[idx].tax = row.querySelector('.li-tax').value;
+      row.querySelector('.li-amount').textContent = '$' + lineItemAmount(items[idx]).toFixed(2);
+      renderInvoiceTotals(prefix);
+    };
+    row.querySelector('.li-desc').addEventListener('input', onEdit);
+    row.querySelector('.li-qty').addEventListener('input', onEdit);
+    row.querySelector('.li-rate').addEventListener('input', onEdit);
+    row.querySelector('.li-tax').addEventListener('input', onEdit);
+    row.querySelector('.remove-row').addEventListener('click', () => {
+      items.splice(idx, 1);
+      renderLineItemsEditor(prefix);
+    });
+  });
+  renderInvoiceTotals(prefix);
+}
+
+$('#ai_addLineItem').addEventListener('click', () => { aiLineItems.push({ description: '', qty: 1, rate: '', tax: '' }); renderLineItemsEditor('ai'); });
+$('#im_addLineItem').addEventListener('click', () => { imLineItems.push({ description: '', qty: 1, rate: '', tax: '' }); renderLineItemsEditor('im'); });
+$('#ai_discount').addEventListener('input', () => renderInvoiceTotals('ai'));
+$('#im_discount').addEventListener('input', () => renderInvoiceTotals('im'));
+$('#ai_useTotalBtn').addEventListener('click', () => { $('#ai_amount').value = computeInvoiceTotals('ai').total.toFixed(2); });
+$('#im_useTotalBtn').addEventListener('click', () => { $('#im_amount').value = computeInvoiceTotals('im').total.toFixed(2); });
+renderLineItemsEditor('ai');
+
+/* ---------- Printable invoice template ---------- */
+function invoiceNumber(inv) { return 'INV-' + String(inv.id).padStart(4, '0'); }
+
+function buildInvoicePrintHtml(inv) {
+  const company = {
+    name: currentContent.company_name || 'E-Clean Pro Services LLC',
+    logo: currentContent.company_logo_url || '/eclean-logo-color.png',
+    address: currentContent.contact_address || '',
+    phone: currentContent.contact_phone || '',
+    email: currentContent.contact_email || '',
+  };
+  const items = Array.isArray(inv.line_items) && inv.line_items.length
+    ? inv.line_items
+    : [{ description: 'Cleaning Services', qty: 1, rate: Number(inv.amount) || 0, tax: 0 }];
+  const subtotal = items.reduce((sum, it) => sum + (Number(it.qty) || 0) * (Number(it.rate) || 0), 0);
+  const taxTotal = items.reduce((sum, it) => sum + (Number(it.tax) || 0), 0);
+  const discount = Number(inv.discount) || 0;
+  const totalDue = Number(inv.amount) || 0;
+  const rowsHtml = items.map((it, i) => `
+    <tr style="background:${i % 2 === 0 ? '#ffffff' : '#F7FAFC'};">
+      <td>${escapeHtml(it.description || '')}</td>
+      <td style="text-align:center;">${Number(it.qty) || 0}</td>
+      <td style="text-align:right;">$${(Number(it.rate) || 0).toFixed(2)}</td>
+      <td style="text-align:right;">$${(Number(it.tax) || 0).toFixed(2)}</td>
+      <td style="text-align:right;">$${lineItemAmount(it).toFixed(2)}</td>
+    </tr>
+  `).join('');
+  const emptyRows = Array.from({ length: Math.max(0, 6 - items.length) }).map((_, i) => `
+    <tr style="background:${(items.length + i) % 2 === 0 ? '#ffffff' : '#F7FAFC'};"><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+  `).join('');
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>${invoiceNumber(inv)} — ${escapeHtml(inv.client_name || '')}</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',Arial,sans-serif; color:#1E2A34; padding:40px; max-width:800px; margin:0 auto;}
+  .top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;}
+  .top img{height:52px;}
+  .invoice-badge{background:#1256A3; color:#fff; font-weight:800; font-size:26px; letter-spacing:0.06em; padding:22px 34px;}
+  .underline{height:3px; background:#39A96B; margin-bottom:18px;}
+  .strip{display:grid; grid-template-columns:repeat(4,1fr); background:#F7FAFC; border:1px solid #e3eaf0; margin-bottom:18px;}
+  .strip div{padding:12px 16px; border-right:1px solid #e3eaf0;}
+  .strip div:last-child{border-right:none;}
+  .strip label{display:block; font-size:10.5px; font-weight:800; color:#1256A3; letter-spacing:0.04em; margin-bottom:6px;}
+  .strip span{font-size:13px; color:#1E2A34;}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; border:1px solid #e3eaf0; margin-bottom:18px;}
+  .two-col .cell{padding:14px 16px; border-right:1px solid #e3eaf0;}
+  .two-col .cell:last-child{border-right:none;}
+  .bar{background:#1256A3; color:#fff; font-size:11px; font-weight:800; letter-spacing:0.05em; padding:8px 16px;}
+  .two-col p{font-size:13px; line-height:1.7; color:#1E2A34; padding:12px 16px;}
+  .service-strip{display:grid; grid-template-columns:1fr 1fr; background:#EAF5EF; border:1px solid #d7ecdd; margin-bottom:18px;}
+  .service-strip div{padding:12px 16px;}
+  .service-strip label{display:block; font-size:10.5px; font-weight:800; color:#1256A3; letter-spacing:0.04em; margin-bottom:6px;}
+  table{width:100%; border-collapse:collapse; margin-bottom:22px;}
+  thead tr{background:#1256A3; color:#fff;}
+  th{text-align:left; font-size:11px; letter-spacing:0.04em; padding:10px 14px; font-weight:800;}
+  th:nth-child(2){text-align:center;}
+  th:nth-child(3), th:nth-child(4), th:nth-child(5){text-align:right;}
+  td{padding:10px 14px; font-size:13px; border-bottom:1px solid #eef2f5;}
+  .bottom{display:grid; grid-template-columns:1.3fr 1fr; gap:24px; margin-bottom:30px;}
+  .notes h4{font-size:11px; font-weight:800; color:#1256A3; letter-spacing:0.04em; margin-bottom:8px;}
+  .notes p{font-size:12.5px; line-height:1.7; color:#1E2A34; margin-bottom:10px;}
+  .totals .t-row{display:flex; justify-content:space-between; padding:8px 14px; font-size:13px; color:#1E2A34;}
+  .totals .t-row.due{background:#EAF5EF; font-weight:800; font-size:15px; color:#1256A3;}
+  .footer{text-align:center; color:#39A96B; font-weight:800; letter-spacing:0.08em; font-size:13px; margin-top:10px;}
+  .print-bar{text-align:center; margin-bottom:24px;}
+  .print-bar button{background:#1256A3; color:#fff; border:none; padding:10px 24px; border-radius:99px; font-weight:700; font-size:13.5px; cursor:pointer;}
+  @media print{ .print-bar{display:none;} body{padding:0;} }
+</style></head>
+<body>
+  <div class="print-bar"><button onclick="window.print()">Print / Save as PDF</button></div>
+
+  <div class="top">
+    <img src="${company.logo}" alt="${escapeHtml(company.name)}" onerror="this.style.display='none'">
+    <div class="invoice-badge">INVOICE</div>
+  </div>
+  <div class="underline"></div>
+
+  <div class="strip">
+    <div><label>Invoice #</label><span>${invoiceNumber(inv)}</span></div>
+    <div><label>Invoice Date</label><span>${new Date(inv.created_at).toLocaleDateString()}</span></div>
+    <div><label>Due Date</label><span>${inv.due_date ? new Date(inv.due_date).toLocaleDateString() : '—'}</span></div>
+    <div><label>Payment Terms</label><span>${escapeHtml(inv.payment_terms || '—')}</span></div>
+  </div>
+
+  <div class="two-col">
+    <div class="cell">
+      <div class="bar">FROM</div>
+      <p>${escapeHtml(company.name)}<br>${escapeHtml(company.address)}<br>${escapeHtml(company.phone)} &middot; ${escapeHtml(company.email)}</p>
+    </div>
+    <div class="cell">
+      <div class="bar">BILL TO</div>
+      <p>${escapeHtml(inv.client_name || '')}${inv.client_company ? ' — ' + escapeHtml(inv.client_company) : ''}<br>${escapeHtml(inv.client_address || '')}<br>${escapeHtml(inv.client_phone || '')}${inv.client_email ? ' &middot; ' + escapeHtml(inv.client_email) : ''}</p>
+    </div>
+  </div>
+
+  <div class="service-strip">
+    <div><label>Service Location</label><span>${escapeHtml(inv.service_location || inv.client_address || '—')}</span></div>
+    <div><label>Service Date(s)</label><span>${escapeHtml(inv.service_dates || '—')}</span></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Service / Description</th><th>Qty</th><th>Rate</th><th>Tax</th><th>Amount</th></tr></thead>
+    <tbody>${rowsHtml}${emptyRows}</tbody>
+  </table>
+
+  <div class="bottom">
+    <div class="notes">
+      <h4>Notes / Terms</h4>
+      <p>${inv.notes ? escapeHtml(inv.notes).replace(/\n/g, '<br>') : escapeHtml(currentContent.invoice_footer_note || 'Thank you for choosing ' + company.name + '.')}</p>
+      ${inv.payment_method ? `<p><strong>Payment Method:</strong> ${escapeHtml(inv.payment_method)}</p>` : ''}
+    </div>
+    <div class="totals">
+      <div class="t-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+      <div class="t-row"><span>Tax</span><span>$${taxTotal.toFixed(2)}</span></div>
+      <div class="t-row"><span>Discount</span><span>-$${discount.toFixed(2)}</span></div>
+      <div class="t-row due"><span>Total Due</span><span>$${totalDue.toFixed(2)}</span></div>
+    </div>
+  </div>
+
+  <div class="footer">CLEAN SPACES. BETTER PLACES.</div>
+</body></html>`;
+}
+
+function printInvoice(inv) {
+  const html = buildInvoicePrintHtml(inv);
+  const win = window.open('', '_blank');
+  if (!win) { alert('Please allow pop-ups to print this invoice.'); return; }
+  win.document.write(html);
+  win.document.close();
+}
 
 const invoiceTable = createDataTable({
   prefix: 'invoice',
@@ -2980,16 +3257,19 @@ const invoiceTable = createDataTable({
     `,
   rowKey: (r) => r.id,
   onRowClick: openInvoiceModal,
-  csvHeaders: ['Created','Client','Company','Amount','Due Date','Status','Payment Method','Paid Date','Notes'],
-  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.client_name, r.client_company, r.amount, r.due_date, r.status, r.payment_method, r.paid_date, r.notes],
+  csvHeaders: ['Created','Client','Company','Amount','Due Date','Status','Payment Method','Paid Date','Service Location','Service Dates','Payment Terms','Discount','Notes'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.client_name, r.client_company, r.amount, r.due_date, r.status, r.payment_method, r.paid_date, r.service_location, r.service_dates, r.payment_terms, r.discount, r.notes],
   csvFilenamePrefix: 'invoices',
   nounSingular: 'invoice', nounPlural: 'invoices',
   emptyMessage: 'No invoices yet.',
   defaultSortKey: 'created_at', defaultSortDir: 'desc',
 });
 
+let selectedInvoiceData = null;
+
 function openInvoiceModal(r) {
   selectedInvoiceId = r.id;
+  selectedInvoiceData = r;
   $('#invoiceModalError').classList.remove('show');
   populateClientDropdown($('#im_clientId'), r.client_id);
   $('#im_amount').value = r.amount || '';
@@ -2997,20 +3277,29 @@ function openInvoiceModal(r) {
   $('#im_paymentMethod').value = r.payment_method || '';
   $('#im_paidDate').value = r.paid_date ? r.paid_date.slice(0, 10) : '';
   $('#im_notes').value = r.notes || '';
+  $('#im_serviceLocation').value = r.service_location || '';
+  $('#im_serviceDates').value = r.service_dates || '';
+  $('#im_paymentTerms').value = r.payment_terms || '';
+  $('#im_discount').value = r.discount || 0;
   populateSelect($('#im_status'), INVOICE_STATUS_VALUES, r.status || 'Unpaid');
+  imLineItems = Array.isArray(r.line_items) ? r.line_items.map((i) => ({ ...i })) : [];
+  renderLineItemsEditor('im');
   $('#invoiceModalCreated').textContent = 'Created ' + new Date(r.created_at).toLocaleString();
   $('#invoiceModal').classList.add('show');
 }
 $('#invoiceModalClose').addEventListener('click', () => $('#invoiceModal').classList.remove('show'));
 $('#invoiceModal').addEventListener('click', (e) => { if (e.target.id === 'invoiceModal') $('#invoiceModal').classList.remove('show'); });
+$('#invoiceModalPrint').addEventListener('click', () => {
+  if (selectedInvoiceData) printInvoice(selectedInvoiceData);
+});
 
 function readInvoiceForm(prefix) {
-  return readForm(prefix, ['clientId', 'amount', 'dueDate', 'status', 'paymentMethod', 'paidDate', 'notes']);
+  return readForm(prefix, ['clientId', 'amount', 'dueDate', 'status', 'paymentMethod', 'paidDate', 'notes', 'serviceLocation', 'serviceDates', 'paymentTerms', 'discount']);
 }
 
 $('#invoiceModalSave').addEventListener('click', async () => {
   if (!selectedInvoiceId) return;
-  const payload = readInvoiceForm('im');
+  const payload = { ...readInvoiceForm('im'), lineItems: imLineItems };
   const errBox = $('#invoiceModalError');
   errBox.classList.remove('show');
   if (!payload.clientId || !payload.amount) {
@@ -3025,6 +3314,8 @@ $('#invoiceModalSave').addEventListener('click', async () => {
       method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Save failed');
+    const { invoice } = await r.json();
+    selectedInvoiceData = invoice;
     $('#invoiceModal').classList.remove('show');
     await invoiceTable.load();
     await loadDashboardStats();
@@ -3053,7 +3344,7 @@ $('#invoiceModalDelete').addEventListener('click', async () => {
 });
 
 $('#addInvoiceSubmit').addEventListener('click', async () => {
-  const payload = readInvoiceForm('ai');
+  const payload = { ...readInvoiceForm('ai'), lineItems: aiLineItems };
   const errBox = $('#addInvoiceError');
   const statusEl = document.querySelector('[data-status="add-invoice"]');
   errBox.classList.remove('show');
@@ -3069,7 +3360,10 @@ $('#addInvoiceSubmit').addEventListener('click', async () => {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add invoice');
-    ['amount', 'dueDate', 'paymentMethod', 'notes'].forEach((f) => { $('#ai_' + f).value = ''; });
+    ['amount', 'dueDate', 'paymentMethod', 'notes', 'serviceLocation', 'serviceDates', 'paymentTerms'].forEach((f) => { $('#ai_' + f).value = ''; });
+    $('#ai_discount').value = 0;
+    aiLineItems = [];
+    renderLineItemsEditor('ai');
     populateSelect($('#ai_status'), INVOICE_STATUS_VALUES, 'Unpaid');
     statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
     setTimeout(() => statusEl.classList.remove('show'), 2000);
@@ -4080,6 +4374,8 @@ async function loadContent() {
     });
     renderListEditor('facilityTypesList', JSON.parse(currentContent.pricing_facility_types || '[]'), 'rate');
     renderListEditor('addonsList', JSON.parse(currentContent.pricing_addons || '[]'), 'price');
+    const wwsNames = JSON.parse(currentContent.services_industries || '[]');
+    wwsNames.forEach((name, i) => { const el = $('#c_wws_' + i); if (el) el.value = name || ''; });
     renderCompanyLogoWidget();
   } catch (err) {
     console.error('Failed to load content', err);
@@ -4149,6 +4445,9 @@ $$('[data-save]').forEach((btn) => {
         about_text_2: $('#c_about_text_2').value,
         services_description: $('#c_services_description').value,
       }, 'text');
+    } else if (which === 'who-we-serve') {
+      const names = Array.from({ length: 8 }, (_, i) => $('#c_wws_' + i).value.trim());
+      saveContent({ services_industries: JSON.stringify(names) }, 'who-we-serve');
     } else if (which === 'facility-types') {
       saveContent({ pricing_facility_types: JSON.stringify(collectListRows('facilityTypesList', 'rate')) }, 'facility-types');
     } else if (which === 'addons') {
