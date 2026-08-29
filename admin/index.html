@@ -1884,6 +1884,7 @@ function readForm(prefix, fields) {
   const out = {};
   fields.forEach((f) => {
     const el = document.getElementById(prefix + '_' + f);
+    if (!el) return; // e.g. a field that only exists on the Edit form, not Add (or vice versa)
     out[f] = el.value.trim ? el.value.trim() : el.value;
   });
   return out;
@@ -3175,13 +3176,22 @@ function buildInvoicePrintHtml(inv) {
   .totals .t-row{display:flex; justify-content:space-between; padding:8px 14px; font-size:13px; color:#1E2A34;}
   .totals .t-row.due{background:#EAF5EF; font-weight:800; font-size:15px; color:#1256A3;}
   .footer{text-align:center; color:#39A96B; font-weight:800; letter-spacing:0.08em; font-size:13px; margin-top:10px;}
-  .print-bar{text-align:center; margin-bottom:24px;}
+  .print-bar{text-align:center; margin-bottom:24px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
   .print-bar button{background:#1256A3; color:#fff; border:none; padding:10px 24px; border-radius:99px; font-weight:700; font-size:13.5px; cursor:pointer;}
+  .print-bar button.secondary{background:#fff; color:#1256A3; border:1.5px solid #1256A3;}
+  .print-bar .pdf-status{width:100%; font-size:12.5px; color:#3c5450; margin-top:6px;}
   @media print{ .print-bar{display:none;} body{padding:0;} }
-</style></head>
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+</head>
 <body>
-  <div class="print-bar"><button onclick="window.print()">Print / Save as PDF</button></div>
+  <div class="print-bar">
+    <button onclick="downloadInvoicePdf()" id="downloadPdfBtn">Download PDF</button>
+    <button class="secondary" onclick="window.print()">Print</button>
+    <div class="pdf-status" id="pdfStatus"></div>
+  </div>
 
+  <div id="invoiceContent">
   <div class="top">
     <img src="${company.logo}" alt="${escapeHtml(company.name)}" onerror="this.style.display='none'">
     <div class="invoice-badge">INVOICE</div>
@@ -3231,6 +3241,31 @@ function buildInvoicePrintHtml(inv) {
   </div>
 
   <div class="footer">CLEAN SPACES. BETTER PLACES.</div>
+  </div>
+
+  <script>
+    function downloadInvoicePdf() {
+      const btn = document.getElementById('downloadPdfBtn');
+      const status = document.getElementById('pdfStatus');
+      btn.disabled = true;
+      status.textContent = 'Generating PDF…';
+      const el = document.getElementById('invoiceContent');
+      html2pdf().set({
+        margin: 0.3,
+        filename: '${invoiceNumber(inv)}-${(inv.client_name || 'invoice').replace(/[^a-zA-Z0-9]+/g, '-')}.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      }).from(el).save().then(() => {
+        status.textContent = 'Downloaded ✓';
+        btn.disabled = false;
+      }).catch((err) => {
+        console.error('PDF generation failed:', err);
+        status.textContent = 'Could not generate PDF — try Print instead.';
+        btn.disabled = false;
+      });
+    }
+  <\/script>
 </body></html>`;
 }
 
