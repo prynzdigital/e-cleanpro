@@ -1069,7 +1069,6 @@
           <div class="cfield"><label>About Heading</label><input id="c_about_heading"></div>
           <div class="cfield"><label>About Paragraph 1</label><textarea id="c_about_text_1"></textarea></div>
           <div class="cfield"><label>About Paragraph 2 (Mission)</label><textarea id="c_about_text_2"></textarea></div>
-          <div class="cfield"><label>Service Card Description</label><input id="c_services_description"></div>
           <div class="save-row">
             <button class="btn btn-sm" data-save="text">Save Text Content</button>
             <span class="save-status" data-status="text">Saved</span>
@@ -1079,18 +1078,26 @@
 
       <!-- ================= CONTENT: WHO WE SERVE ================= -->
       <div class="panel" id="panel-content-who-we-serve">
-        <div class="panel-head"><div><h2>Who We Serve</h2><p>Titles shown on each photo card in the homepage "Who We Serve" section. The photo and icon per card are fixed — only the title text is editable here.</p></div></div>
+        <div class="panel-head"><div><h2>Who We Serve</h2><p>Title and description shown on each photo card in the homepage "Who We Serve" section. The photo and icon per card are fixed — only the title and description text is editable here.</p></div></div>
         <div class="content-section">
-          <div class="cfield"><label>Card 1 — Office Photo</label><input id="c_wws_0"></div>
-          <div class="cfield"><label>Card 2 — Medical Photo</label><input id="c_wws_1"></div>
-          <div class="cfield"><label>Card 3 — School Photo</label><input id="c_wws_2"></div>
-          <div class="cfield"><label>Card 4 — Apartment Photo</label><input id="c_wws_3"></div>
-          <div class="cfield"><label>Card 5 — Warehouse Photo</label><input id="c_wws_4"></div>
-          <div class="cfield"><label>Card 6 — Retail Photo</label><input id="c_wws_5"></div>
-          <div class="cfield"><label>Card 7 — Church Photo</label><input id="c_wws_6"></div>
-          <div class="cfield"><label>Card 8 — Government Photo</label><input id="c_wws_7"></div>
+          <div class="cfield"><label>Card 1 — Office Photo — Title</label><input id="c_wws_0"></div>
+          <div class="cfield"><label>Card 1 — Office Photo — Description</label><input id="c_wws_desc_0"></div>
+          <div class="cfield"><label>Card 2 — Medical Photo — Title</label><input id="c_wws_1"></div>
+          <div class="cfield"><label>Card 2 — Medical Photo — Description</label><input id="c_wws_desc_1"></div>
+          <div class="cfield"><label>Card 3 — School Photo — Title</label><input id="c_wws_2"></div>
+          <div class="cfield"><label>Card 3 — School Photo — Description</label><input id="c_wws_desc_2"></div>
+          <div class="cfield"><label>Card 4 — Apartment Photo — Title</label><input id="c_wws_3"></div>
+          <div class="cfield"><label>Card 4 — Apartment Photo — Description</label><input id="c_wws_desc_3"></div>
+          <div class="cfield"><label>Card 5 — Warehouse Photo — Title</label><input id="c_wws_4"></div>
+          <div class="cfield"><label>Card 5 — Warehouse Photo — Description</label><input id="c_wws_desc_4"></div>
+          <div class="cfield"><label>Card 6 — Retail Photo — Title</label><input id="c_wws_5"></div>
+          <div class="cfield"><label>Card 6 — Retail Photo — Description</label><input id="c_wws_desc_5"></div>
+          <div class="cfield"><label>Card 7 — Church Photo — Title</label><input id="c_wws_6"></div>
+          <div class="cfield"><label>Card 7 — Church Photo — Description</label><input id="c_wws_desc_6"></div>
+          <div class="cfield"><label>Card 8 — Government Photo — Title</label><input id="c_wws_7"></div>
+          <div class="cfield"><label>Card 8 — Government Photo — Description</label><input id="c_wws_desc_7"></div>
           <div class="save-row">
-            <button class="btn btn-sm" data-save="who-we-serve">Save Titles</button>
+            <button class="btn btn-sm" data-save="who-we-serve">Save Titles &amp; Descriptions</button>
             <span class="save-status" data-status="who-we-serve">Saved</span>
           </div>
         </div>
@@ -4400,7 +4407,7 @@ let currentContent = {};
 const SIMPLE_FIELDS = [
   'contact_phone', 'contact_email', 'contact_address', 'contact_hours',
   'hero_eyebrow', 'hero_headline', 'hero_slogan', 'hero_lead',
-  'about_heading', 'about_text_1', 'about_text_2', 'services_description',
+  'about_heading', 'about_text_1', 'about_text_2',
   'pricing_floor_factor', 'pricing_minimum_per_visit',
   'company_name', 'company_tax_id', 'invoice_footer_note',
 ];
@@ -4424,8 +4431,13 @@ async function loadContent() {
     });
     renderListEditor('facilityTypesList', JSON.parse(currentContent.pricing_facility_types || '[]'), 'rate');
     renderListEditor('addonsList', JSON.parse(currentContent.pricing_addons || '[]'), 'price');
-    const wwsNames = JSON.parse(currentContent.services_industries || '[]');
-    wwsNames.forEach((name, i) => { const el = $('#c_wws_' + i); if (el) el.value = name || ''; });
+    const wwsItems = JSON.parse(currentContent.services_industries || '[]');
+    wwsItems.forEach((item, i) => {
+      const nameEl = $('#c_wws_' + i);
+      if (nameEl) nameEl.value = (typeof item === 'string' ? item : item.name) || '';
+      const descEl = $('#c_wws_desc_' + i);
+      if (descEl) descEl.value = (typeof item === 'string' ? '' : item.description) || '';
+    });
     renderCompanyLogoWidget();
   } catch (err) {
     console.error('Failed to load content', err);
@@ -4493,11 +4505,13 @@ $$('[data-save]').forEach((btn) => {
         about_heading: $('#c_about_heading').value,
         about_text_1: $('#c_about_text_1').value,
         about_text_2: $('#c_about_text_2').value,
-        services_description: $('#c_services_description').value,
       }, 'text');
     } else if (which === 'who-we-serve') {
-      const names = Array.from({ length: 8 }, (_, i) => $('#c_wws_' + i).value.trim());
-      saveContent({ services_industries: JSON.stringify(names) }, 'who-we-serve');
+      const items = Array.from({ length: 8 }, (_, i) => ({
+        name: $('#c_wws_' + i).value.trim(),
+        description: $('#c_wws_desc_' + i).value.trim(),
+      }));
+      saveContent({ services_industries: JSON.stringify(items) }, 'who-we-serve');
     } else if (which === 'facility-types') {
       saveContent({ pricing_facility_types: JSON.stringify(collectListRows('facilityTypesList', 'rate')) }, 'facility-types');
     } else if (which === 'addons') {

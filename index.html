@@ -1198,17 +1198,16 @@ revealEls.forEach(el => io.observe(el));
 
 /* ---------- Who We Serve grid ---------- */
 const industries = [
-  { name:"Corporate & Professional Offices", icon:"M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4", photo:"office.jpeg" },
-  { name:"Medical & Healthcare Facilities", icon:"M12 2v20M2 12h20", photo:"medical.jpeg" },
-  { name:"Schools & Educational Institutions", icon:"M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5", photo:"school.jpeg" },
-  { name:"Apartment & Commercial Properties", icon:"M4 21V8l8-5 8 5v13M9 21v-5h6v5M9 12h.01M15 12h.01M9 8h.01M15 8h.01", photo:"apartment.jpeg" },
-  { name:"Warehouses & Distribution Centers", icon:"M3 9.5 12 4l9 5.5V20H3V9.5zM3 9.5 12 15l9-5.5", photo:"warehouse.jpeg" },
-  { name:"Retail Businesses", icon:"M6 2 3 7v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7l-3-5H6zM3 7h18M12 12a3 3 0 0 1-6 0", photo:"retail.jpeg" },
-  { name:"Churches & Religious Facilities", icon:"M12 2v20M9 6h6M6 21h12M8 21v-8l4-9 4 9v8", photo:"church.jpeg" },
-  { name:"Government & Institutional Facilities", icon:"M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6M6 10h.01M18 10h.01", photo:"government.jpeg" }
+  { name:"Corporate & Professional Offices", description:"Custom cleaning programs built around your schedule.", icon:"M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4", photo:"office.jpeg" },
+  { name:"Medical & Healthcare Facilities", description:"Custom cleaning programs built around your schedule.", icon:"M12 2v20M2 12h20", photo:"medical.jpeg" },
+  { name:"Schools & Educational Institutions", description:"Custom cleaning programs built around your schedule.", icon:"M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5", photo:"school.jpeg" },
+  { name:"Apartment & Commercial Properties", description:"Custom cleaning programs built around your schedule.", icon:"M4 21V8l8-5 8 5v13M9 21v-5h6v5M9 12h.01M15 12h.01M9 8h.01M15 8h.01", photo:"apartment.jpeg" },
+  { name:"Warehouses & Distribution Centers", description:"Custom cleaning programs built around your schedule.", icon:"M3 9.5 12 4l9 5.5V20H3V9.5zM3 9.5 12 15l9-5.5", photo:"warehouse.jpeg" },
+  { name:"Retail Businesses", description:"Custom cleaning programs built around your schedule.", icon:"M6 2 3 7v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7l-3-5H6zM3 7h18M12 12a3 3 0 0 1-6 0", photo:"retail.jpeg" },
+  { name:"Churches & Religious Facilities", description:"Custom cleaning programs built around your schedule.", icon:"M12 2v20M9 6h6M6 21h12M8 21v-8l4-9 4 9v8", photo:"church.jpeg" },
+  { name:"Government & Institutional Facilities", description:"Custom cleaning programs built around your schedule.", icon:"M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6M6 10h.01M18 10h.01", photo:"government.jpeg" }
 ];
 const grid = document.getElementById('servicesGrid');
-let servicesDescription = 'Custom cleaning programs built around your schedule.';
 function renderServicesGrid(){
   grid.innerHTML = industries.map(i => `
     <div class="service-card">
@@ -1217,7 +1216,7 @@ function renderServicesGrid(){
       <div class="sc-content">
         <div class="icon-circ2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${i.icon}"/></svg></div>
         <h4>${i.name}</h4>
-        <p>${escapeHtmlHome(servicesDescription)}</p>
+        <p>${escapeHtmlHome(i.description || '')}</p>
       </div>
     </div>
   `).join('');
@@ -1497,15 +1496,20 @@ function applyTextContent(c){
   document.querySelectorAll('[data-cms="about_text_1"]').forEach(el => el.textContent = c.about_text_1);
   document.querySelectorAll('[data-cms="about_text_2"]').forEach(el => el.textContent = c.about_text_2);
   let servicesNeedsRerender = false;
-  if (c.services_description){
-    servicesDescription = c.services_description;
-    servicesNeedsRerender = true;
-  }
   if (c.services_industries){
     try {
-      const names = JSON.parse(c.services_industries);
-      industries.forEach((ind, i) => { if (names[i]) ind.name = names[i]; });
-      servicesNeedsRerender = true;
+      const items = JSON.parse(c.services_industries);
+      industries.forEach((ind, i) => {
+        const item = items[i];
+        if (!item) return;
+        if (typeof item === 'string') {
+          ind.name = item;
+        } else {
+          if (item.name) ind.name = item.name;
+          if (item.description !== undefined) ind.description = item.description;
+        }
+        servicesNeedsRerender = true;
+      });
     } catch (err) { console.error('Invalid services_industries', err); }
   }
   if (servicesNeedsRerender) renderServicesGrid();
