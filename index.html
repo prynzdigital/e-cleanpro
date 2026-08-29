@@ -1506,7 +1506,7 @@ function applyTextContent(c){
           ind.name = item;
         } else {
           if (item.name) ind.name = item.name;
-          if (item.description !== undefined) ind.description = item.description;
+          if (item.description) ind.description = item.description;
         }
         servicesNeedsRerender = true;
       });
