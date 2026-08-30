@@ -20,9 +20,12 @@ const RESOURCE_HANDLERS = {
   content: require('../../lib/handlers/content'),
   upload: require('../../lib/handlers/upload'),
   users: require('../../lib/handlers/users'),
+  'audit-log': require('../../lib/handlers/audit-log'),
   login: require('../../lib/handlers/login'),
   logout: require('../../lib/handlers/logout'),
   session: require('../../lib/handlers/session'),
+  'forgot-password': require('../../lib/handlers/forgot-password'),
+  'reset-password': require('../../lib/handlers/reset-password'),
 };
 
 module.exports = async (req, res) => {

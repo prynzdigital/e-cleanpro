@@ -1,6 +1,7 @@
 const { put } = require('@vercel/blob');
 const { sql, ensureSchema } = require('../lib/db');
 const { sendEmail, escapeHtml, wrapEmail, BUSINESS_EMAIL } = require('../lib/email');
+const { isRateLimited, clientIp } = require('../lib/rateLimit');
 
 const RESUME_ALLOWED_TYPES = [
   'application/pdf', 'image/jpeg', 'image/png', 'image/webp',
@@ -67,6 +68,15 @@ async function handleList(req, res) {
 
 async function handleApply(req, res) {
   const body = req.body || {};
+  if (body.website) {
+    res.status(200).json({ ok: true, applicationId: 0 });
+    return;
+  }
+  if (isRateLimited(clientIp(req), { maxAttempts: 5, windowMs: 15 * 60 * 1000 })) {
+    res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    return;
+  }
+
   const {
     jobPostingId, name, email, phone, address, zipCode, workAuthorized, expertise,
     race, veteranStatus, militaryStatus,
@@ -217,6 +227,11 @@ async function handleCheckToken(req, res) {
 }
 
 async function handleUploadDocuments(req, res) {
+  if (isRateLimited(clientIp(req), { maxAttempts: 10, windowMs: 15 * 60 * 1000 })) {
+    res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    return;
+  }
+
   const body = req.body || {};
   const {
     token, govIdFilename, govIdContentType, govIdBase64,

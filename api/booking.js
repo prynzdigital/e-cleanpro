@@ -1,4 +1,5 @@
 const { sql, ensureSchema } = require('../lib/db');
+const { isRateLimited, clientIp } = require('../lib/rateLimit');
 
 const BUSINESS_EMAIL = 'info@ecleanproservices.com';
 
@@ -87,6 +88,18 @@ module.exports = async (req, res) => {
   }
 
   const body = req.body || {};
+  // Honeypot: real visitors never see or fill this field (hidden via CSS),
+  // so a non-empty value means a bot filled the form. Pretend success so
+  // the bot doesn't learn it was caught, without doing any real work.
+  if (body.website) {
+    res.status(200).json({ ok: true, savedToDb: true, emailSent: true });
+    return;
+  }
+  if (isRateLimited(clientIp(req), { maxAttempts: 5, windowMs: 15 * 60 * 1000 })) {
+    res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    return;
+  }
+
   const { name, phone, email, address } = body;
 
   if (!name || typeof name !== 'string' || name.trim().length < 2) {

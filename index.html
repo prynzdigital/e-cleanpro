@@ -344,6 +344,7 @@
   }
   .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--teal-500); box-shadow:0 0 0 4px rgba(18,163,148,0.15); background:#fff;}
   .field-error{display:none; font-size:12.5px; font-weight:600; color:var(--danger); margin-top:6px;}
+  .hp-field{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
   .field.invalid input{border-color:var(--danger); background:#fff;}
   .field.invalid input:focus{box-shadow:0 0 0 4px rgba(229,72,77,0.15);}
   .field.invalid .field-error{display:block;}
@@ -853,6 +854,10 @@
         <h3>Share Your Experience</h3>
         <p>Had a great experience or ran into an issue? Let our team know — we read every submission.</p>
         <form id="feedbackForm">
+          <div class="hp-field" aria-hidden="true">
+            <label for="fWebsite">Website</label>
+            <input type="text" id="fWebsite" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="row2">
             <div class="field">
               <label for="fName">Full Name</label>
@@ -1068,6 +1073,10 @@
         <div id="bookingFormView">
           <div class="booking-summary" id="bookingSummary"></div>
           <form id="bookingForm">
+            <div class="hp-field" aria-hidden="true">
+              <label for="bWebsite">Website</label>
+              <input type="text" id="bWebsite" name="website" tabindex="-1" autocomplete="off">
+            </div>
             <div class="row2">
               <div class="field">
                 <label for="bName">Full Name</label>
@@ -1484,6 +1493,7 @@ bookingForm.addEventListener('submit', async (e) => {
     time: document.getElementById('bTime').value,
     notes: document.getElementById('bNotes').value,
     estimate: est,
+    website: document.getElementById('bWebsite').value,
   };
 
   const originalBtnHtml = bookingSubmitBtn.innerHTML;
@@ -1609,6 +1619,7 @@ feedbackForm.addEventListener('submit', async (e) => {
     type: fTypeSelect.value,
     rating: document.getElementById('fRating').value,
     comment: fComment.value,
+    website: document.getElementById('fWebsite').value,
   };
 
   const originalBtnHtml = feedbackSubmitBtn.innerHTML;

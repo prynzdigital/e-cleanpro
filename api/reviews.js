@@ -1,5 +1,6 @@
 const { sql, ensureSchema } = require('../lib/db');
 const { sendEmail, escapeHtml, wrapEmail, BUSINESS_EMAIL } = require('../lib/email');
+const { isRateLimited, clientIp } = require('../lib/rateLimit');
 
 const TYPE_VALUES = ['Review', 'Complaint'];
 
@@ -15,6 +16,15 @@ module.exports = async (req, res) => {
   }
 
   const body = req.body || {};
+  if (body.website) {
+    res.status(200).json({ ok: true });
+    return;
+  }
+  if (isRateLimited(clientIp(req), { maxAttempts: 5, windowMs: 15 * 60 * 1000 })) {
+    res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    return;
+  }
+
   const { name, email, phone, comment } = body;
   const type = TYPE_VALUES.includes(body.type) ? body.type : 'Review';
   const rating = type === 'Review' ? Number(body.rating) : null;

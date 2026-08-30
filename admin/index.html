@@ -62,6 +62,16 @@
     padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:none;
   }
   .error-msg.show{display:block;}
+  .success-msg{
+    background:rgba(46,196,182,0.15); border:1px solid rgba(46,196,182,0.4); color:#9deee5;
+    padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:none;
+  }
+  .success-msg.show{display:block;}
+  .link-btn{
+    background:none; border:none; color:rgba(255,255,255,0.65); font-size:12.8px; font-weight:600;
+    text-decoration:underline; cursor:pointer; margin-top:16px; padding:0; display:block; text-align:center; width:100%;
+  }
+  .link-btn:hover{color:#fff;}
 
   /* ===== SHELL ===== */
   .dash{display:none; min-height:100vh;}
@@ -316,19 +326,54 @@
   <div class="login-card">
     <img src="/eclean-logo-white.png" alt="E-Clean Pro Services">
     <h1>Admin Dashboard</h1>
-    <p>Sign in to manage your business.</p>
-    <div class="error-msg" id="loginError"></div>
-    <form id="loginForm">
-      <div class="field">
-        <label for="username">Username</label>
-        <input type="text" id="username" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" autocomplete="current-password" required>
-      </div>
-      <button type="submit" class="btn" id="loginBtn">Sign In</button>
-    </form>
+
+    <div id="loginView">
+      <p>Sign in to manage your business.</p>
+      <div class="error-msg" id="loginError"></div>
+      <div class="success-msg" id="loginSuccess"></div>
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Sign In</button>
+      </form>
+      <button type="button" class="link-btn" id="showForgotPassword">Forgot password?</button>
+    </div>
+
+    <div id="forgotPasswordView" style="display:none;">
+      <p>Enter the email on file for your admin account and we'll send you a reset link.</p>
+      <div class="error-msg" id="forgotPasswordError"></div>
+      <div class="success-msg" id="forgotPasswordSuccess"></div>
+      <form id="forgotPasswordForm">
+        <div class="field">
+          <label for="fpEmail">Email</label>
+          <input type="email" id="fpEmail" autocomplete="email" required>
+        </div>
+        <button type="submit" class="btn" id="forgotPasswordBtn">Send Reset Link</button>
+      </form>
+      <button type="button" class="link-btn" id="backToLogin">Back to sign in</button>
+    </div>
+
+    <div id="resetPasswordView" style="display:none;">
+      <p>Choose a new password for your admin account.</p>
+      <div class="error-msg" id="resetPasswordError"></div>
+      <form id="resetPasswordForm">
+        <div class="field">
+          <label for="rpPassword">New Password</label>
+          <input type="password" id="rpPassword" autocomplete="new-password" required minlength="8">
+        </div>
+        <div class="field">
+          <label for="rpPassword2">Confirm New Password</label>
+          <input type="password" id="rpPassword2" autocomplete="new-password" required minlength="8">
+        </div>
+        <button type="submit" class="btn" id="resetPasswordBtn">Set New Password</button>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -510,6 +555,11 @@
       <button class="nav-item" data-panel="content-settings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Settings
+      </button>
+
+      <button class="nav-item" data-panel="audit-log" id="auditLogNavItem" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>
+        Audit Log
       </button>
 
       <div class="nav-group" id="contentGroup">
@@ -1000,6 +1050,12 @@
         <div class="dash-note">Reports are computed live from Invoices, Expenses, Jobs, and Leads data.</div>
       </div>
 
+      <!-- ================= AUDIT LOG ================= -->
+      <div class="panel" id="panel-audit-log">
+        <div class="panel-head"><div><h2>Audit Log</h2><p id="audit-count">Loading…</p></div></div>
+        <div id="audit-shell"></div>
+      </div>
+
       <!-- ================= SETTINGS: COMPANY PROFILE ================= -->
       <div class="panel" id="panel-content-settings">
         <div class="panel-head"><div><h2>Settings</h2><p>Company profile shown on future invoices and reports.</p></div></div>
@@ -1024,8 +1080,11 @@
           <p class="hint">Owners can add, deactivate, or remove admin accounts. Every account has full access to the dashboard; only Owners can manage the team itself.</p>
           <div class="error-msg" id="teamError"></div>
           <div id="teamList"></div>
-          <div class="row3" style="margin-top:18px; align-items:end;">
+          <div class="row2" style="margin-top:18px;">
             <div class="cfield"><label>Username *</label><input id="tm_username" required></div>
+            <div class="cfield"><label>Email * <span style="font-weight:400; color:var(--ink-soft);">(used for password reset)</span></label><input id="tm_email" type="email" required></div>
+          </div>
+          <div class="row2" style="align-items:end;">
             <div class="cfield"><label>Password *</label><input id="tm_password" type="password" placeholder="Min. 8 characters" required minlength="8"></div>
             <div class="cfield">
               <label>Role</label>
@@ -1535,6 +1594,12 @@ function populateSelect(select, values, selected) {
 
 /* ---------- Session / Login ---------- */
 async function checkSession() {
+  const resetToken = new URLSearchParams(location.search).get('reset');
+  if (resetToken) {
+    showLogin();
+    showLoginSubview('resetPassword');
+    return;
+  }
   try {
     const r = await fetch('/api/admin/session');
     const data = await r.json();
@@ -1550,6 +1615,90 @@ function showLogin() {
   $('#dash').classList.remove('show');
 }
 
+function showLoginSubview(view) {
+  $('#loginView').style.display = view === 'login' ? 'block' : 'none';
+  $('#forgotPasswordView').style.display = view === 'forgotPassword' ? 'block' : 'none';
+  $('#resetPasswordView').style.display = view === 'resetPassword' ? 'block' : 'none';
+}
+
+$('#showForgotPassword').addEventListener('click', () => {
+  $('#forgotPasswordError').classList.remove('show');
+  $('#forgotPasswordSuccess').classList.remove('show');
+  $('#forgotPasswordForm').reset();
+  showLoginSubview('forgotPassword');
+});
+$('#backToLogin').addEventListener('click', () => showLoginSubview('login'));
+
+$('#forgotPasswordForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#forgotPasswordBtn');
+  const errBox = $('#forgotPasswordError');
+  const successBox = $('#forgotPasswordSuccess');
+  errBox.classList.remove('show');
+  successBox.classList.remove('show');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const r = await fetch('/api/admin/forgot-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: $('#fpEmail').value.trim() }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok) {
+      successBox.textContent = data.message || "If an account with that email exists, we've sent a password reset link.";
+      successBox.classList.add('show');
+      $('#forgotPasswordForm').reset();
+    } else {
+      errBox.textContent = data.error || 'Something went wrong. Try again.';
+      errBox.classList.add('show');
+    }
+  } catch {
+    errBox.textContent = 'Network error. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+});
+
+$('#resetPasswordForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#resetPasswordBtn');
+  const errBox = $('#resetPasswordError');
+  errBox.classList.remove('show');
+  const password = $('#rpPassword').value;
+  const password2 = $('#rpPassword2').value;
+  if (password.length < 8) {
+    errBox.textContent = 'Password must be at least 8 characters.';
+    errBox.classList.add('show');
+    return;
+  }
+  if (password !== password2) {
+    errBox.textContent = 'Passwords do not match.';
+    errBox.classList.add('show');
+    return;
+  }
+  const token = new URLSearchParams(location.search).get('reset');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/admin/reset-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok) {
+      history.replaceState(null, '', location.pathname);
+      showLoginSubview('login');
+      $('#loginSuccess').textContent = 'Password updated — sign in with your new password.';
+      $('#loginSuccess').classList.add('show');
+    } else {
+      errBox.textContent = data.error || 'Failed to reset password. Try again.';
+      errBox.classList.add('show');
+    }
+  } catch {
+    errBox.textContent = 'Network error. Try again.';
+    errBox.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Set New Password';
+});
+
 let currentUserRole = null;
 let currentUserId = null;
 
@@ -1563,7 +1712,8 @@ function showDashboard(username, role, userId) {
     $('#dashWelcome').textContent = `Welcome back, ${username}! 👋`;
   }
   $('#teamSection').style.display = currentUserRole === 'Owner' ? 'block' : 'none';
-  if (currentUserRole === 'Owner') loadTeam();
+  $('#auditLogNavItem').style.display = currentUserRole === 'Owner' ? 'flex' : 'none';
+  if (currentUserRole === 'Owner') { loadTeam(); auditTable.load(); }
   leadTable.load();
   clientTable.load();
   quoteTable.load();
@@ -1584,6 +1734,7 @@ $('#loginForm').addEventListener('submit', async (e) => {
   const btn = $('#loginBtn');
   const errBox = $('#loginError');
   errBox.classList.remove('show');
+  $('#loginSuccess').classList.remove('show');
   btn.disabled = true;
   btn.textContent = 'Signing in…';
   try {
@@ -3761,6 +3912,47 @@ const reviewTable = createDataTable({
   defaultSortKey: 'created_at', defaultSortDir: 'desc',
 });
 
+/* ============================================================
+   AUDIT LOG (Owner only — who changed what)
+   ============================================================ */
+const AUDIT_RESOURCE_VALUES = [
+  'leads', 'clients', 'quotes', 'contracts', 'employees', 'jobs', 'invoices',
+  'expenses', 'supplies', 'reviews', 'job-postings', 'applications', 'content', 'users',
+];
+const auditTable = createDataTable({
+  prefix: 'audit',
+  fetchUrl: '/api/admin/audit-log',
+  dataKey: 'entries',
+  searchPlaceholder: 'Search user, action, resource…',
+  columns: [
+    { key:'created_at', label:'When', sortable:true, get:(r)=>new Date(r.created_at).getTime() },
+    { key:'username', label:'User', sortable:true, get:(r)=>(r.username||'').toLowerCase() },
+    { key:'action', label:'Action', sortable:true, get:(r)=>r.action||'' },
+    { key:'resource', label:'Resource', sortable:true, get:(r)=>r.resource||'' },
+    { key:'resource_id', label:'Record #', sortable:false },
+    { key:'details', label:'Details', sortable:false },
+  ],
+  searchFields: (r) => [r.username, r.role, r.action, r.resource, r.resource_id, r.details],
+  statusField: (r) => r.resource,
+  statusValues: AUDIT_RESOURCE_VALUES,
+  renderRowCells: (r) => `
+      <td>${new Date(r.created_at).toLocaleString()}</td>
+      <td>${escapeHtml(r.username || 'Unknown')}${r.role ? '<br><span class="est-line">' + escapeHtml(r.role) + '</span>' : ''}</td>
+      <td>${escapeHtml(r.action || '—')}</td>
+      <td>${escapeHtml(r.resource || '—')}</td>
+      <td>${r.resource_id ? escapeHtml(String(r.resource_id)) : '—'}</td>
+      <td>${escapeHtml(r.details || '—')}</td>
+    `,
+  rowKey: (r) => r.id,
+  onRowClick: () => {},
+  csvHeaders: ['When','User','Role','Action','Resource','Record #','Details'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.username, r.role, r.action, r.resource, r.resource_id, r.details],
+  csvFilenamePrefix: 'audit-log',
+  nounSingular: 'entry', nounPlural: 'entries',
+  emptyMessage: 'No audit log entries yet.',
+  defaultSortKey: 'created_at', defaultSortDir: 'desc',
+});
+
 function openReviewModal(r) {
   selectedReviewId = r.id;
   $('#reviewModalError').classList.remove('show');
@@ -4569,12 +4761,13 @@ function renderTeamList(users) {
     <div style="display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid rgba(10,92,83,0.08); flex-wrap:wrap;">
       <div style="flex:1; min-width:140px;">
         <strong>${escapeHtml(u.username)}</strong>${u.id === currentUserId ? ' <span class="est-line">(you)</span>' : ''}
-        <div class="est-line">Added ${new Date(u.created_at).toLocaleDateString()}</div>
+        <div class="est-line">${u.email ? escapeHtml(u.email) : 'No email on file — password reset unavailable'} &middot; Added ${new Date(u.created_at).toLocaleDateString()}</div>
       </div>
       ${roleBadge(u.role)}
       ${userStatusBadge(u.status)}
       <button type="button" class="btn btn-sm btn-ghost" data-action="toggle-role" data-id="${u.id}" data-role="${u.role}">${u.role === 'Owner' ? 'Make Admin' : 'Make Owner'}</button>
       <button type="button" class="btn btn-sm btn-ghost" data-action="toggle-status" data-id="${u.id}" data-status="${u.status}">${u.status === 'Active' ? 'Deactivate' : 'Activate'}</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-action="set-email" data-id="${u.id}" data-email="${escapeHtml(u.email || '')}">${u.email ? 'Change Email' : 'Set Email'}</button>
       <button type="button" class="btn btn-sm btn-ghost" data-action="reset-password" data-id="${u.id}">Reset Password</button>
       ${u.id === currentUserId ? '' : `<button type="button" class="btn btn-sm btn-danger" data-action="delete-user" data-id="${u.id}">Delete</button>`}
     </div>
@@ -4619,6 +4812,11 @@ async function handleTeamAction(btn) {
     if (!newPassword) return;
     if (newPassword.length < 8) { alert('Password must be at least 8 characters.'); return; }
     payload = { password: newPassword };
+  } else if (action === 'set-email') {
+    const newEmail = prompt('Enter this team member\'s email (used for password reset):', btn.dataset.email || '');
+    if (newEmail === null) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail.trim())) { alert('Please enter a valid email address.'); return; }
+    payload = { email: newEmail.trim() };
   } else if (action === 'delete-user') {
     confirmMsg = 'Remove this team member permanently? This cannot be undone.';
     method = 'DELETE';
@@ -4644,13 +4842,14 @@ async function handleTeamAction(btn) {
 
 $('#addUserSubmit').addEventListener('click', async () => {
   const username = $('#tm_username').value.trim();
+  const email = $('#tm_email').value.trim();
   const password = $('#tm_password').value;
   const role = $('#tm_role').value;
   const errBox = $('#teamError');
   const statusEl = document.querySelector('[data-status="add-user"]');
   errBox.classList.remove('show');
-  if (!username || password.length < 8) {
-    errBox.textContent = 'A username and a password of at least 8 characters are required.';
+  if (!username || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 8) {
+    errBox.textContent = 'A username, valid email, and a password of at least 8 characters are required.';
     errBox.classList.add('show');
     return;
   }
@@ -4658,10 +4857,10 @@ $('#addUserSubmit').addEventListener('click', async () => {
   btn.disabled = true; btn.textContent = 'Adding…';
   try {
     const r = await fetch('/api/admin/users', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password, role }),
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email, password, role }),
     });
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'Failed to add team member');
-    $('#tm_username').value = ''; $('#tm_password').value = ''; $('#tm_role').value = 'Admin';
+    $('#tm_username').value = ''; $('#tm_email').value = ''; $('#tm_password').value = ''; $('#tm_role').value = 'Admin';
     statusEl.textContent = 'Added ✓'; statusEl.style.color = 'var(--teal-600)'; statusEl.classList.add('show');
     setTimeout(() => statusEl.classList.remove('show'), 2000);
     await loadTeam();

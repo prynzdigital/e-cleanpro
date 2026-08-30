@@ -76,6 +76,7 @@
   }
   .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--teal-500); background:#fff; box-shadow:0 0 0 4px rgba(18,163,148,0.12);}
   .field-error{display:none; font-size:12.5px; font-weight:600; color:var(--danger); margin-top:6px;}
+  .hp-field{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
   .field.invalid input, .field.invalid select{border-color:var(--danger);}
   .field.invalid .field-error{display:block;}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
@@ -169,6 +170,10 @@
     <div class="apply-wrap">
       <div id="applyFormView">
         <form id="applyForm">
+          <div class="hp-field" aria-hidden="true">
+            <label for="jWebsite">Website</label>
+            <input type="text" id="jWebsite" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="field">
             <label for="jJobPosting">Position</label>
             <select id="jJobPosting"><option value="">General Application</option></select>
@@ -470,6 +475,7 @@ $('#applyForm').addEventListener('submit', async (e) => {
       resumeFilename: resumeUpload.filename,
       resumeContentType: resumeUpload.contentType,
       resumeBase64: resumeUpload.base64,
+      website: $('#jWebsite').value,
     };
 
     const resp = await fetch('/api/careers', {
