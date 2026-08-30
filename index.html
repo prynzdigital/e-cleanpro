@@ -261,6 +261,10 @@
   .testimonial-card p.quote{font-size:14.5px; color:var(--ink-soft); line-height:1.7; margin-bottom:16px; font-style:italic; flex:1;}
   .testimonial-author{font-size:13.5px; font-weight:700; color:var(--teal-900);}
   .testimonial-author span{display:block; font-size:12px; font-weight:500; color:var(--ink-soft); margin-top:2px;}
+  .feedback-card{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:38px; max-width:640px; margin:44px auto 0;}
+  .feedback-card h3{font-size:22px; color:var(--teal-900); margin-bottom:6px;}
+  .feedback-card > p{font-size:14px; color:var(--ink-soft); margin-bottom:26px;}
+  @media (max-width:640px){ .feedback-card{padding:26px;} }
   .pillars-section{}
   .pillars{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
   .pillar{
@@ -835,14 +839,76 @@
 </section>
 
 <!-- ================= TESTIMONIALS ================= -->
-<section id="reviews" class="bg-fade" style="display:none;">
+<section id="reviews" class="bg-fade">
   <div class="container">
     <div class="section-head center reveal">
       <span class="eyebrow" style="margin-left:auto;margin-right:auto;"><span class="dot"></span>Client Reviews</span>
       <h2>What Our Clients Say</h2>
       <p>Real feedback from the businesses and organizations we serve across Illinois.</p>
     </div>
-    <div class="testimonials-grid" id="testimonialsGrid"></div>
+    <div class="testimonials-grid" id="testimonialsGrid" style="display:none;"></div>
+
+    <div class="feedback-card reveal">
+      <div id="feedbackFormView">
+        <h3>Share Your Experience</h3>
+        <p>Had a great experience or ran into an issue? Let our team know — we read every submission.</p>
+        <form id="feedbackForm">
+          <div class="row2">
+            <div class="field">
+              <label for="fName">Full Name</label>
+              <input type="text" id="fName" required placeholder="Jane Smith">
+              <span class="field-error" id="err-fName"></span>
+            </div>
+            <div class="field">
+              <label for="fType">Type</label>
+              <select id="fType">
+                <option value="Review">Review</option>
+                <option value="Complaint">Complaint</option>
+              </select>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="fEmail">Email Address</label>
+              <input type="email" id="fEmail" placeholder="jane@company.com">
+              <span class="field-error" id="err-fEmail"></span>
+            </div>
+            <div class="field">
+              <label for="fPhone">Phone Number</label>
+              <input type="tel" id="fPhone" placeholder="(555) 555-5555">
+            </div>
+          </div>
+          <div class="field" id="fRatingField">
+            <label for="fRating">Rating</label>
+            <select id="fRating">
+              <option value="5">★★★★★ (5) Excellent</option>
+              <option value="4">★★★★☆ (4) Good</option>
+              <option value="3">★★★☆☆ (3) Average</option>
+              <option value="2">★★☆☆☆ (2) Poor</option>
+              <option value="1">★☆☆☆☆ (1) Very Poor</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fComment" id="fCommentLabel">Your Review</label>
+            <textarea id="fComment" rows="4" required placeholder="Tell us about your experience..."></textarea>
+            <span class="field-error" id="err-fComment"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="feedbackSubmitBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Submit Feedback
+          </button>
+        </form>
+      </div>
+
+      <div class="success-panel" id="feedbackSuccessPanel">
+        <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3 id="feedbackSuccessTitle">Thank You!</h3>
+        <p id="feedbackSuccessMsg">We've received your feedback and our team will follow up if needed.</p>
+        <div class="success-actions">
+          <button class="btn btn-ghost" id="feedbackAnother">Submit Another</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1475,6 +1541,129 @@ document.getElementById('bookAnother').addEventListener('click', () => {
   document.getElementById('bookingSummary').classList.remove('show');
 });
 
+/* ---------- Feedback (review/complaint) form ---------- */
+const feedbackForm = document.getElementById('feedbackForm');
+const feedbackSubmitBtn = document.getElementById('feedbackSubmitBtn');
+const fTypeSelect = document.getElementById('fType');
+const fRatingField = document.getElementById('fRatingField');
+const fCommentLabel = document.getElementById('fCommentLabel');
+const fComment = document.getElementById('fComment');
+
+function syncFeedbackTypeUI(){
+  const isReview = fTypeSelect.value === 'Review';
+  fRatingField.style.display = isReview ? '' : 'none';
+  fCommentLabel.textContent = isReview ? 'Your Review' : 'Describe the Issue';
+  fComment.placeholder = isReview ? 'Tell us about your experience...' : 'Tell us what happened so we can make it right...';
+}
+fTypeSelect.addEventListener('change', syncFeedbackTypeUI);
+syncFeedbackTypeUI();
+
+const FEEDBACK_VALIDATORS = {
+  fName: (v) => v.trim().length >= 2 || 'Please enter your full name.',
+  fEmail: (v) => v.trim() === '' || isValidEmailFormat(v) || 'Enter a valid email address, e.g. name@company.com.',
+  fComment: (v) => v.trim().length >= 5 || 'Please tell us a bit more before submitting.',
+};
+
+function validateFeedbackField(id){
+  const value = document.getElementById(id).value;
+  const result = FEEDBACK_VALIDATORS[id](value);
+  if (result === true){
+    clearFieldError(id);
+    return true;
+  }
+  setFieldError(id, result);
+  return false;
+}
+
+Object.keys(FEEDBACK_VALIDATORS).forEach((id) => {
+  const input = document.getElementById(id);
+  input.addEventListener('blur', () => validateFeedbackField(id));
+  input.addEventListener('input', () => {
+    if (input.closest('.field').classList.contains('invalid')) validateFeedbackField(id);
+  });
+});
+
+function validateFeedbackForm(){
+  const ids = Object.keys(FEEDBACK_VALIDATORS);
+  let firstInvalid = null;
+  let allValid = true;
+  ids.forEach((id) => {
+    const ok = validateFeedbackField(id);
+    if (!ok){
+      allValid = false;
+      if (!firstInvalid) firstInvalid = id;
+    }
+  });
+  if (firstInvalid) document.getElementById(firstInvalid).focus();
+  return allValid;
+}
+
+feedbackForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validateFeedbackForm()) return;
+
+  const payload = {
+    name: document.getElementById('fName').value,
+    email: document.getElementById('fEmail').value,
+    phone: document.getElementById('fPhone').value,
+    type: fTypeSelect.value,
+    rating: document.getElementById('fRating').value,
+    comment: fComment.value,
+  };
+
+  const originalBtnHtml = feedbackSubmitBtn.innerHTML;
+  feedbackSubmitBtn.disabled = true;
+  feedbackSubmitBtn.innerHTML = 'Sending…';
+
+  let ok = false;
+  let serverError = null;
+  try {
+    const resp = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok) {
+      ok = true;
+    } else {
+      serverError = data.error || 'Something went wrong. Please try again.';
+    }
+  } catch (err) {
+    serverError = 'Network error — please check your connection and try again.';
+  }
+
+  feedbackSubmitBtn.disabled = false;
+  feedbackSubmitBtn.innerHTML = originalBtnHtml;
+
+  if (!ok) {
+    let banner = document.getElementById('feedbackSubmitError');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'feedbackSubmitError';
+      banner.className = 'field-error';
+      banner.style.cssText = 'display:block; margin-bottom:16px; font-size:13.5px;';
+      feedbackForm.prepend(banner);
+    }
+    banner.textContent = serverError;
+    return;
+  }
+
+  const isReview = payload.type === 'Review';
+  document.getElementById('feedbackSuccessTitle').textContent = isReview ? 'Thanks for the Feedback!' : 'We Received Your Report';
+  document.getElementById('feedbackSuccessMsg').textContent = isReview
+    ? `Thank you, ${payload.name.split(' ')[0]} — we appreciate you taking the time to share your experience.`
+    : `Thank you, ${payload.name.split(' ')[0]} — our team will look into this and follow up with you if you provided contact details.`;
+  document.getElementById('feedbackFormView').style.display = 'none';
+  document.getElementById('feedbackSuccessPanel').classList.add('show');
+});
+document.getElementById('feedbackAnother').addEventListener('click', () => {
+  document.getElementById('feedbackSuccessPanel').classList.remove('show');
+  document.getElementById('feedbackFormView').style.display = 'block';
+  feedbackForm.reset();
+  syncFeedbackTypeUI();
+});
+
 /* ---------- CMS: fetch live content and apply on top of defaults ---------- */
 function applyContactInfo(c){
   const phoneDigits = (c.contact_phone || '').replace(/[^\d]/g, '');
@@ -1563,9 +1752,8 @@ async function loadSiteContent(){
 }
 
 function renderTestimonials(reviews){
-  const section = document.getElementById('reviews');
   const grid = document.getElementById('testimonialsGrid');
-  if (!reviews.length){ section.style.display = 'none'; return; }
+  if (!reviews.length){ grid.style.display = 'none'; return; }
   grid.innerHTML = reviews.map(r => {
     const stars = '&#9733;'.repeat(Math.max(0, Math.min(5, Number(r.rating) || 0))) + '&#9734;'.repeat(5 - Math.max(0, Math.min(5, Number(r.rating) || 0)));
     const author = r.client_name || 'Verified Client';
@@ -1578,7 +1766,7 @@ function renderTestimonials(reviews){
       </div>
     `;
   }).join('');
-  section.style.display = '';
+  grid.style.display = '';
 }
 
 loadSiteContent();

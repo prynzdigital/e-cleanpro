@@ -1448,6 +1448,7 @@
   <div class="modal">
     <h3>Edit Review / Complaint</h3>
     <div class="error-msg" id="reviewModalError"></div>
+    <div class="hint" id="reviewModalSubmitterInfo" style="display:none; margin-bottom:16px; padding:12px 14px; background:rgba(18,163,148,0.08); border-radius:var(--radius-sm); font-size:13px;"></div>
     <div class="row2">
       <div class="cfield"><label>Type</label><select id="rm_type"></select></div>
       <div class="cfield"><label>Client</label><select id="rm_clientId"><option value="">— None —</option></select></div>
@@ -3735,7 +3736,7 @@ const reviewTable = createDataTable({
     { key:'status', label:'Status', sortable:true, get:(r)=>r.status||'New' },
     { key:'featured', label:'On Website', sortable:true, get:(r)=>r.featured ? 1 : 0 },
   ],
-  searchFields: (r) => [r.client_name, r.client_company, r.comment, r.source],
+  searchFields: (r) => [r.client_name, r.client_company, r.comment, r.source, r.submitted_by_name, r.submitted_by_email],
   statusField: (r) => r.status || 'New',
   statusValues: REVIEW_STATUS_VALUES,
   renderRowCells: (r) => {
@@ -3743,7 +3744,7 @@ const reviewTable = createDataTable({
     return `
       <td>${new Date(r.created_at).toLocaleDateString()}</td>
       <td><span class="badge" style="background:${typeColor}1a; color:${typeColor};">${escapeHtml(r.type)}</span></td>
-      <td>${r.client_name ? escapeHtml(r.client_name) : '—'}</td>
+      <td>${r.client_name ? escapeHtml(r.client_name) : (r.submitted_by_name ? escapeHtml(r.submitted_by_name) + ' <span class="sub">(website)</span>' : '—')}</td>
       <td>${r.rating ? '★'.repeat(r.rating) : '—'}</td>
       <td>${escapeHtml(r.source || '—')}</td>
       <td>${statusBadge(r.status, REVIEW_STATUS_COLORS, 'New')}</td>
@@ -3752,8 +3753,8 @@ const reviewTable = createDataTable({
   },
   rowKey: (r) => r.id,
   onRowClick: openReviewModal,
-  csvHeaders: ['Date','Type','Client','Rating','Source','Comment','Status','Resolution','On Website'],
-  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.type, r.client_name, r.rating, r.source, r.comment, r.status, r.resolution, r.featured],
+  csvHeaders: ['Date','Type','Client','Submitted By (Website)','Email','Phone','Rating','Source','Comment','Status','Resolution','On Website'],
+  csvRow: (r) => [new Date(r.created_at).toLocaleString(), r.type, r.client_name, r.submitted_by_name, r.submitted_by_email, r.submitted_by_phone, r.rating, r.source, r.comment, r.status, r.resolution, r.featured],
   csvFilenamePrefix: 'reviews',
   nounSingular: 'review', nounPlural: 'reviews',
   emptyMessage: 'No reviews or complaints logged yet.',
@@ -3763,6 +3764,15 @@ const reviewTable = createDataTable({
 function openReviewModal(r) {
   selectedReviewId = r.id;
   $('#reviewModalError').classList.remove('show');
+  const submitterInfo = $('#reviewModalSubmitterInfo');
+  if (!r.client_id && r.submitted_by_name) {
+    submitterInfo.style.display = 'block';
+    submitterInfo.innerHTML = `<strong>Submitted via website by:</strong> ${escapeHtml(r.submitted_by_name)}` +
+      (r.submitted_by_email ? ` &middot; ${escapeHtml(r.submitted_by_email)}` : '') +
+      (r.submitted_by_phone ? ` &middot; ${escapeHtml(r.submitted_by_phone)}` : '');
+  } else {
+    submitterInfo.style.display = 'none';
+  }
   populateSelect($('#rm_type'), REVIEW_TYPE_VALUES, r.type || 'Review');
   populateClientDropdown($('#rm_clientId'), r.client_id, true);
   $('#rm_rating').value = r.rating || '';
