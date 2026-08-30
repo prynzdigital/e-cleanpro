@@ -264,6 +264,16 @@
   .testimonial-author span{display:block; font-size:12px; font-weight:500; color:var(--ink-soft); margin-top:2px;}
   .testimonial-empty{align-items:center; justify-content:center; text-align:center; min-height:200px;}
   .testimonial-empty p.quote{margin-bottom:0; flex:none;}
+  .testimonials-viewport{
+    max-height:640px; overflow:hidden; position:relative;
+    -webkit-mask-image:linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+    mask-image:linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  }
+  .testimonials-track{display:flex; flex-direction:column; gap:20px;}
+  .testimonials-track.auto-scroll{animation-name:testimonialScroll; animation-timing-function:linear; animation-iteration-count:infinite;}
+  .testimonials-viewport:hover .testimonials-track.auto-scroll{animation-play-state:paused;}
+  @keyframes testimonialScroll{ from{transform:translateY(0);} to{transform:translateY(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .testimonials-track.auto-scroll{animation:none;} }
   .feedback-card{background:#fff; border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:38px;}
   .feedback-card h3{font-size:22px; color:var(--teal-900); margin-bottom:6px;}
   .feedback-card > p{font-size:14px; color:var(--ink-soft); margin-bottom:26px;}
@@ -1771,7 +1781,7 @@ function renderTestimonials(reviews){
     grid.style.display = '';
     return;
   }
-  grid.innerHTML = reviews.map(r => {
+  const cardsHtml = reviews.map(r => {
     const stars = '&#9733;'.repeat(Math.max(0, Math.min(5, Number(r.rating) || 0))) + '&#9734;'.repeat(5 - Math.max(0, Math.min(5, Number(r.rating) || 0)));
     const author = r.client_name || 'Verified Client';
     const company = r.client_company ? escapeHtmlHome(r.client_company) : (r.source ? escapeHtmlHome(r.source) : '');
@@ -1783,6 +1793,22 @@ function renderTestimonials(reviews){
       </div>
     `;
   }).join('');
+
+  if (reviews.length > 3) {
+    // Duplicate the card list so translateY(-50%) loops seamlessly back to
+    // an identical starting frame instead of jumping/snapping.
+    const duration = Math.max(18, reviews.length * 6);
+    grid.innerHTML = `
+      <div class="testimonials-viewport">
+        <div class="testimonials-track auto-scroll" style="animation-duration:${duration}s;">
+          ${cardsHtml}
+          ${cardsHtml}
+        </div>
+      </div>
+    `;
+  } else {
+    grid.innerHTML = cardsHtml;
+  }
   grid.style.display = '';
 }
 
