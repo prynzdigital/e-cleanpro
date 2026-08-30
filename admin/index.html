@@ -119,6 +119,29 @@
   .panel{display:none;}
   .panel.active{display:block;}
   .panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px;}
+  .view-toggle{display:flex; gap:4px; background:rgba(10,92,83,0.06); padding:4px; border-radius:var(--radius-sm);}
+  .view-toggle-btn{padding:7px 16px; border:none; background:none; border-radius:8px; font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer; transition:.15s;}
+  .view-toggle-btn.active{background:#fff; color:var(--teal-700); box-shadow:0 2px 6px rgba(4,40,36,0.12);}
+  .view-toggle-btn:hover:not(.active){color:var(--teal-700);}
+  .cal-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;}
+  .cal-nav{display:flex; gap:8px; align-items:center;}
+  .cal-nav button{width:34px; height:34px; border-radius:8px; border:1px solid rgba(10,92,83,0.15); background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--teal-700);}
+  .cal-nav button:hover{background:rgba(18,163,148,0.08);}
+  .cal-nav .cal-today-btn{width:auto; padding:0 14px; font-size:12.5px; font-weight:700;}
+  .cal-title{font-size:17px; font-weight:800; color:var(--teal-900); min-width:170px; text-align:center;}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:rgba(10,92,83,0.1); border:1px solid rgba(10,92,83,0.1); border-radius:var(--radius-md); overflow:hidden;}
+  .cal-weekday{background:var(--aqua-100); padding:8px 6px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--teal-700); text-align:center;}
+  .cal-day{background:#fff; min-height:104px; padding:6px; display:flex; flex-direction:column; gap:3px;}
+  .cal-day.other-month{background:#fafbfb;}
+  .cal-day.other-month .cal-day-num{color:rgba(60,84,80,0.35);}
+  .cal-day.today{background:rgba(18,163,148,0.06);}
+  .cal-day-num{font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:2px;}
+  .cal-day.today .cal-day-num{color:var(--teal-700);}
+  .cal-job{font-size:10.5px; padding:3px 6px; border-radius:6px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; border-left:3px solid transparent;}
+  .cal-job:hover{filter:brightness(0.95);}
+  .cal-more{font-size:10.5px; color:var(--ink-soft); padding:2px 6px; cursor:pointer; font-weight:600;}
+  .cal-more:hover{color:var(--teal-700);}
+  @media (max-width:820px){ .cal-day{min-height:70px;} .cal-job{font-size:9.5px;} }
   .panel-head h2{font-size:22px; color:var(--teal-900);}
   .panel-head p{font-size:13.5px; color:var(--ink-soft); margin-top:2px;}
   .search-input{
@@ -791,8 +814,15 @@
 
       <!-- ================= JOBS: ALL JOBS ================= -->
       <div class="panel" id="panel-jobs-list">
-        <div class="panel-head"><div><h2>Jobs &amp; Schedule</h2><p id="job-count">Loading…</p></div></div>
+        <div class="panel-head">
+          <div><h2>Jobs &amp; Schedule</h2><p id="job-count">Loading…</p></div>
+          <div class="view-toggle">
+            <button type="button" class="view-toggle-btn active" id="jobViewListBtn">List</button>
+            <button type="button" class="view-toggle-btn" id="jobViewCalendarBtn">Calendar</button>
+          </div>
+        </div>
         <div id="job-shell"></div>
+        <div id="job-calendar" style="display:none;"></div>
       </div>
 
       <!-- ================= JOBS: ADD JOB ================= -->
@@ -3184,6 +3214,118 @@ document.querySelector('[data-panel="jobs-add"]').addEventListener('click', () =
   populateClientDropdown($('#ajb_clientId'), null);
   populateEmployeeDropdown($('#ajb_employeeId'), null);
 });
+
+/* ============================================================
+   JOBS CALENDAR VIEW
+   ============================================================ */
+// Local (not UTC) calendar-day key -- toISOString() on a locally-built Date
+// re-interprets it through UTC and can silently shift the date by a day
+// depending on the viewer's timezone, which would misplace jobs in the grid.
+function localDateKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+let calendarViewDate = new Date();
+let expandedCalDays = new Set();
+
+function renderJobCalendar() {
+  const container = $('#job-calendar');
+  const jobs = jobTable.getData();
+  const year = calendarViewDate.getFullYear();
+  const month = calendarViewDate.getMonth();
+
+  const jobsByDate = {};
+  jobs.forEach((j) => {
+    if (!j.scheduled_date) return;
+    const key = j.scheduled_date.slice(0, 10);
+    (jobsByDate[key] = jobsByDate[key] || []).push(j);
+  });
+
+  const firstOfMonth = new Date(year, month, 1);
+  const startOffset = firstOfMonth.getDay();
+  const gridStart = new Date(year, month, 1 - startOffset);
+  const todayKey = localDateKey(new Date());
+  const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  let cellsHtml = weekdayLabels.map((d) => `<div class="cal-weekday">${d}</div>`).join('');
+
+  for (let i = 0; i < 42; i++) {
+    const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+    const cellKey = localDateKey(cellDate);
+    const inMonth = cellDate.getMonth() === month;
+    const dayJobs = (jobsByDate[cellKey] || []).slice().sort((a, b) => (a.scheduled_time || '').localeCompare(b.scheduled_time || ''));
+    const cap = expandedCalDays.has(cellKey) ? dayJobs.length : 3;
+    const visibleJobs = dayJobs.slice(0, cap);
+    const hiddenCount = dayJobs.length - visibleJobs.length;
+
+    const jobsHtml = visibleJobs.map((j) => {
+      const color = JOB_STATUS_COLORS[j.status] || JOB_STATUS_COLORS.Scheduled;
+      const label = `${j.scheduled_time ? j.scheduled_time + ' ' : ''}${j.client_name || 'Job'}`;
+      return `<div class="cal-job" data-job-id="${j.id}" style="background:${color}1a; color:${color}; border-left-color:${color};" title="${escapeHtml(label)}">${escapeHtml(label)}</div>`;
+    }).join('');
+
+    const moreHtml = hiddenCount > 0 ? `<div class="cal-more" data-expand-date="${cellKey}">+${hiddenCount} more</div>` : '';
+
+    cellsHtml += `
+      <div class="cal-day ${inMonth ? '' : 'other-month'} ${cellKey === todayKey ? 'today' : ''}">
+        <div class="cal-day-num">${cellDate.getDate()}</div>
+        ${jobsHtml}
+        ${moreHtml}
+      </div>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="cal-header">
+      <div class="cal-title">${firstOfMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</div>
+      <div class="cal-nav">
+        <button type="button" id="calPrevBtn" title="Previous month">&lsaquo;</button>
+        <button type="button" class="cal-today-btn" id="calTodayBtn">Today</button>
+        <button type="button" id="calNextBtn" title="Next month">&rsaquo;</button>
+      </div>
+    </div>
+    <div class="cal-grid">${cellsHtml}</div>
+  `;
+
+  $('#calPrevBtn').addEventListener('click', () => { calendarViewDate = new Date(year, month - 1, 1); renderJobCalendar(); });
+  $('#calNextBtn').addEventListener('click', () => { calendarViewDate = new Date(year, month + 1, 1); renderJobCalendar(); });
+  $('#calTodayBtn').addEventListener('click', () => { calendarViewDate = new Date(); renderJobCalendar(); });
+
+  container.querySelectorAll('.cal-job').forEach((el) => {
+    el.addEventListener('click', () => {
+      const job = jobs.find((j) => String(j.id) === el.dataset.jobId);
+      if (job) openJobModal(job);
+    });
+  });
+  container.querySelectorAll('.cal-more').forEach((el) => {
+    el.addEventListener('click', () => {
+      expandedCalDays.add(el.dataset.expandDate);
+      renderJobCalendar();
+    });
+  });
+}
+
+$('#jobViewListBtn').addEventListener('click', () => {
+  $('#jobViewListBtn').classList.add('active');
+  $('#jobViewCalendarBtn').classList.remove('active');
+  $('#job-shell').style.display = 'block';
+  $('#job-calendar').style.display = 'none';
+});
+$('#jobViewCalendarBtn').addEventListener('click', () => {
+  $('#jobViewCalendarBtn').classList.add('active');
+  $('#jobViewListBtn').classList.remove('active');
+  $('#job-shell').style.display = 'none';
+  $('#job-calendar').style.display = 'block';
+  renderJobCalendar();
+});
+
+// Keep the calendar in sync with adds/edits/deletes made while it's the
+// active view (jobTable.load() itself only refreshes the list/table).
+const _jobTableLoad = jobTable.load;
+jobTable.load = async () => {
+  await _jobTableLoad();
+  if ($('#job-calendar').style.display !== 'none') renderJobCalendar();
+};
 
 /* ============================================================
    INVOICES & PAYMENTS
